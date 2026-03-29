@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apuestas — 7 Días</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg: linear-gradient(160deg,#1a2744 0%,#0f1a30 60%,#1a1a2e 100%);
+  --card-bg:#ffffff;
+  --text-dark:#1e293b;
+  --text-grey:#64748b;
+  --text-light:#94a3b8;
+  --accent: linear-gradient(90deg,#8E2DE2 0%,#4A00E0 100%);
+  --tab-active: linear-gradient(90deg,#ff7e5f 0%,#feb47b 100%);
+  --line-grad: linear-gradient(90deg,#ff416c 0%,#4776E6 100%);
+  --green-bg:#dcfce7;--green-border:#bbf7d0;--green-text:#166534;
+  --blue-bg:#dbeafe;--blue-text:#1e40af;
+  --amber-bg:#fef9c3;--amber-text:#854d0e;
+  --orange-bg:#ffedd5;--orange-text:#c2410c;
+  --border-r:16px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:#fff;min-height:100vh}
+.w{max-width:620px;margin:0 auto;padding:1.25rem 1rem 3rem}
+
+/* Header */
+.hdr{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);padding:12px 16px;border-radius:22px;margin-bottom:1.25rem;font-size:15px;font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;background:#ff4757;animation:pu 1.5s infinite;margin-left:4px}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+.hdr-right{margin-left:auto;font-size:11px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);padding:3px 10px;border-radius:10px}
+
+/* Date strip */
+.dstrip-wrap{margin-bottom:1rem;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.dstrip-wrap::-webkit-scrollbar{display:none}
+.dstrip{display:flex;gap:6px;width:max-content}
+.db{display:flex;flex-direction:column;align-items:center;padding:8px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);cursor:pointer;background:rgba(255,255,255,.06);min-width:54px;transition:all .2s;color:#fff}
+.db:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1)}
+.db.active{background:var(--tab-active);border-color:transparent;box-shadow:0 4px 14px rgba(255,126,95,.35)}
+.db .dn{font-size:9px;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
+.db .dd{font-size:18px;font-weight:700;line-height:1.1}
+.db .dm{font-size:9px;opacity:.6}
+.db.active .dn,.db.active .dm{opacity:.85}
+.db.today .dd{color:#feb47b}
+.db.active.today .dd{color:#fff}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;margin-bottom:1.25rem}
+.tab{padding:8px 18px;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.12);border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .25s;font-family:var(--font)}
+.tab.active{background:var(--tab-active);box-shadow:0 4px 12px rgba(255,126,95,.3)}
+.tab:hover:not(.active){background:rgba(255,255,255,.18)}
+
+/* Section head */
+.sh{display:flex;align-items:center;gap:10px;margin:1.25rem 0 .7rem}
+.sh-flag{font-size:16px}
+.sh-label{font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:.3px;text-transform:uppercase}
+.sh-line{flex:1;height:2px;background:var(--line-grad);border-radius:2px}
+
+/* Cards */
+.mc,.combo-card{background:var(--card-bg);border-radius:var(--border-r);margin-bottom:1rem;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.18);color:var(--text-dark)}
+
+/* Match head */
+.mc-head{display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--accent);color:#fff}
+.mc-time{font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:4px 10px;border-radius:12px;white-space:nowrap}
+.mc-teams{flex:1;font-size:13px;font-weight:700;line-height:1.3}
+.mc-ctx{font-size:10px;background:rgba(0,0,0,.18);padding:3px 8px;border-radius:10px;white-space:nowrap}
+
+/* Odds */
+.odds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:13px}
+.ob{display:flex;flex-direction:column;align-items:center;gap:3px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:9px 4px;transition:transform .15s}
+.ob-lbl{font-size:9px;color:var(--text-grey);text-transform:uppercase;font-weight:700;letter-spacing:.4px;text-align:center}
+.ob-val{font-size:17px;font-weight:800;color:var(--text-dark)}
+.ob.best{background:var(--green-bg);border-color:var(--green-border)}
+.ob.best .ob-val,.ob.best .ob-lbl{color:var(--green-text)}
+
+/* Stats bar */
+.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding:0 13px 10px;border-bottom:1px solid #f1f5f9}
+.sb-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px}
+.sb-val{font-size:15px;font-weight:800;color:var(--text-dark)}
+.sb-lbl{font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:.3px;text-align:center}
+.sb-item:not(:last-child){border-right:1px solid #f1f5f9}
+.form-dots{display:flex;gap:3px;margin-top:3px}
+.fd{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
+.fd-W{background:#16a34a}.fd-D{background:#94a3b8}.fd-L{background:#dc2626}
+
+/* Analysis */
+.analysis{padding:11px 15px 13px;display:flex;flex-direction:column;gap:7px}
+.ar{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-grey);line-height:1.45}
+.adot{width:6px;height:6px;border-radius:50%;background:#38bdf8;margin-top:4px;flex-shrink:0}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.bt{display:inline-flex;align-items:center;gap:4px;border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700}
+.bt-s{background:var(--blue-bg);color:var(--blue-text)}
+.bt-g{background:var(--orange-bg);color:var(--orange-text)}
+.bt-v{background:var(--amber-bg);color:var(--amber-text)}
+
+/* Combinadas */
+.combo-top{padding:13px 15px;background:var(--accent);color:#fff}
+.combo-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.combo-sub{font-size:11px;color:rgba(255,255,255,.78)}
+.combo-legs{padding:6px 15px}
+.leg{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9}
+.leg:last-child{border-bottom:none}
+.leg-n{width:19px;height:19px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--text-grey);flex-shrink:0}
+.leg-m{flex:1;font-size:11px;color:var(--text-grey)}
+.leg-p{font-size:12px;font-weight:700;color:var(--text-dark)}
+.leg-o{font-size:11px;font-weight:800;color:var(--text-light);min-width:34px;text-align:right}
+.combo-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:#f8fafc;border-top:1px solid #f1f5f9}
+.cf-left,.cf-right{display:flex;flex-direction:column;gap:2px}
+.cf-right{align-items:flex-end}
+.cf-lbl{font-size:9px;color:var(--text-grey);text-transform:uppercase;font-weight:700;letter-spacing:.4px}
+.cf-val{font-size:19px;font-weight:800;color:var(--text-dark)}
+.cf-prob{font-size:16px;font-weight:800}
+.ph{color:#16a34a}.pm{color:#d97706}
+.combo-adv{font-size:11px;color:var(--text-grey);padding:10px 15px;background:#fff;font-style:italic;line-height:1.5}
+.rb{padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(255,255,255,.2);color:#fff}
+
+/* Prob bar */
+.pbar-wrap{padding:0 13px 11px}
+.pbar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-grey);margin-bottom:4px;font-weight:600}
+.pbar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;display:flex}
+.pb-h{background:#4776E6}.pb-d{background:#94a3b8}.pb-a{background:#f97316}
+
+/* Day sections */
+.day-section{display:none}.day-section.active{display:block}
+
+/* Sections */
+.sec{display:none;animation:fi .3s ease}.sec.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.disclaimer{font-size:11px;color:rgba(255,255,255,.45);text-align:center;padding:1.25rem 0 .5rem;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="w">
+
+<div class="hdr">
+  ⚽ Apuestas 7 días <div class="dot"></div>
+  <span class="hdr-right">29 mar — 4 abr 2026</span>
+</div>
+
+<!-- DATE STRIP -->
+<div class="dstrip-wrap">
+<div class="dstrip">
+  <div class="db active today" onclick="selDay(0,this)"><span class="dn">Dom</span><span class="dd">29</span><span class="dm">Mar·4</span></div>
+  <div class="db" onclick="selDay(1,this)"><span class="dn">Lun</span><span class="dd">30</span><span class="dm">Mar·0</span></div>
+  <div class="db" onclick="selDay(2,this)"><span class="dn">Mar</span><span class="dd">31</span><span class="dm">Mar·3</span></div>
+  <div class="db" onclick="selDay(3,this)"><span class="dn">Mié</span><span class="dd">1</span><span class="dm">Abr·4</span></div>
+  <div class="db" onclick="selDay(4,this)"><span class="dn">Jue</span><span class="dd">2</span><span class="dm">Abr·3</span></div>
+  <div class="db" onclick="selDay(5,this)"><span class="dn">Vie</span><span class="dd">3</span><span class="dm">Abr·1</span></div>
+  <div class="db" onclick="selDay(6,this)"><span class="dn">Sáb</span><span class="dd">4</span><span class="dm">Abr·5</span></div>
+</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="sw('partidos',this)">⚽ Partidos</button>
+  <button class="tab" onclick="sw('combinadas',this)">📊 Combinadas</button>
+</div>
+
+<!-- ============ PARTIDOS ============ -->
+<div class="sec active" id="sec-partidos">
+
+<!-- DÍA 0: 29 MAR (HOY) -->
+<div class="day-section active" id="day-0">
+
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.32 · Dom 29 Mar</span><div class="sh-line"></div></div>
+
+<!-- Eibar vs Las Palmas -->
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">14:00</span><span class="mc-teams">SD Eibar vs UD Las Palmas</span><span class="mc-ctx">8º vs 7º</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">2.4</span><span class="sb-lbl">Goles/p local</span></div>
+    <div class="sb-item"><span class="sb-val">11</span><span class="sb-lbl">GC en casa (tmpa)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-L">D</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">57%</span><span class="sb-lbl">Victoria local (hist.)</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Eibar 45%</span><span>Empate 26%</span><span>L. Palmas 29%</span></div><div class="pbar"><div class="pb-h" style="width:45%"></div><div class="pb-d" style="width:26%"></div><div class="pb-a" style="width:29%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Eibar gana</span><span class="ob-val">2.35</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.00</span></div>
+    <div class="ob"><span class="ob-lbl">Las Palmas</span><span class="ob-val">3.10</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Eibar lleva 4 victorias en sus últimos 5 en Ipurua. Solo 11 goles encajados en casa en toda la temporada — la mejor defensa local de la categoría.</span></div>
+    <div class="ar"><div class="adot"></div><span>Las Palmas (7ª, 51 pts) no gana fuera desde hace 5 jornadas. Su media de goles a domicilio baja a 0.8 goles/partido.</span></div>
+    <div class="ar"><div class="adot"></div><span>Partido históricamente de pocos goles: 7 de los últimos 10 enfrentamientos terminaron con menos de 2.5 goles.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Eibar o empate (DC) @1.42</span>
+      <span class="bt bt-g">Menos de 2.5 goles @1.65</span>
+    </div>
+  </div>
+</div>
+
+<!-- Leonesa vs Andorra -->
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">16:15</span><span class="mc-teams">C. y D. Leonesa vs FC Andorra</span><span class="mc-ctx">19º vs 14º · Descenso</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">0.8</span><span class="sb-lbl">Goles/p Leonesa</span></div>
+    <div class="sb-item"><span class="sb-val">0.9</span><span class="sb-lbl">GC/p Andorra fuera</span><div class="form-dots"><div class="fd fd-L">D</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-L">D</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">19º</span><span class="sb-lbl">Leonesa — descenso</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Leonesa 30%</span><span>Empate 33%</span><span>Andorra 37%</span></div><div class="pbar"><div class="pb-h" style="width:30%"></div><div class="pb-d" style="width:33%"></div><div class="pb-a" style="width:37%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Leonesa</span><span class="ob-val">2.50</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.30</span></div>
+    <div class="ob best"><span class="ob-lbl">Andorra gana</span><span class="ob-val">2.60</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Leonesa en zona de descenso, presionada y sin margen. Pero juega en casa y con su afición — factor crucial en un partido de vida o muerte para ellos.</span></div>
+    <div class="ar"><div class="adot"></div><span>Andorra solo encajó 1 gol en sus últimas 3 salidas. Partido táctico con pocas ocasiones esperadas.</span></div>
+    <div class="tags">
+      <span class="bt bt-g">Menos de 2.5 goles @1.70</span>
+      <span class="bt bt-v">Empate — valor @3.30</span>
+    </div>
+  </div>
+</div>
+
+<!-- Zaragoza vs Racing -->
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">18:30</span><span class="mc-teams">Real Zaragoza vs Racing Santander</span><span class="mc-ctx">20º vs 1º · LÍDER</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">60</span><span class="sb-lbl">Pts Racing (1º)</span></div>
+    <div class="sb-item"><span class="sb-val">62</span><span class="sb-lbl">Goles Racing (temp.)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-L">D</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">2.6</span><span class="sb-lbl">Goles/p Racing</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Zaragoza 28%</span><span>Empate 25%</span><span>Racing 47%</span></div><div class="pbar"><div class="pb-h" style="width:28%"></div><div class="pb-d" style="width:25%"></div><div class="pb-a" style="width:47%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Zaragoza</span><span class="ob-val">2.86</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.40</span></div>
+    <div class="ob best"><span class="ob-lbl">Racing gana</span><span class="ob-val">2.50</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Racing lidera con 60 puntos y 62 goles — el equipo más goleador de la categoría. No especula, busca el partido.</span></div>
+    <div class="ar"><div class="adot"></div><span>Zaragoza (20º, zona de descenso) está obligado a atacar. Suma de los dos factores = partido abierto con goles garantizados.</span></div>
+    <div class="ar"><div class="adot"></div><span>5 de los últimos 6 encuentros del Racing como visitante terminaron con más de 2 goles totales.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Racing gana o empata @1.55</span>
+      <span class="bt bt-g">Más de 2.5 goles @2.10</span>
+    </div>
+  </div>
+</div>
+
+<!-- Almería vs Sanse -->
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">UD Almería vs Real Sociedad B</span><span class="mc-ctx">3º vs 13º · Play-off</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">55</span><span class="sb-lbl">Pts Almería (3º)</span></div>
+    <div class="sb-item"><span class="sb-val">59</span><span class="sb-lbl">Goles Almería (tmp)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-L">D</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">4V</span><span class="sb-lbl">Racha local Almería</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Almería 58%</span><span>Empate 25%</span><span>Sanse 17%</span></div><div class="pbar"><div class="pb-h" style="width:58%"></div><div class="pb-d" style="width:25%"></div><div class="pb-a" style="width:17%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Almería gana</span><span class="ob-val">1.55</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">4.00</span></div>
+    <div class="ob"><span class="ob-lbl">Soc. B</span><span class="ob-val">5.50</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Almería en play-off de ascenso (3º, 55 pts) con 4 victorias consecutivas en casa. Motivación máxima.</span></div>
+    <div class="ar"><div class="adot"></div><span>Real Sociedad B no puede ascender (filial), lo que limita su motivación real pese a sus buenos resultados recientes.</span></div>
+    <div class="ar"><div class="adot"></div><span>59 goles anotados en la temporada — Almería promedia 2.1 goles/partido en casa. La primera vuelta acabó 2-2.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Almería gana @1.55</span>
+      <span class="bt bt-g">Ambos marcan (BTTS) @1.85</span>
+      <span class="bt bt-s">Almería +1.5 hándicap @1.30</span>
+    </div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🌍</span><span class="sh-label">Amistosos internacionales · FIFA</span><div class="sh-line"></div></div>
+
+<!-- Colombia vs Francia -->
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">Colombia vs Francia</span><span class="mc-ctx">Northwest Stadium · EE.UU.</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">10</span><span class="sb-lbl">Partidos seguidos Francia marcando 2+</span></div>
+    <div class="sb-item"><span class="sb-val">2.3</span><span class="sb-lbl">Goles/p Colombia (últ. 6)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-L">D</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">69%</span><span class="sb-lbl">Prob. +2.5 goles</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Colombia 22%</span><span>Empate 26%</span><span>Francia 52%</span></div><div class="pbar"><div class="pb-h" style="width:22%"></div><div class="pb-d" style="width:26%"></div><div class="pb-a" style="width:52%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Colombia</span><span class="ob-val">4.50</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.90</span></div>
+    <div class="ob best"><span class="ob-lbl">Francia gana</span><span class="ob-val">1.67</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Francia viene de ganar 2-1 a Brasil con Mbappé y Ekitike como goleadores. Se perfila como máxima favorita al Mundial 2026.</span></div>
+    <div class="ar"><div class="adot"></div><span>Colombia perdió su invicto de 9 partidos ante Croacia (1-0) en esta misma ventana FIFA. Aun así es una selección peligrosa con Díaz, Arias y Córdoba.</span></div>
+    <div class="ar"><div class="adot"></div><span>Historial ofensivo brutal: 7 de los últimos 8 partidos entre selecciones top acabaron con más de 2.5 goles en esta fecha FIFA.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Francia gana @1.67</span>
+      <span class="bt bt-g">Más de 2.5 goles @1.90</span>
+      <span class="bt bt-g">Ambos marcan @1.73</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-0 -->
+
+<!-- DÍA 1: 30 MAR (LUNES) -->
+<div class="day-section" id="day-1">
+<div class="sh"><span class="sh-flag">📅</span><span class="sh-label">Lunes 30 Marzo — Sin partidos programados</span><div class="sh-line"></div></div>
+<div style="background:rgba(255,255,255,.06);border-radius:14px;padding:24px;text-align:center;color:rgba(255,255,255,.5);font-size:14px">No hay partidos de Segunda División ni amistosos programados para este día.</div>
+</div>
+
+<!-- DÍA 2: 31 MAR (MARTES) -->
+<div class="day-section" id="day-2">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.33 · Mar 31 Mar</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">19:00</span><span class="mc-teams">CD Mirandés vs Albacete</span><span class="mc-ctx">18º vs 16º · Descenso</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">1.4</span><span class="sb-lbl">Goles/p Mirandés</span></div>
+    <div class="sb-item"><span class="sb-val">1.6</span><span class="sb-lbl">Goles/p Albacete</span><div class="form-dots"><div class="fd fd-D">E</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-L">D</div><div class="fd fd-D">E</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">35%</span><span class="sb-lbl">Partidos con empate</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Mirandés 38%</span><span>Empate 34%</span><span>Albacete 28%</span></div><div class="pbar"><div class="pb-h" style="width:38%"></div><div class="pb-d" style="width:34%"></div><div class="pb-a" style="width:28%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Mirandés</span><span class="ob-val">2.20</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.10</span></div>
+    <div class="ob"><span class="ob-lbl">Albacete</span><span class="ob-val">3.20</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Duelo de zona de descenso. Mirandés en casa tiene ventaja histórica frente a Albacete (4V-2E-1D en los últimos 7).</span></div>
+    <div class="ar"><div class="adot"></div><span>Ambos equipos vienen de empatar en la jornada 32 (Córdoba 2-2 Mirandés). La tensión del descenso favorece partidos cerrados.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Mirandés o empate (DC) @1.38</span>
+      <span class="bt bt-g">Menos de 2.5 goles @1.60</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">20:00</span><span class="mc-teams">RC Deportivo vs Córdoba CF</span><span class="mc-ctx">2º vs 11º · Ascenso directo</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">56</span><span class="sb-lbl">Pts Deportivo (2º)</span></div>
+    <div class="sb-item"><span class="sb-val">49</span><span class="sb-lbl">Goles Deportivo (tmp)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">+13</span><span class="sb-lbl">Diferencia de goles</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Depor 52%</span><span>Empate 24%</span><span>Córdoba 24%</span></div><div class="pbar"><div class="pb-h" style="width:52%"></div><div class="pb-d" style="width:24%"></div><div class="pb-a" style="width:24%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Deportivo</span><span class="ob-val">1.80</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.50</span></div>
+    <div class="ob"><span class="ob-lbl">Córdoba</span><span class="ob-val">4.20</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>El Deportivo (2º, ascenso directo) recibe a Córdoba en Riazor con 4 victorias en los últimos 5 en casa. Presionado a sumar para no perder el 2º puesto.</span></div>
+    <div class="ar"><div class="adot"></div><span>Córdoba empató 2-2 con Mirandés en J.32 — no ha ganado fuera en las últimas 4 jornadas. Mala dinámica a domicilio.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Deportivo gana @1.80</span>
+      <span class="bt bt-g">Deportivo +1.5 hándicap @1.35</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:30</span><span class="mc-teams">Real Valladolid vs Cádiz CF</span><span class="mc-ctx">Posición media tabla</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">1.5</span><span class="sb-lbl">Goles/p (ambos)</span></div>
+    <div class="sb-item"><span class="sb-val">3</span><span class="sb-lbl">Empates últimos 5 (Valladolid)</span><div class="form-dots"><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">41%</span><span class="sb-lbl">% empates hist.</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Valladolid 39%</span><span>Empate 32%</span><span>Cádiz 29%</span></div><div class="pbar"><div class="pb-h" style="width:39%"></div><div class="pb-d" style="width:32%"></div><div class="pb-a" style="width:29%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Valladolid</span><span class="ob-val">2.10</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.20</span></div>
+    <div class="ob"><span class="ob-lbl">Cádiz</span><span class="ob-val">3.40</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Valladolid en Zorrilla tiene buen récord local. Cádiz viaja sin presión pero con escasa pegada fuera.</span></div>
+    <div class="ar"><div class="adot"></div><span>Historial: 3 de los últimos 5 enfrentamientos acabaron en empate. El mercado de empate @3.20 tiene valor estadístico.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Valladolid o empate (DC) @1.45</span>
+      <span class="bt bt-v">Empate — valor @3.20</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-2 -->
+
+<!-- DÍA 3: 1 ABR (MIÉRCOLES) -->
+<div class="day-section" id="day-3">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.33 · Mié 1 Abr</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">19:00</span><span class="mc-teams">FC Andorra vs Málaga CF</span><span class="mc-ctx">14º vs 4º · Play-off</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">55</span><span class="sb-lbl">Pts Málaga (4º)</span></div>
+    <div class="sb-item"><span class="sb-val">52</span><span class="sb-lbl">Goles Málaga (tmp)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">+15</span><span class="sb-lbl">DG Málaga</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Andorra 27%</span><span>Empate 28%</span><span>Málaga 45%</span></div><div class="pbar"><div class="pb-h" style="width:27%"></div><div class="pb-d" style="width:28%"></div><div class="pb-a" style="width:45%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Andorra</span><span class="ob-val">3.10</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.30</span></div>
+    <div class="ob best"><span class="ob-lbl">Málaga gana</span><span class="ob-val">2.10</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Málaga (4º, 55 pts, play-off) viene en estado de forma espectacular: 4 victorias consecutivas y 52 goles en la temporada.</span></div>
+    <div class="ar"><div class="adot"></div><span>Andorra juega en el Estadi Nacional de Andorra la Vella — campo difícil pero con capacidad limitada. Sin intimidación real.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Málaga gana @2.10</span>
+      <span class="bt bt-g">Más de 1.5 goles @1.45</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:30</span><span class="mc-teams">Racing Santander vs Sporting Gijón</span><span class="mc-ctx">1º vs 10º · DERBI ASTURIANO</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">60</span><span class="sb-lbl">Pts Racing (1º)</span></div>
+    <div class="sb-item"><span class="sb-val">3V-1E-1D</span><span class="sb-lbl">Racing últimos 5</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-L">D</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">DERBI</span><span class="sb-lbl">Siempre abierto</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Racing 42%</span><span>Empate 27%</span><span>Sporting 31%</span></div><div class="pbar"><div class="pb-h" style="width:42%"></div><div class="pb-d" style="width:27%"></div><div class="pb-a" style="width:31%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Racing gana</span><span class="ob-val">2.05</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.30</span></div>
+    <div class="ob"><span class="ob-lbl">Sporting</span><span class="ob-val">3.50</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>El GRAN DERBI ASTURIANO. Racing lidera la categoría y juega en casa (El Sardinero) — máxima motivación para ser campeón ante su rival histórico.</span></div>
+    <div class="ar"><div class="adot"></div><span>El Sporting (10º) tiene a sus mejores jugadores disponibles y en el derbi siempre arriesga todo. Partido abierto y emocional garantizado.</span></div>
+    <div class="ar"><div class="adot"></div><span>Los últimos 5 derbis en Santander: 3 victorias locales, 1 empate, 1 derrota. Promedio de 2.8 goles por partido.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Racing gana @2.05</span>
+      <span class="bt bt-g">Más de 2.5 goles @1.95</span>
+      <span class="bt bt-g">Ambos marcan @1.78</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-3 -->
+
+<!-- DÍA 4: 2 ABR (JUEVES) -->
+<div class="day-section" id="day-4">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.33 · Jue 2 Abr</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">19:00</span><span class="mc-teams">UD Las Palmas vs Granada CF</span><span class="mc-ctx">7º vs 15º · Play-off vs zona media</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">51</span><span class="sb-lbl">Pts Las Palmas (7º)</span></div>
+    <div class="sb-item"><span class="sb-val">+14</span><span class="sb-lbl">DG Las Palmas</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">27</span><span class="sb-lbl">GC temp. (mejor visita)</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Las Palmas 48%</span><span>Empate 26%</span><span>Granada 26%</span></div><div class="pbar"><div class="pb-h" style="width:48%"></div><div class="pb-d" style="width:26%"></div><div class="pb-a" style="width:26%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Las Palmas</span><span class="ob-val">2.00</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.40</span></div>
+    <div class="ob"><span class="ob-lbl">Granada</span><span class="ob-val">3.60</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Las Palmas (7º, 51 pts) juega en casa con ventaja clara sobre Granada. Solo 27 goles en contra en toda la temporada — la mejor defensa del campeonato.</span></div>
+    <div class="ar"><div class="adot"></div><span>Granada no gana fuera desde hace 6 jornadas. Partido con pocas concesiones defensivas por parte de Las Palmas.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Las Palmas gana @2.00</span>
+      <span class="bt bt-g">Menos de 2.5 goles @1.58</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">20:00</span><span class="mc-teams">Real Sociedad B vs SD Eibar</span><span class="mc-ctx">13º vs 8º</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">1.5</span><span class="sb-lbl">Goles/p Eibar fuera</span></div>
+    <div class="sb-item"><span class="sb-val">1.3</span><span class="sb-lbl">Goles/p Sanse en casa</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">48</span><span class="sb-lbl">Pts Eibar (8º)</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Sanse 33%</span><span>Empate 30%</span><span>Eibar 37%</span></div><div class="pbar"><div class="pb-h" style="width:33%"></div><div class="pb-d" style="width:30%"></div><div class="pb-a" style="width:37%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Sociedad B</span><span class="ob-val">2.90</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.10</span></div>
+    <div class="ob best"><span class="ob-lbl">Eibar gana</span><span class="ob-val">2.40</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Eibar viaja a Zubieta con buena forma. Sanse no puede ascender (filial) pero lleva una racha sorprendente de 5 victorias consecutivas.</span></div>
+    <div class="ar"><div class="adot"></div><span>Partido equilibrado. La Sanse produce muchos goles en casa: promedia 2.0 goles/partido en el Zubieta.</span></div>
+    <div class="tags">
+      <span class="bt bt-g">Más de 2.5 goles @1.85</span>
+      <span class="bt bt-g">Ambos marcan @1.70</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">20:00</span><span class="mc-teams">CD Castellón vs UD Almería</span><span class="mc-ctx">6º vs 3º · Play-off directo</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">51</span><span class="sb-lbl">Pts Castellón (6º)</span></div>
+    <div class="sb-item"><span class="sb-val">55</span><span class="sb-lbl">Pts Almería (3º)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-L">D</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">+12</span><span class="sb-lbl">DG Castellón</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Castellón 36%</span><span>Empate 27%</span><span>Almería 37%</span></div><div class="pbar"><div class="pb-h" style="width:36%"></div><div class="pb-d" style="width:27%"></div><div class="pb-a" style="width:37%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Castellón</span><span class="ob-val">2.60</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.20</span></div>
+    <div class="ob best"><span class="ob-lbl">Almería</span><span class="ob-val">2.55</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>DUELO DIRECTO por el play-off: 2 equipos separados por 4 puntos. El ganador se consolida en zona de ascenso, el perdedor puede quedarse fuera.</span></div>
+    <div class="ar"><div class="adot"></div><span>Castellón es extraordinariamente fuerte en Castalia (51 goles en casa, 39 en contra toda la temporada). Almería tiene la mejor racha pero viaja.</span></div>
+    <div class="ar"><div class="adot"></div><span>Ambos equipos juegan al ataque. Los últimos 3 enfrentamientos directos: 3.7 goles de media.</span></div>
+    <div class="tags">
+      <span class="bt bt-g">Más de 2.5 goles @1.88</span>
+      <span class="bt bt-g">Ambos marcan @1.75</span>
+      <span class="bt bt-v">Empate — valor @3.20</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-4 -->
+
+<!-- DÍA 5: 3 ABR (VIERNES) -->
+<div class="day-section" id="day-5">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.34 (adelantado) · Vie 3 Abr</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">CD Leganés vs (pendiente)</span><span class="mc-ctx">J.33 — horario por confirmar</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">—</span><span class="sb-lbl">Por confirmar</span></div>
+    <div class="sb-item"><span class="sb-val">—</span><span class="sb-lbl">Rival pendiente</span></div>
+    <div class="sb-item"><span class="sb-val">—</span><span class="sb-lbl">Cuotas pendientes</span></div>
+  </div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Local</span><span class="ob-val">—</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">—</span></div>
+    <div class="ob"><span class="ob-lbl">Visitante</span><span class="ob-val">—</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Leganés tiene partido de J.33 pendiente de asignación de horario oficial. Se actualizará cuando LaLiga publique el calendario definitivo.</span></div>
+    <div class="tags">
+      <span class="bt bt-v">Pendiente confirmación oficial</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-5 -->
+
+<!-- DÍA 6: 4 ABR (SÁBADO) -->
+<div class="day-section" id="day-6">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-label">LaLiga Hypermotion · J.34 · Sáb 5 Abr</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">14:00</span><span class="mc-teams">Albacete vs Burgos CF</span><span class="mc-ctx">16º vs 5º · Play-off</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">53</span><span class="sb-lbl">Pts Burgos (5º)</span></div>
+    <div class="sb-item"><span class="sb-val">26</span><span class="sb-lbl">GC Burgos (best def.)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">+11</span><span class="sb-lbl">DG Burgos</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Albacete 28%</span><span>Empate 29%</span><span>Burgos 43%</span></div><div class="pbar"><div class="pb-h" style="width:28%"></div><div class="pb-d" style="width:29%"></div><div class="pb-a" style="width:43%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Albacete</span><span class="ob-val">3.30</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.20</span></div>
+    <div class="ob best"><span class="ob-lbl">Burgos gana</span><span class="ob-val">2.00</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Burgos (5º, 53 pts) tiene la segunda mejor defensa de la categoría — 26 goles encajados. Solo Racing y Deportivo están por delante.</span></div>
+    <div class="ar"><div class="adot"></div><span>Albacete no tiene presiones reales y lo nota: solo 2 victorias en los últimos 8. Burgos necesita los puntos para el play-off.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Burgos gana @2.00</span>
+      <span class="bt bt-g">Burgos gana y menos de 3.5 goles @1.65</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">16:15</span><span class="mc-teams">Cádiz CF vs Córdoba CF</span><span class="mc-ctx">Duelo andaluz · posición media</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">1.8</span><span class="sb-lbl">Goles/p Cádiz en casa</span></div>
+    <div class="sb-item"><span class="sb-val">2.0</span><span class="sb-lbl">Goles/p Córdoba fuera</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">68%</span><span class="sb-lbl">Partidos con 2+ goles</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Cádiz 44%</span><span>Empate 28%</span><span>Córdoba 28%</span></div><div class="pbar"><div class="pb-h" style="width:44%"></div><div class="pb-d" style="width:28%"></div><div class="pb-a" style="width:28%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Cádiz</span><span class="ob-val">2.15</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.20</span></div>
+    <div class="ob"><span class="ob-lbl">Córdoba</span><span class="ob-val">3.30</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Cádiz en el Carranza suma ventaja local significativa. Córdoba viene de empatar 2-2 con Mirandés — ambos equipos gustan de los goles.</span></div>
+    <div class="ar"><div class="adot"></div><span>6 de los 9 últimos encuentros entre ambos terminaron con más de 1.5 goles. Partido entretenido garantizado.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Cádiz o empate (DC) @1.40</span>
+      <span class="bt bt-g">Más de 1.5 goles @1.42</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">18:30</span><span class="mc-teams">RC Deportivo vs Málaga CF</span><span class="mc-ctx">2º vs 4º · DUELO DIRECTO PLAY-OFF</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">56</span><span class="sb-lbl">Pts Deportivo (2º)</span></div>
+    <div class="sb-item"><span class="sb-val">55</span><span class="sb-lbl">Pts Málaga (4º)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">1pt</span><span class="sb-lbl">Diferencia entre ambos</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Deportivo 42%</span><span>Empate 26%</span><span>Málaga 32%</span></div><div class="pbar"><div class="pb-h" style="width:42%"></div><div class="pb-d" style="width:26%"></div><div class="pb-a" style="width:32%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Deportivo</span><span class="ob-val">2.10</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.30</span></div>
+    <div class="ob"><span class="ob-lbl">Málaga</span><span class="ob-val">3.40</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>PARTIDO DE LA SEMANA. El Deportivo (2º, ascenso directo) recibe a Málaga (4º, play-off) en Riazor. Solo 1 punto les separa. El ganador podría cambiar la clasificación radicalmente.</span></div>
+    <div class="ar"><div class="adot"></div><span>El Deportivo en Riazor es imbatible: 5V-3E-1D esta temporada en casa. El ambiente será brutal.</span></div>
+    <div class="ar"><div class="adot"></div><span>Málaga llega con 4 victorias seguidas y al máximo nivel. Duelo igualado pero con ligera ventaja local.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Deportivo gana @2.10</span>
+      <span class="bt bt-g">Más de 2.5 goles @2.00</span>
+      <span class="bt bt-g">Ambos marcan @1.80</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">FC Andorra vs Racing Santander</span><span class="mc-ctx">J.34 · 14º vs 1º</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">62</span><span class="sb-lbl">Goles Racing (tmp)</span></div>
+    <div class="sb-item"><span class="sb-val">6</span><span class="sb-lbl">Victorias visitante Racing (últ. 8)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">1º</span><span class="sb-lbl">Racing — Líder</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Andorra 22%</span><span>Empate 25%</span><span>Racing 53%</span></div><div class="pbar"><div class="pb-h" style="width:22%"></div><div class="pb-d" style="width:25%"></div><div class="pb-a" style="width:53%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ob-lbl">Andorra</span><span class="ob-val">3.60</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.50</span></div>
+    <div class="ob best"><span class="ob-lbl">Racing gana</span><span class="ob-val">1.88</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Racing lidera con 60 puntos y está a 4 del ascenso directo garantizado. No puede permitirse perder. Andorra (14º) sin presiones.</span></div>
+    <div class="ar"><div class="adot"></div><span>El Racing como visitante gana 6 de sus últimos 8 encuentros — la mejor estadística a domicilio de la categoría.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Racing gana @1.88</span>
+      <span class="bt bt-g">Racing gana y +1.5 goles @1.55</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">SD Eibar vs AD Ceuta</span><span class="mc-ctx">8º vs 9º</span></div>
+  <div class="stats-bar">
+    <div class="sb-item"><span class="sb-val">48</span><span class="sb-lbl">Pts Eibar (8º)</span></div>
+    <div class="sb-item"><span class="sb-val">47</span><span class="sb-lbl">Pts Ceuta (9º)</span><div class="form-dots"><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div><div class="fd fd-D">E</div><div class="fd fd-W">V</div></div></span></div>
+    <div class="sb-item"><span class="sb-val">1pt</span><span class="sb-lbl">Entre ambos</span></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar-labels"><span>Eibar 44%</span><span>Empate 28%</span><span>Ceuta 28%</span></div><div class="pbar"><div class="pb-h" style="width:44%"></div><div class="pb-d" style="width:28%"></div><div class="pb-a" style="width:28%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ob-lbl">Eibar</span><span class="ob-val">2.20</span></div>
+    <div class="ob"><span class="ob-lbl">Empate</span><span class="ob-val">3.20</span></div>
+    <div class="ob"><span class="ob-lbl">Ceuta</span><span class="ob-val">3.10</span></div>
+  </div>
+  <div class="analysis">
+    <div class="ar"><div class="adot"></div><span>Eibar en Ipurua tiene ventaja clara. Ceuta viene con 5 victorias en los últimos 10 como visitante pero nunca ha ganado en Ipurua.</span></div>
+    <div class="ar"><div class="adot"></div><span>Partido compacto entre dos equipos de mitad de tabla con aspiraciones similares. Pocos goles esperados.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Eibar gana o empata (DC) @1.45</span>
+      <span class="bt bt-g">Menos de 2.5 goles @1.62</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /day-6 -->
+
+</div><!-- /sec-partidos -->
+
+<!-- ============ COMBINADAS ============ -->
+<div class="sec" id="sec-combinadas">
+
+<!-- Combo 1 -->
+<div class="combo-card">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Ultra Segura — 3 patas</div><span class="rb">Segura</span></div>
+    <div class="combo-sub">Tres favoritos con sólida base estadística de la semana</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Almería vs Sanse · Dom 29</div><div class="leg-p">Almería gana</div><div class="leg-o">@1.55</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Deportivo vs Córdoba · Mar 31</div><div class="leg-p">Deportivo gana</div><div class="leg-o">@1.80</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Racing vs Sporting · Mié 1</div><div class="leg-p">Racing gana</div><div class="leg-o">@2.05</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-left"><span class="cf-lbl">Cuota total</span><span class="cf-val">@5.75</span></div>
+    <div class="cf-right"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~52%</span></div>
+  </div>
+  <div class="combo-adv">Almería lleva 4 victorias locales seguidas. Deportivo (2º) recibe a Córdoba en un duelo favorable. Racing, líder indiscutible, en casa ante su máximo rival regional. Las tres con gran respaldo estadístico.</div>
+</div>
+
+<!-- Combo 2 -->
+<div class="combo-card">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Mini Doble Máxima Seguridad</div><span class="rb">Muy segura</span></div>
+    <div class="combo-sub">Solo 2 patas — ~68% de probabilidad conjunta</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Eibar vs Las Palmas · Dom 29</div><div class="leg-p">Eibar gana o empata (DC)</div><div class="leg-o">@1.42</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Almería vs Sanse · Dom 29</div><div class="leg-p">Almería gana</div><div class="leg-o">@1.55</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-left"><span class="cf-lbl">Cuota total</span><span class="cf-val">@2.20</span></div>
+    <div class="cf-right"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~68%</span></div>
+  </div>
+  <div class="combo-adv">La doble chance del Eibar (11 GC en casa en toda la temporada) combinada con el favorito más claro del día. La opción más conservadora para apostar sobre seguro.</div>
+</div>
+
+<!-- Combo 3 -->
+<div class="combo-card">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada de Goles — 4 patas</div><span class="rb">Media</span></div>
+    <div class="combo-sub">Apuesta a la tendencia goleadora de los mejores partidos</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Francia vs Colombia · Dom 29</div><div class="leg-p">Más de 2.5 goles</div><div class="leg-o">@1.90</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Zaragoza vs Racing · Dom 29</div><div class="leg-p">Más de 2.5 goles</div><div class="leg-o">@2.10</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Racing vs Sporting · Mié 1</div><div class="leg-p">Ambos marcan</div><div class="leg-o">@1.78</div></div>
+    <div class="leg"><div class="leg-n">4</div><div class="leg-m">Castellón vs Almería · Jue 2</div><div class="leg-p">Más de 2.5 goles</div><div class="leg-o">@1.88</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-left"><span class="cf-lbl">Cuota total</span><span class="cf-val">@11.94</span></div>
+    <div class="cf-right"><span class="cf-lbl">Probabilidad</span><span class="cf-prob pm">~35%</span></div>
+  </div>
+  <div class="combo-adv">Francia lleva 10 partidos seguidos marcando 2+. Zaragoza vs Racing = partido abierto garantizado. El derbi asturiano históricamente goleador (2.8/p). Castellón vs Almería = dos equipos de ataque en duelo directo por el play-off.</div>
+</div>
+
+<!-- Combo 4 -->
+<div class="combo-card">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Partidos del Fin de Semana</div><span class="rb">Media</span></div>
+    <div class="combo-sub">Los 3 mejores partidos del sábado con análisis profundo</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Burgos vs Albacete · Sáb 4</div><div class="leg-p">Burgos gana</div><div class="leg-o">@2.00</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Deportivo vs Málaga · Sáb 4</div><div class="leg-p">Deportivo gana</div><div class="leg-o">@2.10</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Racing vs Andorra · Sáb 4</div><div class="leg-p">Racing gana</div><div class="leg-o">@1.88</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-left"><span class="cf-lbl">Cuota total</span><span class="cf-val">@7.92</span></div>
+    <div class="cf-right"><span class="cf-lbl">Probabilidad</span><span class="cf-prob pm">~43%</span></div>
+  </div>
+  <div class="combo-adv">Burgos tiene la segunda mejor defensa (26 GC) y llega motivado para el play-off. Deportivo local con ventaja sobre Málaga. Racing lidera y necesita ganar para ampliar distancia. Tres favoritos con cuotas con valor.</div>
+</div>
+
+<!-- Combo 5 -->
+<div class="combo-card">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Valor — Cuotas altas justificadas</div><span class="rb">Valor</span></div>
+    <div class="combo-sub">Selecciones estadísticamente justificadas con cuotas atractivas</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Málaga vs Andorra · Mié 1</div><div class="leg-p">Málaga gana</div><div class="leg-o">@2.10</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Las Palmas vs Granada · Jue 2</div><div class="leg-p">Las Palmas gana</div><div class="leg-o">@2.00</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Sanse vs Eibar · Jue 2</div><div class="leg-p">Ambos marcan</div><div class="leg-o">@1.70</div></div>
+    <div class="leg"><div class="leg-n">4</div><div class="leg-m">Deportivo vs Málaga · Sáb 4</div><div class="leg-p">Más de 2.5 goles</div><div class="leg-o">@2.00</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-left"><span class="cf-lbl">Cuota total</span><span class="cf-val">@14.28</span></div>
+    <div class="cf-right"><span class="cf-lbl">Probabilidad</span><span class="cf-prob pm">~28%</span></div>
+  </div>
+  <div class="combo-adv">Málaga en forma brillante con 4V consecutivas. Las Palmas es el mejor equipo defensivo y aprovecha en casa. Sanse produce mucho y Eibar también marca fuera. El duelo Depor-Málaga es el partido de la semana — dos equipos atacantes muy igualados.</div>
+</div>
+
+</div><!-- /sec-combinadas -->
+
+<div class="disclaimer">
+  ⚠ Apuesta siempre con responsabilidad. Cuotas orientativas — pueden variar según la casa de apuestas.<br>Las probabilidades son estimaciones propias. Juego responsable. Solo mayores de 18 años.
+</div>
+
+</div><!-- /w -->
+
+<script>
+function sw(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function selDay(idx,btn){
+  document.querySelectorAll('.day-section').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));
+  document.getElementById('day-'+idx).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
