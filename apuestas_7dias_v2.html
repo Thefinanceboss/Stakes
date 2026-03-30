@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apuestas — 7 Días</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:linear-gradient(160deg,#1a2744 0%,#0f1a30 60%,#1a1a2e 100%);
+  --card:#ffffff;
+  --td:#1e293b;--tg:#64748b;--tl:#94a3b8;
+  --accent:linear-gradient(90deg,#8E2DE2 0%,#4A00E0 100%);
+  --accent-tenis:linear-gradient(90deg,#0f766e 0%,#0ea5e9 100%);
+  --accent-nba:linear-gradient(90deg,#c2410c 0%,#ea580c 100%);
+  --tab-on:linear-gradient(90deg,#ff7e5f 0%,#feb47b 100%);
+  --line:linear-gradient(90deg,#ff416c 0%,#4776E6 100%);
+  --line-tenis:linear-gradient(90deg,#0f766e 0%,#38bdf8 100%);
+  --line-nba:linear-gradient(90deg,#c2410c 0%,#fb923c 100%);
+  --gbg:#dcfce7;--gbr:#bbf7d0;--gtx:#166534;
+  --bbg:#dbeafe;--btx:#1e40af;
+  --abg:#fef9c3;--atx:#854d0e;
+  --obg:#ffedd5;--otx:#c2410c;
+  --r:16px;--rm:8px;
+  --f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh}
+.w{max-width:640px;margin:0 auto;padding:1.25rem 1rem 3rem}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);padding:11px 16px;border-radius:22px;margin-bottom:1rem;font-size:14px;font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;background:#ff4757;animation:pu 1.5s infinite;margin-left:4px}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.3)}}
+.hdr-r{margin-left:auto;font-size:10px;color:rgba(255,255,255,.45);background:rgba(255,255,255,.07);padding:3px 10px;border-radius:10px}
+
+/* DATE STRIP */
+.dstrip-wrap{margin-bottom:.9rem;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.dstrip-wrap::-webkit-scrollbar{display:none}
+.dstrip{display:flex;gap:5px;width:max-content}
+.db{display:flex;flex-direction:column;align-items:center;padding:7px 10px;border-radius:13px;border:1px solid rgba(255,255,255,.12);cursor:pointer;background:rgba(255,255,255,.05);min-width:50px;transition:all .18s;color:#fff}
+.db:hover{border-color:rgba(255,255,255,.28)}
+.db.active{background:var(--tab-on);border-color:transparent;box-shadow:0 4px 14px rgba(255,126,95,.35)}
+.db .dn{font-size:9px;opacity:.65;text-transform:uppercase;letter-spacing:.4px}
+.db .dd{font-size:17px;font-weight:700;line-height:1.1}
+.db .dm{font-size:9px;opacity:.55}
+.db.today .dd{color:#feb47b}
+.db.active .dd,.db.active .dn,.db.active .dm{color:#fff;opacity:1}
+.db.active.today .dd{color:#fff}
+
+/* SPORT TABS */
+.sport-tabs{display:flex;gap:6px;margin-bottom:.9rem;overflow-x:auto;scrollbar-width:none}
+.sport-tabs::-webkit-scrollbar{display:none}
+.stab{padding:7px 14px;font-size:12px;font-weight:700;color:#fff;background:rgba(255,255,255,.1);border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all .22s;font-family:var(--f)}
+.stab.active{background:var(--tab-on);box-shadow:0 4px 12px rgba(255,126,95,.28)}
+.stab:hover:not(.active){background:rgba(255,255,255,.17)}
+.stab.tenis.active{background:var(--accent-tenis);box-shadow:0 4px 12px rgba(14,165,233,.25)}
+.stab.nba.active{background:var(--accent-nba);box-shadow:0 4px 12px rgba(234,88,12,.25)}
+
+/* SUBSECTION TABS */
+.sub-tabs{display:flex;gap:5px;margin-bottom:.85rem;flex-wrap:wrap}
+.subtab{padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);border:none;border-radius:16px;cursor:pointer;font-family:var(--f);transition:all .18s}
+.subtab.active{background:rgba(255,255,255,.18);color:#fff}
+
+/* SECTION HEAD */
+.sh{display:flex;align-items:center;gap:9px;margin:1.1rem 0 .65rem}
+.sh-flag{font-size:15px}
+.sh-lbl{font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:.3px;text-transform:uppercase}
+.sh-line{flex:1;height:2px;background:var(--line);border-radius:2px}
+.sh-line.tenis{background:var(--line-tenis)}
+.sh-line.nba{background:var(--line-nba)}
+
+/* MATCH CARD */
+.mc{background:var(--card);border-radius:var(--r);margin-bottom:.85rem;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.16);color:var(--td)}
+.mc-head{display:flex;align-items:center;gap:9px;padding:12px 14px;background:var(--accent);color:#fff}
+.mc-head.tenis{background:var(--accent-tenis)}
+.mc-head.nba{background:var(--accent-nba)}
+.mc-time{font-size:10px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:11px;white-space:nowrap}
+.mc-live{font-size:10px;font-weight:700;background:#ff4757;padding:3px 9px;border-radius:11px;animation:pu 1.2s infinite}
+.mc-teams{flex:1;font-size:13px;font-weight:700;line-height:1.25}
+.mc-ctx{font-size:9px;background:rgba(0,0,0,.18);padding:3px 7px;border-radius:9px;white-space:nowrap}
+
+/* STATS BAR */
+.sbar{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f1f5f9}
+.si{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px}
+.si:not(:last-child){border-right:1px solid #f1f5f9}
+.sv{font-size:14px;font-weight:800;color:var(--td)}
+.sl{font-size:9px;color:var(--tl);text-transform:uppercase;letter-spacing:.3px;text-align:center}
+.form{display:flex;gap:2px;margin-top:2px}
+.fd{width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#fff}
+.fW{background:#16a34a}.fD{background:#94a3b8}.fL{background:#dc2626}
+
+/* PROB BAR */
+.pbar-w{padding:0 13px 9px}
+.pbar-l{display:flex;justify-content:space-between;font-size:9px;color:var(--tg);margin-bottom:3px;font-weight:600}
+.pbar{height:5px;border-radius:3px;background:#e2e8f0;overflow:hidden;display:flex}
+.pbh{background:#4776E6}.pbd{background:#94a3b8}.pba{background:#f97316}
+.pbnba{background:#c2410c}
+
+/* ODDS */
+.odds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:11px 13px}
+.ob{display:flex;flex-direction:column;align-items:center;gap:3px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 3px}
+.ol{font-size:9px;color:var(--tg);text-transform:uppercase;font-weight:700;letter-spacing:.4px;text-align:center}
+.ov{font-size:16px;font-weight:800;color:var(--td)}
+.ob.best{background:var(--gbg);border-color:var(--gbr)}
+.ob.best .ov,.ob.best .ol{color:var(--gtx)}
+
+/* SCORE (live/final) */
+.score-row{display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 13px;border-bottom:1px solid #f1f5f9}
+.score-team{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.score-name{font-size:11px;font-weight:700;color:var(--td);text-align:center}
+.score-num{font-size:28px;font-weight:800;color:var(--td)}
+.score-num.win{color:#16a34a}
+.score-vs{font-size:11px;color:var(--tl);font-weight:600}
+.score-info{font-size:9px;color:var(--tl);text-align:center}
+.quarter-badge{background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--tg)}
+.live-badge{background:#ff4757;border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:#fff;animation:pu 1.2s infinite}
+
+/* ANALYSIS */
+.anal{padding:10px 14px 13px;display:flex;flex-direction:column;gap:6px}
+.ar{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--tg);line-height:1.45}
+.adot{width:5px;height:5px;border-radius:50%;background:#38bdf8;margin-top:4px;flex-shrink:0}
+.adot.tenis{background:#0ea5e9}
+.adot.nba{background:#f97316}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.bt{display:inline-flex;align-items:center;border-radius:11px;padding:3px 9px;font-size:10px;font-weight:700}
+.bt-s{background:var(--bbg);color:var(--btx)}
+.bt-g{background:var(--obg);color:var(--otx)}
+.bt-v{background:var(--abg);color:var(--atx)}
+
+/* NBA ODDS 2-way */
+.odds2{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:11px 13px}
+
+/* TENNIS SET DISPLAY */
+.sets-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid #f1f5f9}
+.set-player{font-size:11px;font-weight:700;color:var(--td);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.set-boxes{display:flex;gap:4px}
+.set-box{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:#f1f5f9;color:var(--tg)}
+.set-box.w{background:#dcfce7;color:#166534}
+.set-box.live{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+
+/* COMBO CARD */
+.combo{background:var(--card);border-radius:var(--r);margin-bottom:.85rem;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.16);color:var(--td)}
+.combo-top{padding:12px 14px;background:var(--accent);color:#fff}
+.combo-top.tenis{background:var(--accent-tenis)}
+.combo-top.nba{background:var(--accent-nba)}
+.combo-top.mix{background:linear-gradient(90deg,#7c3aed 0%,#c2410c 100%)}
+.combo-title{font-size:14px;font-weight:700;margin-bottom:2px}
+.combo-sub{font-size:10px;color:rgba(255,255,255,.75)}
+.combo-legs{padding:5px 14px}
+.leg{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f1f5f9}
+.leg:last-child{border-bottom:none}
+.leg-n{width:18px;height:18px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--tg);flex-shrink:0}
+.leg-m{flex:1;font-size:11px;color:var(--tg)}
+.leg-p{font-size:11px;font-weight:700;color:var(--td)}
+.leg-o{font-size:11px;font-weight:800;color:var(--tl);min-width:32px;text-align:right}
+.combo-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fafc;border-top:1px solid #f1f5f9}
+.cf-l,.cf-r{display:flex;flex-direction:column;gap:1px}
+.cf-r{align-items:flex-end}
+.cf-lbl{font-size:9px;color:var(--tg);text-transform:uppercase;font-weight:700;letter-spacing:.4px}
+.cf-val{font-size:19px;font-weight:800;color:var(--td)}
+.cf-prob{font-size:15px;font-weight:800}
+.ph{color:#16a34a}.pm{color:#d97706}
+.combo-adv{font-size:11px;color:var(--tg);padding:9px 14px;background:#fff;font-style:italic;line-height:1.5}
+.rb{padding:3px 9px;border-radius:11px;font-size:9px;font-weight:800;text-transform:uppercase;background:rgba(255,255,255,.2);color:#fff}
+
+/* SECTIONS */
+.sport-sec{display:none}.sport-sec.active{display:block}
+.day-sec{display:none}.day-sec.active{display:block}
+.sub-sec{display:none}.sub-sec.active{display:block}
+.disclaimer{font-size:10px;color:rgba(255,255,255,.38);text-align:center;padding:1rem 0 .5rem;line-height:1.6}
+
+/* NBA STANDINGS mini */
+.standing-row{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid #f1f5f9;font-size:11px;color:var(--td)}
+.standing-row:last-child{border-bottom:none}
+.st-rank{min-width:18px;font-weight:800;color:var(--tg);font-size:10px}
+.st-team{flex:1;font-weight:600}
+.st-rec{color:var(--tg);font-size:10px}
+.st-pct{font-weight:700;color:var(--td);min-width:36px;text-align:right}
+.st-playoff{width:7px;height:7px;border-radius:50%;background:#16a34a;flex-shrink:0}
+.st-bubble{background:#fef9c3;color:#854d0e;font-size:9px;font-weight:700;padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="w">
+
+<!-- HEADER -->
+<div class="hdr">
+  ⚽🎾🏀 Apuestas 7 días <div class="dot"></div>
+  <span class="hdr-r" id="hdr-date">29 Mar — 4 Abr 2026</span>
+</div>
+
+<!-- DATE STRIP -->
+<div class="dstrip-wrap"><div class="dstrip">
+  <div class="db active today" onclick="selDay(0,this)"><span class="dn">Dom</span><span class="dd">29</span><span class="dm">Mar</span></div>
+  <div class="db" onclick="selDay(1,this)"><span class="dn">Lun</span><span class="dd">30</span><span class="dm">Mar</span></div>
+  <div class="db" onclick="selDay(2,this)"><span class="dn">Mar</span><span class="dd">31</span><span class="dm">Mar</span></div>
+  <div class="db" onclick="selDay(3,this)"><span class="dn">Mié</span><span class="dd">1</span><span class="dm">Abr</span></div>
+  <div class="db" onclick="selDay(4,this)"><span class="dn">Jue</span><span class="dd">2</span><span class="dm">Abr</span></div>
+  <div class="db" onclick="selDay(5,this)"><span class="dn">Vie</span><span class="dd">3</span><span class="dm">Abr</span></div>
+  <div class="db" onclick="selDay(6,this)"><span class="dn">Sáb</span><span class="dd">4</span><span class="dm">Abr</span></div>
+</div></div>
+
+<!-- SPORT TABS -->
+<div class="sport-tabs">
+  <button class="stab active" onclick="selSport('futbol',this)">⚽ Fútbol</button>
+  <button class="stab tenis" onclick="selSport('tenis',this)">🎾 Tenis</button>
+  <button class="stab nba" onclick="selSport('nba',this)">🏀 NBA</button>
+  <button class="stab" onclick="selSport('combinadas',this)">📊 Combinadas</button>
+</div>
+
+<!-- ═══════════════ FÚTBOL ═══════════════ -->
+<div class="sport-sec active" id="sp-futbol">
+
+<!-- SUBSECCIÓN TABS -->
+<div class="sub-tabs">
+  <button class="subtab active" onclick="selSub('futbol','partidos',this)">Partidos</button>
+  <button class="subtab" onclick="selSub('futbol','selecciones',this)">Selecciones</button>
+  <button class="subtab" onclick="selSub('futbol','ligas',this)">Ligas EU</button>
+  <button class="subtab" onclick="selSub('futbol','2div',this)">2ª División</button>
+</div>
+
+<!-- PARTIDOS (hoy destacados) -->
+<div class="sub-sec active" id="futbol-partidos">
+<div id="f-day-container"></div>
+</div>
+
+<!-- SELECCIONES -->
+<div class="sub-sec" id="futbol-selecciones">
+<div class="sh"><span class="sh-flag">🌍</span><span class="sh-lbl">Amistosos FIFA — Semana</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00 · Dom 29</span><span class="mc-teams">Colombia vs Francia</span><span class="mc-ctx">NW Stadium · EE.UU.</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">10</span><span class="sl">Partidos Francia marcando 2+</span></div>
+    <div class="si"><span class="sv">2.3</span><span class="sl">Goles/p Colombia (últ. 6)</span><div class="form">
+      <div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">69%</span><span class="sl">Prob. +2.5 goles</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Colombia 22%</span><span>Empate 26%</span><span>Francia 52%</span></div><div class="pbar"><div class="pbh" style="width:22%"></div><div class="pbd" style="width:26%"></div><div class="pba" style="width:52%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Colombia</span><span class="ov">4.50</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.90</span></div>
+    <div class="ob best"><span class="ol">Francia</span><span class="ov">1.67</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Francia ganó 2-1 a Brasil con Mbappé y Ekitike — máximo favorita al Mundial 2026. Llevan 10 partidos seguidos marcando 2 o más goles.</span></div>
+    <div class="ar"><div class="adot"></div><span>Colombia perdió el invicto ante Croacia (0-1) en esta misma ventana FIFA pero sigue siendo un equipo peligroso con Díaz, Arias y James.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Francia gana @1.67</span>
+      <span class="bt bt-g">+2.5 goles @1.90</span>
+      <span class="bt bt-g">Ambos marcan @1.73</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">01:00 · Lun 30</span><span class="mc-teams">Argentina vs Zambia</span><span class="mc-ctx">La Bombonera · Buenos Aires</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">1.18</span><span class="sl">Cuota Argentina</span></div>
+    <div class="si"><span class="sv">+18</span><span class="sl">Victorias consecutivas Argentina</span><div class="form">
+      <div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">3.2</span><span class="sl">Goles/p Argentina (últ. 10)</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Argentina 87%</span><span>Empate 8%</span><span>Zambia 5%</span></div><div class="pbar"><div class="pbh" style="width:87%"></div><div class="pbd" style="width:8%"></div><div class="pba" style="width:5%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Argentina</span><span class="ov">1.18</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">8.00</span></div>
+    <div class="ob"><span class="ol">Zambia</span><span class="ov">18.00</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Messi y Argentina reciben a Zambia en La Bombonera. Duelo sin competitividad real — Argentina acumula 18 victorias en sus últimos 18 partidos en casa.</span></div>
+    <div class="ar"><div class="adot"></div><span>Argentina marcó 4-0 ante Mauritania en el primer amistoso. Se esperan 4+ goles con rotaciones en los últimos minutos.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Argentina gana @1.18</span>
+      <span class="bt bt-g">Argentina +2.5 goles @1.45</span>
+    </div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">14:30 · Dom 29</span><span class="mc-teams">Escocia vs Japón</span><span class="mc-ctx">Hill Dickinson Stadium</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">2.10</span><span class="sl">Cuota Japón</span></div>
+    <div class="si"><span class="sv">Top 15</span><span class="sl">Ranking FIFA Japón</span><div class="form">
+      <div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fL">D</div></div></div>
+    <div class="si"><span class="sv">54%</span><span class="sl">Prob. victoria Japón</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Escocia 28%</span><span>Empate 26%</span><span>Japón 46%</span></div><div class="pbar"><div class="pbh" style="width:28%"></div><div class="pbd" style="width:26%"></div><div class="pba" style="width:46%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Escocia</span><span class="ov">3.20</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.40</span></div>
+    <div class="ob best"><span class="ol">Japón</span><span class="ov">2.10</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Japón tiene una generación histórica: Minamino, Kubo, Doan, Ito — todos en grandes ligas europeas. Escocia llega sin figuras importantes.</span></div>
+    <div class="tags"><span class="bt bt-v">Japón — valor @2.10</span><span class="bt bt-g">+2.5 goles @1.78</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mar 31 Mar</span><span class="mc-teams">Alemania vs Italia</span><span class="mc-ctx">Signal Iduna Park · Amistoso</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">2.0</span><span class="sl">Goles/p Alemania (2026)</span></div>
+    <div class="si"><span class="sv">1.7</span><span class="sl">Goles/p Italia (2026)</span><div class="form">
+      <div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">58%</span><span class="sl">Prob. +2.5 goles</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Alemania 45%</span><span>Empate 27%</span><span>Italia 28%</span></div><div class="pbar"><div class="pbh" style="width:45%"></div><div class="pbd" style="width:27%"></div><div class="pba" style="width:28%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Alemania</span><span class="ov">2.20</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.30</span></div>
+    <div class="ob"><span class="ol">Italia</span><span class="ov">3.10</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Alemania recibe a Italia en Dortmund en el partido europeo de preparación más atractivo de la semana. Clásico histórico muy igualado.</span></div>
+    <div class="ar"><div class="adot"></div><span>Italia llega con Barella, Scamacca y Chiesa. Alemania con Wirtz, Musiala y Havertz. 4 últimos enfrentamientos: 3 con ambos marcando.</span></div>
+    <div class="tags"><span class="bt bt-g">Ambos marcan @1.75</span><span class="bt bt-g">+2.5 goles @1.88</span><span class="bt bt-s">Alemania o empate @1.50</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mar 31 Mar · 20:45</span><span class="mc-teams">Portugal vs España</span><span class="mc-ctx">Estádio da Luz · Lisboa</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">2.3</span><span class="sl">Goles/p Portugal (2026)</span></div>
+    <div class="si"><span class="sv">2.1</span><span class="sl">Goles/p España (2026)</span><div class="form">
+      <div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div></div></div>
+    <div class="si"><span class="sv">72%</span><span class="sl">Prob. +2.5 goles</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Portugal 38%</span><span>Empate 24%</span><span>España 38%</span></div><div class="pbar"><div class="pbh" style="width:38%"></div><div class="pbd" style="width:24%"></div><div class="pba" style="width:38%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Portugal</span><span class="ov">2.50</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.30</span></div>
+    <div class="ob best"><span class="ol">España</span><span class="ov">2.60</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>El duelo ibérico más esperado. Portugal en casa con Cristiano, Félix y Rúben Neves. España con Pedri, Yamal y Morata — campeona de la Euro 2024.</span></div>
+    <div class="ar"><div class="adot"></div><span>Historial reciente: 3 empates en los últimos 5 enfrentamientos. Partido muy abierto con ambas selecciones jugando al ataque.</span></div>
+    <div class="tags"><span class="bt bt-g">Ambos marcan @1.62</span><span class="bt bt-g">+2.5 goles @1.85</span><span class="bt bt-v">Empate — valor @3.30</span></div>
+  </div>
+</div>
+</div><!-- /selecciones -->
+
+<!-- LIGAS EU -->
+<div class="sub-sec" id="futbol-ligas">
+<div class="sh"><span class="sh-flag">🏆</span><span class="sh-lbl">Champions League — Cuartos · Ida</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mar 7 Abr · 21:00</span><span class="mc-teams">Real Madrid vs Bayern Munich</span><span class="mc-ctx">UCL QF · Bernabéu</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">31%</span><span class="sl">Prob. victoria Madrid</span></div>
+    <div class="si"><span class="sv">44.6%</span><span class="sl">Prob. victoria Bayern</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">24.4%</span><span class="sl">Prob. empate</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Madrid 31%</span><span>Empate 24%</span><span>Bayern 45%</span></div><div class="pbar"><div class="pbh" style="width:31%"></div><div class="pbd" style="width:24%"></div><div class="pba" style="width:45%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Real Madrid</span><span class="ov">2.85</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.40</span></div>
+    <div class="ob best"><span class="ol">Bayern Munich</span><span class="ov">2.10</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Bayern llega como favorito estadístico. Kane lleva 20 goles en Bundesliga y los bávaros eliminaron al Manchester City con autoridad en la fase de grupos.</span></div>
+    <div class="ar"><div class="adot"></div><span>Real Madrid sin Bellingham (lesión) — su baja es un factor determinante. Mbappé lleva 22 goles pero no está al nivel esperado en UCL esta temporada.</span></div>
+    <div class="tags"><span class="bt bt-s">Bayern gana @2.10</span><span class="bt bt-g">+2.5 goles @1.80</span><span class="bt bt-g">Ambos marcan @1.72</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mié 8 Abr · 21:00</span><span class="mc-teams">FC Barcelona vs Atlético Madrid</span><span class="mc-ctx">UCL QF · Spotify Camp Nou</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">62.4%</span><span class="sl">Prob. victoria Barça</span></div>
+    <div class="si"><span class="sv">7-2</span><span class="sl">Victoria Barça vs Newcastle</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">18%</span><span class="sl">Prob. victoria Atlético</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Barça 62%</span><span>Empate 20%</span><span>Atlético 18%</span></div><div class="pbar"><div class="pbh" style="width:62%"></div><div class="pbd" style="width:20%"></div><div class="pba" style="width:18%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">FC Barcelona</span><span class="ov">1.55</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">4.20</span></div>
+    <div class="ob"><span class="ol">Atlético</span><span class="ov">5.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Barça goleó 7-2 al Newcastle en UCL — la victoria más goleadora de la edición. Lewandowski (18 goles) y Yamal en estado de forma excepcional.</span></div>
+    <div class="ar"><div class="adot"></div><span>Atlético viene de perder 3-2 con Tottenham. Griezmann solo tiene el placer de anotar ante el que fue su club. Papel de víctima asumido.</span></div>
+    <div class="tags"><span class="bt bt-s">Barcelona gana @1.55</span><span class="bt bt-g">Barça +1.5 goles @1.30</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="sh-lbl">Premier League · J.34</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Sáb 11 Abr · 18:30</span><span class="mc-teams">Liverpool FC vs Fulham FC</span><span class="mc-ctx">Anfield · 3º vs 9º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">72</span><span class="sl">Goles Liverpool (tmp)</span></div>
+    <div class="si"><span class="sv">62%</span><span class="sl">Prob. victoria Liverpool</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">25</span><span class="sl">Goles Salah (tmp)</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Liverpool 62%</span><span>Empate 20%</span><span>Fulham 18%</span></div><div class="pbar"><div class="pbh" style="width:62%"></div><div class="pbd" style="width:20%"></div><div class="pba" style="width:18%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Liverpool</span><span class="ov">1.55</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">4.10</span></div>
+    <div class="ob"><span class="ol">Fulham</span><span class="ov">5.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Liverpool (3º) busca el top-2 con urgencia. Salah lleva 25 goles en liga — mejor artillero de la Premier. Anfield en noches de presión es implacable.</span></div>
+    <div class="tags"><span class="bt bt-s">Liverpool gana @1.55</span><span class="bt bt-g">Ambos marcan @1.72</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Dom 12 Abr · 17:30</span><span class="mc-teams">Chelsea FC vs Manchester City</span><span class="mc-ctx">Stamford Bridge · 4º vs 2º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">43%</span><span class="sl">Prob. Man. City</span></div>
+    <div class="si"><span class="sv">32%</span><span class="sl">Prob. Chelsea</span><div class="form"><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">25%</span><span class="sl">Prob. empate</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Chelsea 32%</span><span>Empate 25%</span><span>Man. City 43%</span></div><div class="pbar"><div class="pbh" style="width:32%"></div><div class="pbd" style="width:25%"></div><div class="pba" style="width:43%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Chelsea</span><span class="ov">2.90</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.40</span></div>
+    <div class="ob best"><span class="ol">Man. City</span><span class="ov">1.95</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Duelo por el top-4. Man. City (2º) necesita los puntos para no perder terreno ante Arsenal. De Bruyne retorna de lesión justo a tiempo.</span></div>
+    <div class="tags"><span class="bt bt-s">Man. City gana @1.95</span><span class="bt bt-g">+2.5 goles @1.88</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🇩🇪</span><span class="sh-lbl">Bundesliga · J.29</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Sáb 4 Abr · 15:30</span><span class="mc-teams">SC Freiburg vs Bayern Munich</span><span class="mc-ctx">Europpark · 5º vs 1º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">68.5%</span><span class="sl">Prob. Bayern</span></div>
+    <div class="si"><span class="sv">52</span><span class="sl">Goles Bayern (tmp)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">1.42</span><span class="sl">Cuota Bayern</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Freiburg 14%</span><span>Empate 17%</span><span>Bayern 69%</span></div><div class="pbar"><div class="pbh" style="width:14%"></div><div class="pbd" style="width:17%"></div><div class="pba" style="width:69%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Freiburg</span><span class="ov">7.00</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">5.50</span></div>
+    <div class="ob best"><span class="ol">Bayern Munich</span><span class="ov">1.42</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Bayern (1º, 5V consecutivas en Bundesliga) visita Friburgo antes de la UCL. Equipo de rotación pero con mucha calidad. Harry Kane sigue imparable con 20 goles.</span></div>
+    <div class="tags"><span class="bt bt-s">Bayern gana @1.42</span><span class="bt bt-g">Bayern +1.5 @1.22</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Sáb 4 Abr · 15:30</span><span class="mc-teams">Bayer Leverkusen vs VFL Wolfsburg</span><span class="mc-ctx">BayArena · 2º vs 12º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">67.9%</span><span class="sl">Prob. Leverkusen</span></div>
+    <div class="si"><span class="sv">2</span><span class="sl">Subcampeón · 2ª Bundesliga</span><div class="form"><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">1.45</span><span class="sl">Cuota Leverkusen</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Leverkusen 68%</span><span>Empate 18%</span><span>Wolfsburg 14%</span></div><div class="pbar"><div class="pbh" style="width:68%"></div><div class="pbd" style="width:18%"></div><div class="pba" style="width:14%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Leverkusen</span><span class="ov">1.45</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">4.50</span></div>
+    <div class="ob"><span class="ol">Wolfsburg</span><span class="ov">6.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Leverkusen (2º) busca recuperar puntos tras el empate 3-3 con Heidenheim. Xabi Alonso mantiene un juego vertical y agresivo — Wolfsburg en descenso sin recursos.</span></div>
+    <div class="tags"><span class="bt bt-s">Leverkusen gana @1.45</span><span class="bt bt-g">Leverkusen +2.5 en casa @1.60</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🇮🇹</span><span class="sh-lbl">Serie A · J.32</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Dom 5 Abr · 20:45</span><span class="mc-teams">Inter Milano vs AS Roma</span><span class="mc-ctx">San Siro · 2º vs 7º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">58.8%</span><span class="sl">Prob. Inter</span></div>
+    <div class="si"><span class="sv">2.0</span><span class="sl">Goles/p Inter en casa</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">1.55</span><span class="sl">Cuota Inter</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Inter 59%</span><span>Empate 24%</span><span>Roma 17%</span></div><div class="pbar"><div class="pbh" style="width:59%"></div><div class="pbd" style="width:24%"></div><div class="pba" style="width:17%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Inter Milano</span><span class="ov">1.55</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">4.00</span></div>
+    <div class="ob"><span class="ol">AS Roma</span><span class="ov">5.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Inter (2º) recibe a Roma en San Siro con presión por recuperar el liderato que tiene Napoli. Lautaro Martínez lleva 18 goles en serie A esta temporada.</span></div>
+    <div class="tags"><span class="bt bt-s">Inter gana @1.55</span><span class="bt bt-g">Inter +1.5 @1.30</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Lun 6 Abr · 20:45</span><span class="mc-teams">SSC Napoli vs AC Milan</span><span class="mc-ctx">Maradona · 1º vs 4º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">36.5%</span><span class="sl">Prob. Napoli</span></div>
+    <div class="si"><span class="sv">32.7%</span><span class="sl">Prob. Milan</span><div class="form"><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div></div></div>
+    <div class="si"><span class="sv">62%</span><span class="sl">Prob. ambos marcan</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Napoli 36%</span><span>Empate 31%</span><span>Milan 33%</span></div><div class="pbar"><div class="pbh" style="width:36%"></div><div class="pbd" style="width:31%"></div><div class="pba" style="width:33%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">SSC Napoli</span><span class="ov">2.50</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.20</span></div>
+    <div class="ob"><span class="ol">AC Milan</span><span class="ov">2.80</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>PARTIDO DE LA JORNADA en Serie A. Napoli lidera con 2 puntos sobre Inter. Milan necesita ganar para no perder el tren del top-4.</span></div>
+    <div class="ar"><div class="adot"></div><span>Osimhen vs Theo Hernández — duelo de figuras. Los últimos 4 Napoli-Milan: 3 con ambos marcando. Partido abierto muy probable.</span></div>
+    <div class="tags"><span class="bt bt-g">Ambos marcan @1.65</span><span class="bt bt-v">Empate — valor @3.20</span><span class="bt bt-g">+2.5 goles @1.95</span></div>
+  </div>
+</div>
+</div><!-- /ligas -->
+
+<!-- 2ª DIVISIÓN -->
+<div class="sub-sec" id="futbol-2div">
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-lbl">LaLiga Hypermotion · J.32 · Dom 29</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">14:00</span><span class="mc-teams">SD Eibar vs UD Las Palmas</span><span class="mc-ctx">8º vs 7º · Ipurua</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">4V</span><span class="sl">Eibar últimos 5 casa</span></div>
+    <div class="si"><span class="sv">11</span><span class="sl">GC Eibar en casa (tmp)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div><div class="fd fL">D</div></div></div>
+    <div class="si"><span class="sv">45%</span><span class="sl">Prob. Eibar</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Eibar 45%</span><span>Empate 26%</span><span>Las Palmas 29%</span></div><div class="pbar"><div class="pbh" style="width:45%"></div><div class="pbd" style="width:26%"></div><div class="pba" style="width:29%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Eibar gana</span><span class="ov">2.35</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.00</span></div>
+    <div class="ob"><span class="ol">Las Palmas</span><span class="ov">3.10</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Eibar solo encajó 11 goles en casa — la mejor defensa local de la categoría. 4 victorias en los últimos 5 en Ipurua.</span></div>
+    <div class="tags"><span class="bt bt-s">Eibar o empate (DC) @1.42</span><span class="bt bt-g">-2.5 goles @1.65</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">18:30</span><span class="mc-teams">Real Zaragoza vs Racing Santander</span><span class="mc-ctx">20º vs 1º · LÍDER</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">60</span><span class="sl">Pts Racing (1º)</span></div>
+    <div class="si"><span class="sv">62</span><span class="sl">Goles Racing (tmp)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div></div></div>
+    <div class="si"><span class="sv">47%</span><span class="sl">Prob. Racing</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Zaragoza 28%</span><span>Empate 25%</span><span>Racing 47%</span></div><div class="pbar"><div class="pbh" style="width:28%"></div><div class="pbd" style="width:25%"></div><div class="pba" style="width:47%"></div></div></div>
+  <div class="odds">
+    <div class="ob"><span class="ol">Zaragoza</span><span class="ov">2.86</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.40</span></div>
+    <div class="ob best"><span class="ol">Racing gana</span><span class="ov">2.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Racing lidera con 60 pts y 62 goles — el equipo más goleador. Zaragoza (descenso) obligado a atacar. Partido abierto con goles garantizados.</span></div>
+    <div class="tags"><span class="bt bt-s">Racing o empate @1.55</span><span class="bt bt-g">+2.5 goles @2.10</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">21:00</span><span class="mc-teams">UD Almería vs Real Sociedad B</span><span class="mc-ctx">3º vs 13º · Play-off</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">55</span><span class="sl">Pts Almería (3º)</span></div>
+    <div class="si"><span class="sv">4V</span><span class="sl">Racha local Almería</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div></div></div>
+    <div class="si"><span class="sv">58%</span><span class="sl">Prob. Almería</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Almería 58%</span><span>Empate 25%</span><span>Sanse 17%</span></div><div class="pbar"><div class="pbh" style="width:58%"></div><div class="pbd" style="width:25%"></div><div class="pba" style="width:17%"></div></div></div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Almería gana</span><span class="ov">1.55</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">4.00</span></div>
+    <div class="ob"><span class="ol">Soc. B</span><span class="ov">5.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Almería lleva 4 victorias consecutivas en casa. Real Sociedad B no puede ascender (filial). Primera vuelta: 2-2. La Sociedad B llega con buena forma reciente.</span></div>
+    <div class="tags"><span class="bt bt-s">Almería gana @1.55</span><span class="bt bt-g">BTTS @1.85</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🇪🇸</span><span class="sh-lbl">LaLiga Hypermotion · J.33 · Mar-Mié</span><div class="sh-line"></div></div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mar 31 · 20:00</span><span class="mc-teams">RC Deportivo vs Córdoba CF</span><span class="mc-ctx">2º vs 11º · Ascenso directo</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">56</span><span class="sl">Pts Deportivo (2º)</span></div>
+    <div class="si"><span class="sv">4V</span><span class="sl">Deportivo racha casa</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">52%</span><span class="sl">Prob. Deportivo</span></div>
+  </div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Deportivo</span><span class="ov">1.80</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.50</span></div>
+    <div class="ob"><span class="ol">Córdoba</span><span class="ov">4.20</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>Deportivo (2º, ascenso directo) en Riazor. Córdoba no ha ganado fuera en las últimas 4 jornadas. Resultado muy claro a favor del local.</span></div>
+    <div class="tags"><span class="bt bt-s">Deportivo gana @1.80</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head"><span class="mc-time">Mié 1 Abr · 21:30</span><span class="mc-teams">Racing Santander vs Sporting Gijón</span><span class="mc-ctx">1º vs 10º · DERBI ASTURIANO</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">60</span><span class="sl">Pts Racing (1º)</span></div>
+    <div class="si"><span class="sv">2.8</span><span class="sl">Goles/p derbis histór.</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fD">E</div></div></div>
+    <div class="si"><span class="sv">42%</span><span class="sl">Prob. Racing</span></div>
+  </div>
+  <div class="odds">
+    <div class="ob best"><span class="ol">Racing gana</span><span class="ov">2.05</span></div>
+    <div class="ob"><span class="ol">Empate</span><span class="ov">3.30</span></div>
+    <div class="ob"><span class="ol">Sporting</span><span class="ov">3.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot"></div><span>EL DERBI ASTURIANO. Racing en casa con el liderato y el sueño del ascenso. Los últimos 5 derbis en Santander: 3V-1E-1D para el Racing, promedio 2.8 goles.</span></div>
+    <div class="tags"><span class="bt bt-s">Racing gana @2.05</span><span class="bt bt-g">+2.5 goles @1.95</span><span class="bt bt-g">Ambos marcan @1.78</span></div>
+  </div>
+</div>
+</div><!-- /2div -->
+
+</div><!-- /sp-futbol -->
+
+<!-- ═══════════════ TENIS ═══════════════ -->
+<div class="sport-sec" id="sp-tenis">
+
+<div class="sub-tabs">
+  <button class="subtab active" onclick="selSub('tenis','atp',this)">ATP Tour</button>
+  <button class="subtab" onclick="selSub('tenis','wta',this)">WTA Tour</button>
+  <button class="subtab" onclick="selSub('tenis','apuestas',this)">Apuestas Tenis</button>
+</div>
+
+<!-- ATP -->
+<div class="sub-sec active" id="tenis-atp">
+<div class="sh"><span class="sh-flag">🎾</span><span class="sh-lbl">ATP Miami Open — Masters 1000</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-live">EN VIVO</span><span class="mc-teams">J. Sinner vs J. Lehecka</span><span class="mc-ctx">Miami · Cuartos</span></div>
+  <div class="sets-row">
+    <div class="set-player">Jannik Sinner <span style="font-size:9px;color:#16a34a;font-weight:700">(1)</span></div>
+    <div class="set-boxes">
+      <div class="set-box w">6</div><div class="set-box w">6</div>
+    </div>
+  </div>
+  <div class="sets-row">
+    <div class="set-player">Jiří Lehečka <span style="font-size:9px;color:var(--tg);font-weight:600">(12)</span></div>
+    <div class="set-boxes">
+      <div class="set-box">4</div><div class="set-box">4</div>
+    </div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>Sinner gana 6-4, 6-4 — dominó con su servicio y backhand. Avanza a semifinales del Miami Open donde se enfrentará a Alcaraz o Zverev.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span>Número 1 del mundo en estado de forma excepcional. Cuota para ganar el torneo: @1.60.</span></div>
+    <div class="tags"><span class="bt bt-s">Sinner campeón Miami @1.60</span></div>
+  </div>
+</div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">Semifinal · Próx.</span><span class="mc-teams">C. Alcaraz vs A. Zverev</span><span class="mc-ctx">Miami Open · Semis</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">1.80</span><span class="sl">Cuota Alcaraz</span></div>
+    <div class="si"><span class="sv">3</span><span class="sl">Alcaraz vs Zverev (H2H)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">2.05</span><span class="sl">Cuota Zverev</span></div>
+  </div>
+  <div class="odds2">
+    <div class="ob best"><span class="ol">Carlos Alcaraz</span><span class="ov">1.80</span></div>
+    <div class="ob"><span class="ol">Alexander Zverev</span><span class="ov">2.05</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>Alcaraz vs Zverev — el partido más esperado del Miami Open. Alcaraz gana el H2H 3-1 y en pista dura va bien. Zverev tiene mejor servicio pero Alcaraz es más versátil.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span>Los últimos 3 enfrentamientos: todos con más de 2 sets jugados. Partido largo y muy disputado esperado.</span></div>
+    <div class="tags"><span class="bt bt-s">Alcaraz gana @1.80</span><span class="bt bt-g">+2.5 sets @1.62</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🎾</span><span class="sh-lbl">ATP Challenger — Miyazaki, Japón</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">Lun 30 · 04:00</span><span class="mc-teams">H. Moriya vs Y. Takahashi</span><span class="mc-ctx">Challenger Miyazaki · 1R</span></div>
+  <div class="sets-row">
+    <div class="set-player">Hiroki Moriya (local)</div>
+    <div class="set-boxes"><div class="set-box live">-</div></div>
+  </div>
+  <div class="sets-row">
+    <div class="set-player">Yusuke Takahashi</div>
+    <div class="set-boxes"><div class="set-box live">-</div></div>
+  </div>
+  <div class="odds2">
+    <div class="ob best"><span class="ol">Moriya (local)</span><span class="ov">1.75</span></div>
+    <div class="ob"><span class="ol">Takahashi</span><span class="ov">2.00</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>Moriya tiene ventaja de localía y conoce perfectamente las condiciones. Challenger japonés con buen nivel de participantes asiáticos.</span></div>
+    <div class="tags"><span class="bt bt-s">Moriya gana @1.75</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🏆</span><span class="sh-lbl">Próximos torneos ATP — Semana</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">4-12 Abr</span><span class="mc-teams">Mutua Madrid Open — Masters 1000</span><span class="mc-ctx">Tierra · La Caja Mágica</span></div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>El Mutua Madrid Open arranca la temporada de tierra. Sinner (@2.20) y Alcaraz (@2.50) llegan como máximos favoritos. Nadal podría hacer una aparición especial como embajador del torneo.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span>En tierra española Alcaraz históricamente es imbatible. Ha ganado el torneo en 2023 y 2024. Cuota para el tricampeonato @2.50.</span></div>
+    <div class="tags"><span class="bt bt-s">Alcaraz campeón Madrid @2.50</span><span class="bt bt-v">Sinner campeón Madrid @2.20</span></div>
+  </div>
+</div>
+</div><!-- /tenis-atp -->
+
+<!-- WTA -->
+<div class="sub-sec" id="tenis-wta">
+<div class="sh"><span class="sh-flag">🎾</span><span class="sh-lbl">WTA Miami Open</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">Dom 29 · Final</span><span class="mc-teams">C. Gauff vs K. Muchová</span><span class="mc-ctx">Miami · Final WTA</span></div>
+  <div class="sets-row">
+    <div class="set-player">Coco Gauff <span style="font-size:9px;color:#16a34a;font-weight:700">(2)</span></div>
+    <div class="set-boxes"><div class="set-box w">6</div><div class="set-box w">6</div></div>
+  </div>
+  <div class="sets-row">
+    <div class="set-player">Karolína Muchová <span style="font-size:9px;color:var(--tg);font-weight:600">(8)</span></div>
+    <div class="set-boxes"><div class="set-box">1</div><div class="set-box">1</div></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>Coco Gauff gana la final de Miami 6-1, 6-1 con una actuación demoledora. Su cuarta Masters 1000 con solo 21 años. Dominó en todos los aspectos del juego.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span>Gauff llega a Madrid Open como gran favorita. Su cuota de título en tierra está cayendo: ya @2.80 en los principales mercados.</span></div>
+    <div class="tags"><span class="bt bt-s">Gauff campeona Madrid @2.80</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🎾</span><span class="sh-lbl">WTA Bogotá — Tierra</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-live">EN VIVO</span><span class="mc-teams">I. Burillo vs C. Werner</span><span class="mc-ctx">WTA Bogotá · 2R</span></div>
+  <div class="sets-row">
+    <div class="set-player">Irene Burillo Escorihuela (ESP)</div>
+    <div class="set-boxes"><div class="set-box w">7</div><div class="set-box live">0</div></div>
+  </div>
+  <div class="sets-row">
+    <div class="set-player">Caroline Werner (ALE)</div>
+    <div class="set-boxes"><div class="set-box">6</div><div class="set-box live">0</div></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>Burillo ganó el primer set en tie-break y lidera en el segundo. La tenista española de 22 años viene en excelente momento — torneo WTA 125 en tierra, su superficie favorita.</span></div>
+    <div class="tags"><span class="bt bt-s">Burillo gana el partido @1.65</span></div>
+  </div>
+</div>
+
+<div class="sh"><span class="sh-flag">🏆</span><span class="sh-lbl">Próximos torneos WTA — Semana</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">4-12 Abr</span><span class="mc-teams">Mutua Madrid Open WTA — Premier</span><span class="mc-ctx">Tierra · La Caja Mágica</span></div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span>El Madrid Open WTA se juega simultáneamente. Gauff (@2.80) llega en forma perfecta. Swiatek (@2.20) es la reina de la tierra pero su estado físico genera dudas tras lesión.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span>Aryna Sabalenka (@3.50) y Elena Rybakina (@4.00) completan el cuadro de favoritas. Torneo muy abierto para apuestas de valor.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Swiatek campeona @2.20</span>
+      <span class="bt bt-v">Sabalenka — valor @3.50</span>
+      <span class="bt bt-v">Rybakina — valor @4.00</span>
+    </div>
+  </div>
+</div>
+</div><!-- /tenis-wta -->
+
+<!-- APUESTAS TENIS -->
+<div class="sub-sec" id="tenis-apuestas">
+<div class="sh"><span class="sh-flag">📊</span><span class="sh-lbl">Picks tenis semana</span><div class="sh-line tenis"></div></div>
+
+<div class="mc">
+  <div class="mc-head tenis"><span class="mc-time">Semana</span><span class="mc-teams">Top picks ATP + WTA</span><span class="mc-ctx">Análisis estadístico</span></div>
+  <div class="anal">
+    <div class="ar"><div class="adot tenis"></div><span><strong>Sinner campeón Miami @1.60</strong> — N.1 del mundo con 6-4, 6-4 vs Lehecka en cuartos. Nadie le ha ganado un set en el torneo.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span><strong>Alcaraz gana semifinal vs Zverev @1.80</strong> — H2H favorable 3-1. En pista dura americana es muy sólido.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span><strong>Gauff campeona Madrid WTA @2.80</strong> — Viene de arrasar Miami 6-1, 6-1 en la final. La tierra es su segunda mejor superficie.</span></div>
+    <div class="ar"><div class="adot tenis"></div><span><strong>+2.5 sets en Alcaraz-Zverev @1.62</strong> — Sus últimos 3 enfrentamientos duraron 3 sets. Nivel muy igualado.</span></div>
+    <div class="tags">
+      <span class="bt bt-s">Sinner Miami @1.60</span>
+      <span class="bt bt-s">Alcaraz sf @1.80</span>
+      <span class="bt bt-g">+2.5 sets @1.62</span>
+      <span class="bt bt-v">Gauff Madrid @2.80</span>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /sp-tenis -->
+
+<!-- ═══════════════ NBA ═══════════════ -->
+<div class="sport-sec" id="sp-nba">
+
+<div class="sub-tabs">
+  <button class="subtab active" onclick="selSub('nba','live',this)">En Vivo</button>
+  <button class="subtab" onclick="selSub('nba','proximos',this)">Próximos</button>
+  <button class="subtab" onclick="selSub('nba','clasificacion',this)">Clasificación</button>
+</div>
+
+<!-- EN VIVO -->
+<div class="sub-sec active" id="nba-live">
+<div class="sh"><span class="sh-flag">🏀</span><span class="sh-lbl">NBA — Partidos en Vivo / Hoy</span><div class="sh-line nba"></div></div>
+
+<!-- Portland vs Washington -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-live">Q4 · 8:38</span><span class="mc-teams">Portland Trail Blazers vs Washington Wizards</span><span class="mc-ctx">Moda Center</span></div>
+  <div class="score-row">
+    <div class="score-team"><span class="score-name">Portland</span><span class="score-num win">107</span><span class="score-info">Trail Blazers</span></div>
+    <div class="score-vs">vs</div>
+    <div class="score-team"><span class="score-name">Washington</span><span class="score-num">68</span><span class="score-info">Wizards</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Portland domina por +39 en el Q4. Resultado ya prácticamente decidido. Los Wizards tienen la peor defensa de la conferencia Este.</span></div>
+  </div>
+</div>
+
+<!-- Charlotte vs Boston -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-live">Q4 · 3:09</span><span class="mc-teams">Charlotte Hornets vs Boston Celtics</span><span class="mc-ctx">Spectrum Center</span></div>
+  <div class="score-row">
+    <div class="score-team"><span class="score-name">Charlotte</span><span class="score-num">93</span><span class="score-info">Hornets</span></div>
+    <div class="score-vs">vs</div>
+    <div class="score-team"><span class="score-name">Boston</span><span class="score-num win">111</span><span class="score-info">Celtics</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Boston Celtics (2º Este, 49-24) consolida posición con esta victoria. Los Celtics en racha con Tatum y Brown como líderes.</span></div>
+  </div>
+</div>
+
+<!-- Toronto vs Orlando -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-live">Q4 · 8:28</span><span class="mc-teams">Toronto Raptors vs Orlando Magic</span><span class="mc-ctx">Scotiabank Arena</span></div>
+  <div class="score-row">
+    <div class="score-team"><span class="score-name">Toronto</span><span class="score-num win">128</span><span class="score-info">Raptors</span></div>
+    <div class="score-vs">vs</div>
+    <div class="score-team"><span class="score-name">Orlando</span><span class="score-num">74</span><span class="score-info">Magic</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Toronto arrasa a Orlando por +54 — uno de los resultados más abultados de la temporada. Scottie Barnes con una actuación espectacular.</span></div>
+  </div>
+</div>
+
+<!-- OKC vs NYK -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-live">Q1 · 1:56</span><span class="mc-teams">OKC Thunder vs New York Knicks</span><span class="mc-ctx">Paycom Center</span></div>
+  <div class="score-row">
+    <div class="score-team"><span class="score-name">OKC</span><span class="score-num">23</span><span class="score-info">Thunder (1º Oeste)</span></div>
+    <div class="score-vs">vs</div>
+    <div class="score-team"><span class="score-name">New York</span><span class="score-num">20</span><span class="score-info">Knicks (2º Este)</span></div>
+  </div>
+  <div class="pbar-w" style="margin:0 0 4px"><div class="pbar-l"><span>OKC 58%</span><span style="margin-left:auto">NYK 42%</span></div><div class="pbar"><div class="pbh" style="width:58%"></div><div class="pba" style="width:42%"></div></div></div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>EL PARTIDO DE LA NOCHE. OKC (1º Oeste, 58-16) vs NY Knicks (2º Este, 48-26). Shai Gilgeous-Alexander vs Jalen Brunson — el mejor duelo de guards de la temporada.</span></div>
+    <div class="ar"><div class="adot nba"></div><span>OKC lleva 14 victorias consecutivas en casa. La cuota OKC antes del partido era @1.62. El marcador muestra la igualdad prevista.</span></div>
+    <div class="odds2">
+      <div class="ob best"><span class="ol">OKC Thunder</span><span class="ov">1.62</span></div>
+      <div class="ob"><span class="ol">NY Knicks</span><span class="ov">2.30</span></div>
+    </div>
+    <div class="tags"><span class="bt bt-s">OKC Thunder @1.62</span><span class="bt bt-g">+225.5 puntos @1.88</span></div>
+  </div>
+</div>
+</div><!-- /nba-live -->
+
+<!-- PRÓXIMOS -->
+<div class="sub-sec" id="nba-proximos">
+<div class="sh"><span class="sh-flag">🏀</span><span class="sh-lbl">NBA — Próximos Partidos</span><div class="sh-line nba"></div></div>
+
+<!-- Denver vs GSW -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-time">Lun 30 · 04:00</span><span class="mc-teams">Denver Nuggets vs Golden State Warriors</span><span class="mc-ctx">Ball Arena · Playoff race</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">85.2%</span><span class="sl">Prob. Denver</span></div>
+    <div class="si"><span class="sv">47-28</span><span class="sl">Record Denver</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">36-38</span><span class="sl">Record GSW</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>Denver 85%</span><span style="margin-left:auto">Warriors 15%</span></div><div class="pbar"><div class="pbh" style="width:85%"></div><div class="pba" style="width:15%"></div></div></div>
+  <div class="odds2">
+    <div class="ob best"><span class="ol">Denver Nuggets</span><span class="ov">1.28</span></div>
+    <div class="ob"><span class="ol">Golden State</span><span class="ov">3.80</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Denver (2º Oeste) en Ball Arena con Nikola Jokić dominando el juego interior. GSW (9º Oeste, play-in) está en caída libre — solo 36-38. Curry no está al 100%.</span></div>
+    <div class="ar"><div class="adot nba"></div><span>Jokić promedia 26.4 pts + 12.1 reb + 8.9 ast esta temporada. El MVP más claro desde hace años. Denver en casa: 29-6.</span></div>
+    <div class="tags"><span class="bt bt-s">Denver gana @1.28</span><span class="bt bt-g">+215.5 puntos @1.88</span></div>
+  </div>
+</div>
+
+<!-- SAS vs CHI -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-time">Mar 31 · 02:00</span><span class="mc-teams">San Antonio Spurs vs Chicago Bulls</span><span class="mc-ctx">AT&T Center · 94.7% prob.</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">94.7%</span><span class="sl">Prob. San Antonio</span></div>
+    <div class="si"><span class="sv">56-18</span><span class="sl">Record SAS (2º Oeste)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">29-45</span><span class="sl">Record Chicago</span></div>
+  </div>
+  <div class="odds2">
+    <div class="ob best"><span class="ol">San Antonio Spurs</span><span class="ov">1.08</span></div>
+    <div class="ob"><span class="ol">Chicago Bulls</span><span class="ov">8.00</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Victor Wembanyama y los Spurs (56-18, ¡2º Oeste!) vs unos Bulls (29-45) en caída libre. La mejor probabilidad del día: 94.7% para San Antonio.</span></div>
+    <div class="ar"><div class="adot nba"></div><span>Wembanyama promedia 26.8 pts + 11.2 reb + 4.1 bloqueados — candidato firme al MVP. Los Spurs en casa: 33-5.</span></div>
+    <div class="tags"><span class="bt bt-s">San Antonio gana @1.08</span><span class="bt bt-g">SAS -12.5 hándicap @1.88</span></div>
+  </div>
+</div>
+
+<!-- MIN vs DAL -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-time">Mar 31 · 02:30</span><span class="mc-teams">Dallas Mavericks vs Minnesota Timberwolves</span><span class="mc-ctx">American Airlines Center</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">71.2%</span><span class="sl">Prob. Minnesota</span></div>
+    <div class="si"><span class="sv">45-29</span><span class="sl">Record Minnesota</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fL">D</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">24-50</span><span class="sl">Record Dallas</span></div>
+  </div>
+  <div class="odds2">
+    <div class="ob"><span class="ol">Dallas Mavericks</span><span class="ov">2.80</span></div>
+    <div class="ob best"><span class="ol">Minnesota T-Wolves</span><span class="ov">1.45</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>Minnesota (3º Oeste) visita a Dallas (penúltimo Oeste). Los Mavs sin Luka Dončić esta temporada han caído estrepitosamente. Anthony Edwards en estado de forma estratosférico: 29.4 pts/partido.</span></div>
+    <div class="tags"><span class="bt bt-s">Minnesota gana @1.45</span><span class="bt bt-g">Minnesota -8.5 @1.88</span></div>
+  </div>
+</div>
+
+<!-- OKC vs DET -->
+<div class="mc">
+  <div class="mc-head nba"><span class="mc-time">Mar 31 · 03:30</span><span class="mc-teams">Oklahoma City Thunder vs Detroit Pistons</span><span class="mc-ctx">Paycom Center · 1º vs 1º</span></div>
+  <div class="sbar">
+    <div class="si"><span class="sv">87.6%</span><span class="sl">Prob. OKC</span></div>
+    <div class="si"><span class="sv">58-16</span><span class="sl">Record OKC (1º Oeste)</span><div class="form"><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div><div class="fd fW">V</div></div></div>
+    <div class="si"><span class="sv">54-20</span><span class="sl">Record Detroit (1º Este)</span></div>
+  </div>
+  <div class="pbar-w"><div class="pbar-l"><span>OKC 87.6%</span><span style="margin-left:auto">Detroit 12.4%</span></div><div class="pbar"><div class="pbh" style="width:87.6%"></div><div class="pba" style="width:12.4%"></div></div></div>
+  <div class="odds2">
+    <div class="ob best"><span class="ol">OKC Thunder</span><span class="ov">1.22</span></div>
+    <div class="ob"><span class="ol">Detroit Pistons</span><span class="ov">4.50</span></div>
+  </div>
+  <div class="anal">
+    <div class="ar"><div class="adot nba"></div><span>EL DUELO DE LÍDERES. OKC (1º Oeste, 58-16) vs Detroit (1º Este, 54-20) — los dos mejores récords de la temporada. Shai Gilgeous-Alexander vs Cade Cunningham.</span></div>
+    <div class="ar"><div class="adot nba"></div><span>OKC en casa es casi imbatible (37-3). Detroit tiene el mejor récord del Este pero fuera de casa baja a 24-12. La ventaja local es decisiva.</span></div>
+    <div class="tags"><span class="bt bt-s">OKC gana @1.22</span><span class="bt bt-g">+228.5 puntos @1.88</span></div>
+  </div>
+</div>
+</div><!-- /nba-proximos -->
+
+<!-- CLASIFICACIÓN -->
+<div class="sub-sec" id="nba-clasificacion">
+<div class="sh"><span class="sh-flag">🏆</span><span class="sh-lbl">NBA — Clasificación (Top 10)</span><div class="sh-line nba"></div></div>
+
+<div class="mc">
+  <div class="mc-head nba" style="padding:10px 14px"><span class="mc-teams">Conferencia Este</span></div>
+  <div class="standing-row" style="background:#fff7ed"><div class="st-rank">1</div><div class="st-team">Detroit Pistons <span class="st-bubble">Líder</span></div><div class="st-rec">54-20</div><div class="st-pct">.730</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">2</div><div class="st-team">Boston Celtics</div><div class="st-rec">49-24</div><div class="st-pct">.671</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">3</div><div class="st-team">New York Knicks</div><div class="st-rec">48-26</div><div class="st-pct">.649</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">4</div><div class="st-team">Atlanta Hawks</div><div class="st-rec">42-33</div><div class="st-pct">.560</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">5</div><div class="st-team">Toronto Raptors</div><div class="st-rec">41-32</div><div class="st-pct">.562</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">6</div><div class="st-team">Philadelphia 76ers</div><div class="st-rec">41-33</div><div class="st-pct">.554</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">7</div><div class="st-team">Orlando Magic <span class="st-bubble" style="background:#e0f2fe;color:#0284c7">Play-In</span></div><div class="st-rec">39-34</div><div class="st-pct">.534</div></div>
+  <div class="standing-row"><div class="st-rank">8</div><div class="st-team">Charlotte Hornets <span class="st-bubble" style="background:#e0f2fe;color:#0284c7">Play-In</span></div><div class="st-rec">39-35</div><div class="st-pct">.527</div></div>
+</div>
+
+<div class="mc" style="margin-top:.75rem">
+  <div class="mc-head nba" style="padding:10px 14px"><span class="mc-teams">Conferencia Oeste</span></div>
+  <div class="standing-row" style="background:#fff7ed"><div class="st-rank">1</div><div class="st-team">OKC Thunder <span class="st-bubble">Líder</span></div><div class="st-rec">58-16</div><div class="st-pct">.784</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">2</div><div class="st-team">San Antonio Spurs</div><div class="st-rec">56-18</div><div class="st-pct">.757</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">3</div><div class="st-team">Los Angeles Lakers</div><div class="st-rec">48-26</div><div class="st-pct">.649</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">4</div><div class="st-team">Denver Nuggets</div><div class="st-rec">47-28</div><div class="st-pct">.627</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">5</div><div class="st-team">Minnesota T-Wolves</div><div class="st-rec">45-29</div><div class="st-pct">.608</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">6</div><div class="st-team">Houston Rockets</div><div class="st-rec">44-29</div><div class="st-pct">.603</div><div class="st-playoff"></div></div>
+  <div class="standing-row"><div class="st-rank">7</div><div class="st-team">Phoenix Suns <span class="st-bubble" style="background:#e0f2fe;color:#0284c7">Play-In</span></div><div class="st-rec">41-33</div><div class="st-pct">.554</div></div>
+  <div class="standing-row"><div class="st-rank">8</div><div class="st-team">LA Clippers <span class="st-bubble" style="background:#e0f2fe;color:#0284c7">Play-In</span></div><div class="st-rec">39-36</div><div class="st-pct">.520</div></div>
+</div>
+</div><!-- /clasificacion -->
+
+</div><!-- /sp-nba -->
+
+<!-- ═══════════════ COMBINADAS ═══════════════ -->
+<div class="sport-sec" id="sp-combinadas">
+
+<div class="combo">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Ultra Segura — Fútbol</div><span class="rb">Segura · 68%</span></div>
+    <div class="combo-sub">2 patas máxima probabilidad — bajo riesgo, cuota decente</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">UD Almería vs Sanse · Dom</div><div class="leg-p">Almería gana</div><div class="leg-o">@1.55</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Eibar vs Las Palmas · Dom</div><div class="leg-p">Eibar o empata (DC)</div><div class="leg-o">@1.42</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@2.20</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~68%</span></div>
+  </div>
+  <div class="combo-adv">Almería lleva 4 victorias locales seguidas. Eibar tiene la mejor defensa en casa de la 2ª División. La apuesta más conservadora del día.</div>
+</div>
+
+<div class="combo">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Ligas + NBA</div><span class="rb">Media · 48%</span></div>
+    <div class="combo-sub">3 patas entre fútbol europeo y la mejor probabilidad NBA</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Argentina vs Zambia · Dom</div><div class="leg-p">Argentina gana</div><div class="leg-o">@1.18</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Leverkusen vs Wolfsburg · Sáb</div><div class="leg-p">Leverkusen gana</div><div class="leg-o">@1.45</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">San Antonio vs Chicago · Mar</div><div class="leg-p">San Antonio gana</div><div class="leg-o">@1.08</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@1.85</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~82%</span></div>
+  </div>
+  <div class="combo-adv">Argentina y Zambia: sin historia real. Leverkusen (2º Bundesliga) favorito claro. Spurs (56-18) vs Bulls (29-45): 94.7% de prob. Tres resultados casi seguros.</div>
+</div>
+
+<div class="combo">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada de Goles — 4 patas</div><span class="rb">Media · 38%</span></div>
+    <div class="combo-sub">Los 4 partidos más goleadores de la semana</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Francia vs Colombia · Dom</div><div class="leg-p">+2.5 goles</div><div class="leg-o">@1.90</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Zaragoza vs Racing · Dom</div><div class="leg-p">+2.5 goles</div><div class="leg-o">@2.10</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Racing vs Sporting · Mié</div><div class="leg-p">Ambos marcan</div><div class="leg-o">@1.78</div></div>
+    <div class="leg"><div class="leg-n">4</div><div class="leg-m">Napoli vs AC Milan · Lun</div><div class="leg-p">Ambos marcan</div><div class="leg-o">@1.65</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@11.76</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob pm">~38%</span></div>
+  </div>
+  <div class="combo-adv">Francia lleva 10 partidos marcando 2+. El derbi asturiano históricamente goleador (2.8/p). Napoli-Milan es el partido de la Serie A — ambos marcaron en sus últimos 4 enfrentamientos.</div>
+</div>
+
+<div class="combo">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada NBA — 3 favoritos</div><span class="rb nba" style="background:rgba(255,255,255,.2)">NBA · 71%</span></div>
+    <div class="combo-sub">Los picks NBA con mayor base estadística de la semana</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Denver vs Golden State · Lun</div><div class="leg-p">Denver gana</div><div class="leg-o">@1.28</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Minnesota vs Dallas · Mar</div><div class="leg-p">Minnesota gana</div><div class="leg-o">@1.45</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">OKC vs Detroit · Mar</div><div class="leg-p">OKC Thunder gana</div><div class="leg-o">@1.22</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@2.27</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~71%</span></div>
+  </div>
+  <div class="combo-adv">Denver en casa 29-6 — casi imbatible. Wolves tienen el mejor momento con Edwards. OKC (58-16) recibe a Detroit en Paycom donde llevan 37-3. Tres favoritos con base estadística sólida.</div>
+</div>
+
+<div class="combo">
+  <div class="combo-top mix">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada Tenis + Fútbol</div><span class="rb">Valor · 44%</span></div>
+    <div class="combo-sub">Mix deportes con cuotas de valor real</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Alcaraz vs Zverev · Tenis Miami</div><div class="leg-p">Alcaraz gana</div><div class="leg-o">@1.80</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Barcelona vs Atlético · UCL Mié 8</div><div class="leg-p">Barcelona gana</div><div class="leg-o">@1.55</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Bayern Munich vs Freiburg · Sáb</div><div class="leg-p">Bayern gana</div><div class="leg-o">@1.42</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@3.96</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ph">~44%</span></div>
+  </div>
+  <div class="combo-adv">Alcaraz gana el H2H a Zverev 3-1 y está en gran forma. Barça arrasó 7-2 al Newcastle. Bayern en mejor momento de la temporada. Tres líderes de sus respectivos torneos.</div>
+</div>
+
+<div class="combo">
+  <div class="combo-top">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div class="combo-title">Combinada de Valor Máxima</div><span class="rb">Valor · 29%</span></div>
+    <div class="combo-sub">5 patas con cuotas altas justificadas estadísticamente</div>
+  </div>
+  <div class="combo-legs">
+    <div class="leg"><div class="leg-n">1</div><div class="leg-m">Japón vs Escocia · Dom</div><div class="leg-p">Japón gana</div><div class="leg-o">@2.10</div></div>
+    <div class="leg"><div class="leg-n">2</div><div class="leg-m">Racing vs Sporting · Mié</div><div class="leg-p">+2.5 goles</div><div class="leg-o">@1.95</div></div>
+    <div class="leg"><div class="leg-n">3</div><div class="leg-m">Sinner — Miami Open</div><div class="leg-p">Campeón torneo</div><div class="leg-o">@1.60</div></div>
+    <div class="leg"><div class="leg-n">4</div><div class="leg-m">Napoli vs AC Milan · Lun</div><div class="leg-p">Empate</div><div class="leg-o">@3.20</div></div>
+    <div class="leg"><div class="leg-n">5</div><div class="leg-m">Portugal vs España · Mar</div><div class="leg-p">+2.5 goles</div><div class="leg-o">@1.85</div></div>
+  </div>
+  <div class="combo-foot">
+    <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@39.27</span></div>
+    <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob pm">~29%</span></div>
+  </div>
+  <div class="combo-adv">Japón con valor real frente a una Escocia sin figuras. El derbi asturiano históricamente goleador. Sinner no ha cedido un set en Miami. Napoli-Milan muy igualado (5 empates en los últimos 12). Portugal-España: 72% de prob. de +2.5 goles.</div>
+</div>
+
+</div><!-- /sp-combinadas -->
+
+<div class="disclaimer">
+  ⚠ Apuesta siempre con responsabilidad. Cuotas orientativas — pueden variar. Las probabilidades son estimaciones. Solo mayores de 18 años. Juega con cabeza.
+</div>
+
+</div><!-- /w -->
+
+<script>
+function selSport(id,btn){
+  document.querySelectorAll('.sport-sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sp-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function selDay(idx,btn){
+  document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selSub(sport,id,btn){
+  const sec=document.getElementById('sp-'+sport);
+  sec.querySelectorAll('.sub-sec').forEach(s=>s.classList.remove('active'));
+  sec.querySelectorAll('.subtab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(sport+'-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
