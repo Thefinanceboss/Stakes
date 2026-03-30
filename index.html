@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apuestas Pro — 7 Días</title>
+<title>Apuestas Pro — 7 Días (Real 2026)</title>
 <style>
 /* VARIABLES Y RESET */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -16,11 +16,8 @@
   --accent-nba:linear-gradient(90deg,#c2410c 0%,#ea580c 100%);
   --tab-on:linear-gradient(90deg,#ff7e5f 0%,#feb47b 100%);
   --line:linear-gradient(90deg,#ff416c 0%,#4776E6 100%);
-  --line-tenis:linear-gradient(90deg,#0f766e 0%,#38bdf8 100%);
-  --line-nba:linear-gradient(90deg,#c2410c 0%,#fb923c 100%);
   --gbg:#dcfce7;--gbr:#bbf7d0;--gtx:#166534;
   --bbg:#dbeafe;--btx:#1e40af;
-  --abg:#fef9c3;--atx:#854d0e;
   --r:16px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
 }
 body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;}
@@ -44,14 +41,12 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
 .stab{padding:8px 16px;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.1);border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
 .stab.active{background:var(--tab-on);box-shadow:0 4px 12px rgba(255,126,95,.28)}
 .stab.tenis.active{background:var(--accent-tenis)}
-.stab.nba.active{background:var(--accent-nba)}
 
 /* MATCH CARDS (LISTA) */
 .mc{background:var(--card);border-radius:var(--r);margin-bottom:.85rem;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.16);color:var(--td);cursor:pointer;transition:transform 0.2s;}
 .mc:active{transform:scale(0.98);}
 .mc-head{display:flex;align-items:center;gap:9px;padding:12px 14px;background:var(--accent);color:#fff}
 .mc-head.tenis{background:var(--accent-tenis)}
-.mc-head.nba{background:var(--accent-nba)}
 .mc-time{font-size:10px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:11px;}
 .mc-teams{flex:1;font-size:14px;font-weight:800;line-height:1.2}
 .sbar{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f1f5f9;background:#f8fafc}
@@ -65,7 +60,6 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
 .ol{font-size:10px;color:var(--tg);font-weight:700;text-transform:uppercase}
 .ov{font-size:16px;font-weight:800;color:var(--td)}
 .ob.best{background:var(--gbg);border-color:var(--gbr);color:var(--gtx)}
-.ob.best .ol, .ob.best .ov{color:var(--gtx)}
 
 /* MATCH DETAIL VIEW (SPA) */
 .detail-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
@@ -80,8 +74,6 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
 .stat-bar-bg{height:6px;background:#e2e8f0;border-radius:3px;margin-bottom:12px;display:flex;overflow:hidden;}
 .stat-bar-fill{height:100%;background:var(--accent);}
 .stat-bar-fill.away{background:#f97316;}
-.stat-bar-fill.tenis{background:var(--accent-tenis);}
-.stat-bar-fill.nba{background:var(--accent-nba);}
 
 /* VALUE BETS (SAME GAME PARLAY) */
 .sgp-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:8px;}
@@ -90,11 +82,6 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
 .sgp-odds{font-size:16px;font-weight:800;background:var(--gbg);color:var(--gtx);padding:4px 10px;border-radius:8px;}
 .sgp-leg{font-size:11px;color:var(--tg);display:flex;align-items:center;gap:6px;margin-bottom:4px;}
 .sgp-leg::before{content:"✓";color:#16a34a;font-weight:bold;}
-
-/* COMBINADAS */
-.combo-badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:800;color:#fff;text-transform:uppercase;}
-.cb-high{background:#16a34a;} .cb-med{background:#f59e0b;} .cb-risk{background:#ef4444;}
-.c-exp{font-size:11px;color:var(--tg);background:#f1f5f9;padding:10px;border-radius:8px;font-style:italic;margin-top:10px;border-left:3px solid var(--btx);}
 
 /* SECTIONS */
 .sport-sec{display:none}.sport-sec.active{display:block}
@@ -106,7 +93,7 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
   <div id="main-view" class="view active">
     
     <div class="hdr">
-      ⚡ Apuestas Pro <div class="hdr-r">30 Mar — 5 Abr 2026</div>
+      🌍 Apuestas Pro <div class="hdr-r">30 Mar — 5 Abr 2026</div>
     </div>
 
     <div class="dstrip-wrap"><div class="dstrip">
@@ -115,114 +102,59 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
       <div class="db" onclick="selDay(this)"><span class="dn">Mié</span><span class="dd">01</span></div>
       <div class="db" onclick="selDay(this)"><span class="dn">Jue</span><span class="dd">02</span></div>
       <div class="db" onclick="selDay(this)"><span class="dn">Vie</span><span class="dd">03</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Sáb</span><span class="dd">04</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Dom</span><span class="dd">05</span></div>
     </div></div>
 
     <div class="sport-tabs">
-      <button class="stab active" onclick="selSport('futbol',this)">⚽ Fútbol</button>
+      <button class="stab active" onclick="selSport('futbol',this)">⚽ Selecciones</button>
       <button class="stab tenis" onclick="selSport('tenis',this)">🎾 Tenis</button>
-      <button class="stab nba" onclick="selSport('nba',this)">🏀 NBA</button>
-      <button class="stab" onclick="selSport('combinadas',this)">📊 Combinadas Pro</button>
     </div>
 
     <div class="sport-sec active" id="sp-futbol">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">Ligas Top & Champions</h3>
+      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">Repesca Mundial 2026 & Amistosos</h3>
       
       <div class="mc" onclick="openMatchDetail('futbol_1')">
-        <div class="mc-head"><span class="mc-time">Sáb 4 Abr · 18:30</span><span class="mc-teams">Arsenal vs Manchester City</span></div>
+        <div class="mc-head"><span class="mc-time">Mar 31 Abr · 20:45</span><span class="mc-teams">Bosnia-Herzegovina vs Italia</span></div>
         <div class="sbar">
-          <div class="si"><span class="sv">2.4</span><span class="sl">Goles/P Arsenal</span></div>
-          <div class="si"><span class="sv">11</span><span class="sl">V. Seguidas City</span></div>
-          <div class="si"><span class="sv">68%</span><span class="sl">Prob. +2.5 Goles</span></div>
+          <div class="si"><span class="sv">Repesca</span><span class="sl">Clasif. Mundial</span></div>
+          <div class="si"><span class="sv">1.2</span><span class="sl">Goles/P Bosnia</span></div>
+          <div class="si"><span class="sv">62%</span><span class="sl">Prob. Italia Gana</span></div>
         </div>
         <div class="odds">
-          <div class="ob"><span class="ol">Arsenal</span><span class="ov">2.80</span></div>
-          <div class="ob"><span class="ol">Empate</span><span class="ov">3.40</span></div>
-          <div class="ob best"><span class="ol">Man City</span><span class="ov">2.45</span></div>
+          <div class="ob"><span class="ol">Bosnia</span><span class="ov">5.50</span></div>
+          <div class="ob"><span class="ol">Empate</span><span class="ov">3.80</span></div>
+          <div class="ob best"><span class="ol">Italia</span><span class="ov">1.65</span></div>
         </div>
-        <div style="padding:8px 14px;font-size:11px;color:var(--tg);background:#fff;border-top:1px solid #f1f5f9;text-align:center;font-weight:600;">👉 Toca para ver xG, Bajas y Apuestas de Valor</div>
+        <div style="padding:8px 14px;font-size:11px;color:var(--tg);background:#fff;border-top:1px solid #f1f5f9;text-align:center;font-weight:600;">👉 Toca para ver Apuestas de Valor</div>
       </div>
 
       <div class="mc" onclick="openMatchDetail('futbol_2')">
-        <div class="mc-head"><span class="mc-time">Dom 5 Abr · 21:00</span><span class="mc-teams">Real Madrid vs Sevilla FC</span></div>
+        <div class="mc-head"><span class="mc-time">Lun 30 Mar · 18:00</span><span class="mc-teams">España vs Egipto</span></div>
         <div class="sbar">
-          <div class="si"><span class="sv">0.8</span><span class="sl">Goles Encajados RM</span></div>
-          <div class="si"><span class="sv">H2H</span><span class="sl">RM 4V - 1E</span></div>
-          <div class="si"><span class="sv">54%</span><span class="sl">RM Portería a 0</span></div>
+          <div class="si"><span class="sv">Amistoso</span><span class="sl">Preparación</span></div>
+          <div class="si"><span class="sv">2.1</span><span class="sl">Goles/P España</span></div>
+          <div class="si"><span class="sv">70%</span><span class="sl">Posesión Media</span></div>
         </div>
         <div class="odds">
-          <div class="ob best"><span class="ol">Real Madrid</span><span class="ov">1.33</span></div>
-          <div class="ob"><span class="ol">Empate</span><span class="ov">5.25</span></div>
-          <div class="ob"><span class="ol">Sevilla</span><span class="ov">8.50</span></div>
+          <div class="ob best"><span class="ol">España</span><span class="ov">1.30</span></div>
+          <div class="ob"><span class="ol">Empate</span><span class="ov">4.75</span></div>
+          <div class="ob"><span class="ol">Egipto</span><span class="ov">9.00</span></div>
         </div>
       </div>
     </div>
 
     <div class="sport-sec" id="sp-tenis">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">WTA Charleston / ATP Houston</h3>
+      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">WTA Copa Colsanitas (Bogotá)</h3>
       
       <div class="mc" onclick="openMatchDetail('tenis_1')">
-        <div class="mc-head tenis"><span class="mc-time">Vie 3 Abr · 20:00</span><span class="mc-teams">C. Alcaraz vs B. Shelton</span></div>
+        <div class="mc-head tenis"><span class="mc-time">Lun 30 Mar · 14:00</span><span class="mc-teams">C. Osorio vs Rival Clasificada</span></div>
         <div class="sbar">
-          <div class="si"><span class="sv">82%</span><span class="sl">Win% Tierra (CA)</span></div>
-          <div class="si"><span class="sv">34%</span><span class="sl">Breaks Conv. (BS)</span></div>
-          <div class="si"><span class="sv">2-0</span><span class="sl">H2H (Alcaraz)</span></div>
+          <div class="si"><span class="sv">Tierra</span><span class="sl">Superficie</span></div>
+          <div class="si"><span class="sv">Campeona</span><span class="sl">Defensora Título</span></div>
+          <div class="si"><span class="sv">75%</span><span class="sl">Prob. Victoria</span></div>
         </div>
         <div class="odds two">
-          <div class="ob best"><span class="ol">Alcaraz</span><span class="ov">1.28</span></div>
-          <div class="ob"><span class="ol">Shelton</span><span class="ov">3.75</span></div>
-        </div>
-        <div style="padding:8px 14px;font-size:11px;color:var(--tg);background:#fff;border-top:1px solid #f1f5f9;text-align:center;font-weight:600;">👉 Toca para Estadísticas de Saque y Picks</div>
-      </div>
-    </div>
-
-    <div class="sport-sec" id="sp-nba">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">Recta Final Regular Season</h3>
-      
-      <div class="mc" onclick="openMatchDetail('nba_1')">
-        <div class="mc-head nba"><span class="mc-time">Jue 2 Abr · 01:30</span><span class="mc-teams">Boston Celtics vs Milwaukee Bucks</span></div>
-        <div class="sbar">
-          <div class="si"><span class="sv">121.4</span><span class="sl">Off Rating (BOS)</span></div>
-          <div class="si"><span class="sv">112.8</span><span class="sl">Def Rating (MIL)</span></div>
-          <div class="si"><span class="sv">Giannis</span><span class="sl">Probable (MIL)</span></div>
-        </div>
-        <div class="odds two">
-          <div class="ob best"><span class="ol">Celtics (-5.5)</span><span class="ov">1.90</span></div>
-          <div class="ob"><span class="ol">Bucks (+5.5)</span><span class="ov">1.90</span></div>
-        </div>
-        <div style="padding:8px 14px;font-size:11px;color:var(--tg);background:#fff;border-top:1px solid #f1f5f9;text-align:center;font-weight:600;">👉 Toca para Player Props y Matchup</div>
-      </div>
-    </div>
-
-    <div class="sport-sec" id="sp-combinadas">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">Picks Algorítmicos</h3>
-
-      <div class="mc" style="cursor:default;transform:none;">
-        <div class="mc-head" style="background:#1e293b;"><span class="mc-teams">🏆 El Reto Cuota 10 (Fin de Semana)</span><span class="combo-badge cb-risk">Riesgo Alto</span></div>
-        <div class="dc-section" style="padding:12px">
-          <div class="sgp-leg">Man City Gana (vs Arsenal) @2.45</div>
-          <div class="sgp-leg">Real Madrid Gana a Cero (vs Sevilla) @2.10</div>
-          <div class="sgp-leg">Bayern Munich -1.5 (vs Frankfurt) @1.95</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed #cbd5e1;">
-            <span style="font-weight:800;color:var(--td)">Cuota Total:</span>
-            <span style="font-size:20px;font-weight:900;color:#16a34a">@10.03</span>
-          </div>
-          <div class="c-exp">El City en abril es una apisonadora histórica. El Madrid en el Bernabéu apenas concede tiros a puerta (0.8 xGA). Buscamos maximizar valor combinando favoritos en su momento pico.</div>
-        </div>
-      </div>
-
-      <div class="mc" style="cursor:default;transform:none;">
-        <div class="mc-head nba" style="background:var(--accent-nba);"><span class="mc-teams">🏀 Especial NBA: Locales Fuertes</span><span class="combo-badge cb-high">Segura</span></div>
-        <div class="dc-section" style="padding:12px">
-          <div class="sgp-leg">Denver Nuggets ML (vs T-Wolves) @1.45</div>
-          <div class="sgp-leg">OKC Thunder ML (vs Pelicans) @1.38</div>
-          <div class="sgp-leg">Boston Celtics ML (vs Bucks) @1.40</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed #cbd5e1;">
-            <span style="font-weight:800;color:var(--td)">Cuota Total:</span>
-            <span style="font-size:20px;font-weight:900;color:#c2410c">@2.80</span>
-          </div>
-          <div class="c-exp">Combinamos a los 3 mejores equipos locales de la liga. En la recta final (abril), los contendientes al anillo no rotan en casa para asegurar el seed #1.</div>
+          <div class="ob best"><span class="ol">Osorio</span><span class="ov">1.35</span></div>
+          <div class="ob"><span class="ol">Rival (Q)</span><span class="ov">3.10</span></div>
         </div>
       </div>
     </div>
@@ -232,12 +164,13 @@ body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overf
       <button class="back-btn" onclick="closeMatchDetail()">← Volver</button>
       <div class="detail-title" id="dv-title">Cargando...</div>
     </div>
-
     <div id="dv-content"></div>
   </div>
 
-</div><script>
-// NAVEGACIÓN TABS Y DÍAS
+</div>
+
+<script>
+// NAVEGACIÓN
 function selSport(id,btn){
   document.querySelectorAll('.sport-sec').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
@@ -249,60 +182,34 @@ function selDay(btn){
   btn.classList.add('active');
 }
 
-// LÓGICA SPA (SINGLE PAGE APPLICATION) PARA DETALLES
+// DATOS REALES DE MARZO 2026 (FECHA FIFA)
 const matchDatabase = {
   'futbol_1': {
-    title: 'Arsenal vs Man City',
-    sportClass: 'futbol',
+    title: 'Bosnia vs Italia (Repesca)',
     stats: [
-      { label: 'xG (Goles Esperados) por partido', v1: '1.95', v2: '2.30', p1: 45, p2: 55 },
-      { label: 'Posesión Media Temporada', v1: '58%', v2: '64%', p1: 47, p2: 53 },
-      { label: 'Tiros a Puerta Recibidos / P', v1: '2.8', v2: '2.5', p1: 52, p2: 48 }
+      { label: 'Necesidad de Victoria', v1: 'Alta', v2: 'Crítica', p1: 50, p2: 50 },
+      { label: 'Goles a favor (Fase Previa)', v1: '1.2', v2: '2.4', p1: 33, p2: 67 }
     ],
-    injuries: '🔴 <strong>Arsenal:</strong> Saka (Duda, Tobillo)<br>🔴 <strong>Man City:</strong> De Bruyne (Baja, Muscular)',
     bets: [
-      { title: 'SGP: Value Pick', legs: ['Ambos Equipos Marcan', 'Más de 8.5 Córners', 'Haaland +0.5 Tiros a Puerta'], odds: '3.10' },
-      { title: 'Pick Conservador', legs: ['Empate o Man City (X2)', 'Más de 1.5 Goles totales'], odds: '1.65' }
+      { title: 'SGP: Clasificación Italiana', legs: ['Italia Gana', 'Menos de 3.5 Goles Totales', 'Italia saca +5.5 Córners'], odds: '2.30' }
     ]
   },
   'futbol_2': {
-    title: 'Real Madrid vs Sevilla',
-    sportClass: 'futbol',
+    title: 'España vs Egipto (Amistoso)',
     stats: [
-      { label: 'xG (Goles Esperados) por partido', v1: '2.10', v2: '1.15', p1: 65, p2: 35 },
-      { label: 'Porterías a Cero (%)', v1: '48%', v2: '22%', p1: 70, p2: 30 },
+      { label: 'Posesión Estimada', v1: '68%', v2: '32%', p1: 68, p2: 32 },
     ],
-    injuries: '🔴 <strong>R. Madrid:</strong> Courtois (Baja)<br>🔴 <strong>Sevilla:</strong> Ocampos (Sanción)',
     bets: [
-      { title: 'SGP: Dominio Blanco', legs: ['Real Madrid Gana', 'Vinicius Jr. Anota o Asiste', 'Sevilla Menos de 4.5 Córners'], odds: '2.85' }
+      { title: 'Value Pick', legs: ['España Gana Ambas Mitades', 'Más de 2.5 Goles'], odds: '2.10' }
     ]
   },
   'tenis_1': {
-    title: 'Alcaraz vs Shelton',
-    sportClass: 'tenis',
+    title: 'C. Osorio en Bogotá',
     stats: [
-      { label: 'Win % en Tierra Batida (Carrera)', v1: '81.5%', v2: '45.0%', p1: 80, p2: 20 },
-      { label: 'Puntos ganados al resto (%)', v1: '42%', v2: '35%', p1: 55, p2: 45 },
-      { label: 'Aces por partido (Media)', v1: '4.5', v2: '12.2', p1: 25, p2: 75 }
+      { label: 'Win % en Altura (Bogotá)', v1: '82%', v2: 'N/A', p1: 82, p2: 18 }
     ],
-    injuries: '✅ Ambos jugadores en perfectas condiciones físicas. Alcaraz viene de descansar 4 días.',
     bets: [
-      { title: 'SGP: Tierra Batida Master', legs: ['Alcaraz Gana 2-0 en Sets', 'Menos de 21.5 Juegos Totales'], odds: '1.95' },
-      { title: 'Especial Saques', legs: ['Shelton Más de 8.5 Aces', 'Alcaraz Más de 3.5 Roturas de Servicio'], odds: '2.30' }
-    ]
-  },
-  'nba_1': {
-    title: 'Celtics vs Bucks',
-    sportClass: 'nba',
-    stats: [
-      { label: 'Puntos a Favor (PPG)', v1: '120.5', v2: '119.2', p1: 51, p2: 49 },
-      { label: 'Rebotes Totales (RPG)', v1: '46.5', v2: '44.2', p1: 52, p2: 48 },
-      { label: 'Tiros de 3PT (%)', v1: '38.5%', v2: '37.1%', p1: 52, p2: 48 }
-    ],
-    injuries: '🔴 <strong>Celtics:</strong> Porzingis (Descanso)<br>🔴 <strong>Bucks:</strong> Middleton (Duda, Rodilla)',
-    bets: [
-      { title: 'Player Props SGP', legs: ['Tatum +25.5 Puntos', 'Giannis +11.5 Rebotes', 'Celtics Gana Partido'], odds: '3.40' },
-      { title: 'Línea de Puntos', legs: ['Más de 232.5 Puntos Totales'], odds: '1.90' }
+      { title: 'SGP Local', legs: ['Osorio Gana 2-0', 'Primer Set Menos de 9.5 Juegos'], odds: '1.85' }
     ]
   }
 };
@@ -311,20 +218,11 @@ function openMatchDetail(matchId) {
   const data = matchDatabase[matchId];
   if(!data) return;
 
-  // Ocultar vista principal, mostrar detalle
   document.getElementById('main-view').classList.remove('active');
   document.getElementById('detail-view').classList.add('active');
   window.scrollTo(0,0);
-
-  // Setear Título
   document.getElementById('dv-title').innerText = data.title;
 
-  // Generar color de clase
-  let fillClass = '';
-  if(data.sportClass === 'tenis') fillClass = 'tenis';
-  if(data.sportClass === 'nba') fillClass = 'nba';
-
-  // Construir HTML de Estadísticas
   let statsHtml = '';
   data.stats.forEach(s => {
     statsHtml += `
@@ -334,13 +232,12 @@ function openMatchDetail(matchId) {
         <span>${s.v2}</span>
       </div>
       <div class="stat-bar-bg">
-        <div class="stat-bar-fill ${fillClass}" style="width:${s.p1}%"></div>
+        <div class="stat-bar-fill" style="width:${s.p1}%"></div>
         <div class="stat-bar-fill away" style="width:${s.p2}%; background:#cbd5e1;"></div>
       </div>
     `;
   });
 
-  // Construir HTML de Apuestas (SGP)
   let betsHtml = '';
   data.bets.forEach(b => {
     let legsHtml = b.legs.map(l => `<div class="sgp-leg">${l}</div>`).join('');
@@ -355,19 +252,13 @@ function openMatchDetail(matchId) {
     `;
   });
 
-  // Inyectar en el DOM
   document.getElementById('dv-content').innerHTML = `
     <div class="detail-card">
       <div class="dc-section">
-        <div class="dc-title">Cara a Cara (Métricas Clave)</div>
+        <div class="dc-title">Contexto del Partido</div>
         ${statsHtml}
       </div>
-      <div class="dc-section" style="background:#fffbeb;">
-        <div class="dc-title" style="color:#d97706;">Reporte de Bajas / Lesiones</div>
-        <p style="font-size:13px;line-height:1.5;">${data.injuries}</p>
-      </div>
     </div>
-
     <h3 style="font-size:15px;margin:20px 0 10px;text-transform:uppercase;">🔥 Apuestas de Valor (SGP)</h3>
     <div class="detail-card" style="background:transparent;box-shadow:none;padding:0;">
       ${betsHtml}
