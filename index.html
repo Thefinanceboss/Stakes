@@ -3,273 +3,1301 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apuestas Pro — 7 Días (Real 2026)</title>
+<title>ProBet — Dashboard 7 Días</title>
 <style>
-/* VARIABLES Y RESET */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:linear-gradient(160deg,#1a2744 0%,#0f1a30 60%,#1a1a2e 100%);
+  --bg:linear-gradient(160deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);
   --card:#ffffff;
-  --td:#1e293b;--tg:#64748b;--tl:#94a3b8;
-  --accent:linear-gradient(90deg,#8E2DE2 0%,#4A00E0 100%);
-  --accent-tenis:linear-gradient(90deg,#0f766e 0%,#0ea5e9 100%);
-  --accent-nba:linear-gradient(90deg,#c2410c 0%,#ea580c 100%);
-  --tab-on:linear-gradient(90deg,#ff7e5f 0%,#feb47b 100%);
-  --line:linear-gradient(90deg,#ff416c 0%,#4776E6 100%);
-  --gbg:#dcfce7;--gbr:#bbf7d0;--gtx:#166534;
-  --bbg:#dbeafe;--btx:#1e40af;
-  --r:16px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --td:#0f172a;--tg:#64748b;--tl:#94a3b8;
+  --a1:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);
+  --a2:linear-gradient(135deg,#0f766e 0%,#0ea5e9 100%);
+  --a3:linear-gradient(135deg,#dc2626 0%,#ea580c 100%);
+  --a4:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 100%);
+  --ton:linear-gradient(135deg,#f97316 0%,#fbbf24 100%);
+  --line:linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899);
+  --glow:0 0 20px rgba(99,102,241,.25);
+  --r:16px;--rm:10px;
+  --f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
 }
-body{font-family:var(--f);background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;}
-.w{max-width:640px;margin:0 auto;padding:1.25rem 1rem 3rem;position:relative;}
+body{font-family:var(--f);background:var(--bg);min-height:100vh;color:#fff}
+.wrap{max-width:680px;margin:0 auto;padding:1rem 1rem 4rem}
 
-/* ANIMACIONES SPA */
-.view{display:none;animation:fadeIn 0.3s ease forwards;}
-.view.active{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ─── HEADER ─── */
+.hdr{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:10px 16px;border-radius:22px;margin-bottom:1rem;backdrop-filter:blur(10px)}
+.logo{font-size:18px;font-weight:800;background:var(--a1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:pu 2s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-date{margin-left:auto;font-size:10px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.06);padding:3px 10px;border-radius:10px}
 
-/* HEADER Y TABS */
-.hdr{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);padding:11px 16px;border-radius:22px;margin-bottom:1rem;font-size:14px;font-weight:500}
-.hdr-r{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);padding:4px 12px;border-radius:12px}
-.dstrip-wrap{margin-bottom:.9rem;overflow-x:auto;scrollbar-width:none}
-.dstrip{display:flex;gap:5px;width:max-content}
-.db{display:flex;flex-direction:column;align-items:center;padding:7px 12px;border-radius:13px;border:1px solid rgba(255,255,255,.12);cursor:pointer;background:rgba(255,255,255,.05);min-width:55px;transition:all .2s;color:#fff}
-.db.active{background:var(--tab-on);border-color:transparent;box-shadow:0 4px 14px rgba(255,126,95,.35)}
-.db .dn{font-size:10px;opacity:.7;text-transform:uppercase}
-.db .dd{font-size:18px;font-weight:700}
-.sport-tabs{display:flex;gap:6px;margin-bottom:.9rem;overflow-x:auto;scrollbar-width:none}
-.stab{padding:8px 16px;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.1);border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
-.stab.active{background:var(--tab-on);box-shadow:0 4px 12px rgba(255,126,95,.28)}
-.stab.tenis.active{background:var(--accent-tenis)}
+/* ─── DATE STRIP ─── */
+.dstrip{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:.85rem;scrollbar-width:none}
+.dstrip::-webkit-scrollbar{display:none}
+.db{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.1);cursor:pointer;background:rgba(255,255,255,.04);min-width:48px;transition:all .2s;color:#fff}
+.db:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.db.active{background:var(--ton);border-color:transparent;box-shadow:0 4px 14px rgba(249,115,22,.4)}
+.db .dn{font-size:8px;opacity:.6;text-transform:uppercase;letter-spacing:.4px}
+.db .dd{font-size:16px;font-weight:700;line-height:1.1}
+.db .dm{font-size:8px;opacity:.5}
+.db.active .dn,.db.active .dd,.db.active .dm{opacity:1}
+.db.today .dd{color:#fbbf24}
+.db.active.today .dd{color:#fff}
 
-/* MATCH CARDS (LISTA) */
-.mc{background:var(--card);border-radius:var(--r);margin-bottom:.85rem;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.16);color:var(--td);cursor:pointer;transition:transform 0.2s;}
-.mc:active{transform:scale(0.98);}
-.mc-head{display:flex;align-items:center;gap:9px;padding:12px 14px;background:var(--accent);color:#fff}
-.mc-head.tenis{background:var(--accent-tenis)}
-.mc-time{font-size:10px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:11px;}
-.mc-teams{flex:1;font-size:14px;font-weight:800;line-height:1.2}
-.sbar{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.si{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-right:1px solid #e2e8f0}
-.si:last-child{border-right:none}
-.sv{font-size:13px;font-weight:800;color:var(--td)}
-.sl{font-size:9px;color:var(--tg);text-transform:uppercase;text-align:center}
-.odds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:11px 13px;background:#fff}
-.odds.two{grid-template-columns:1fr 1fr;}
-.ob{display:flex;flex-direction:column;align-items:center;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:9px;padding:8px 3px}
-.ol{font-size:10px;color:var(--tg);font-weight:700;text-transform:uppercase}
+/* ─── SPORT TABS ─── */
+.stabs{display:flex;gap:5px;margin-bottom:.85rem;overflow-x:auto;scrollbar-width:none}
+.stabs::-webkit-scrollbar{display:none}
+.stab{padding:7px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--f)}
+.stab:hover{background:rgba(255,255,255,.12);color:#fff}
+.stab.active{background:var(--a1);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(99,102,241,.35)}
+.stab.t-active{background:var(--a2);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(14,165,233,.3)}
+.stab.n-active{background:var(--a3);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(220,38,38,.3)}
+.stab.c-active{background:var(--ton);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(249,115,22,.3)}
+
+/* ─── LEAGUE FILTER ─── */
+.lfilt{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.75rem}
+.lf{padding:3px 10px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;cursor:pointer;transition:all .15s;font-family:var(--f)}
+.lf:hover{background:rgba(255,255,255,.1);color:#fff}
+.lf.active{background:rgba(99,102,241,.3);border-color:rgba(99,102,241,.5);color:#a5b4fc}
+
+/* ─── SECTION HEAD ─── */
+.sh{display:flex;align-items:center;gap:8px;margin:1rem 0 .6rem}
+.sh-ico{font-size:14px}
+.sh-lbl{font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.sh-line{flex:1;height:1px;background:var(--line);opacity:.4;border-radius:1px}
+
+/* ─── MATCH CARD ─── */
+.mc{background:rgba(255,255,255,.97);border-radius:var(--r);margin-bottom:.75rem;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.2);color:var(--td);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.mc:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.mc-head{display:flex;align-items:center;gap:8px;padding:10px 14px;color:#fff}
+.mc-head.fut{background:var(--a1)}
+.mc-head.ten{background:var(--a2)}
+.mc-head.nba-h{background:var(--a3)}
+.mc-head.ucl{background:var(--a4)}
+.mc-time{font-size:10px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 8px;border-radius:10px;white-space:nowrap}
+.mc-live-badge{font-size:9px;font-weight:800;background:#ef4444;padding:3px 8px;border-radius:10px;animation:pu 1s infinite;white-space:nowrap}
+.mc-title{flex:1;font-size:12px;font-weight:700;line-height:1.3}
+.mc-ctx{font-size:9px;background:rgba(0,0,0,.2);padding:2px 7px;border-radius:8px;white-space:nowrap}
+.mc-arrow{font-size:12px;opacity:.6;margin-left:4px;transition:transform .2s}
+.mc:hover .mc-arrow{transform:translateX(3px)}
+
+/* ─── QUICK STATS ─── */
+.qstats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #f1f5f9}
+.qs{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;text-align:center}
+.qs:not(:last-child){border-right:1px solid #f1f5f9}
+.qs-v{font-size:14px;font-weight:800;color:var(--td)}
+.qs-l{font-size:8px;color:var(--tl);text-transform:uppercase;letter-spacing:.3px}
+.form{display:flex;gap:2px;margin-top:2px}
+.fd{width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#fff}
+.fW{background:#16a34a}.fD{background:#94a3b8}.fL{background:#dc2626}
+
+/* ─── PROB BAR ─── */
+.pb-w{padding:0 14px 8px}
+.pb-l{display:flex;justify-content:space-between;font-size:9px;color:var(--tg);margin-bottom:3px;font-weight:700}
+.pbar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;display:flex}
+.ph{background:#6366f1}.pd{background:#94a3b8}.pa{background:#f97316}
+.pa2{background:#dc2626}
+
+/* ─── ODDS ─── */
+.odds{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 14px 10px}
+.odds2{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 14px 10px}
+.ob{display:flex;flex-direction:column;align-items:center;gap:3px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 3px;transition:all .15s}
+.ob:hover{border-color:#6366f1}
+.ol{font-size:8px;color:var(--tg);text-transform:uppercase;font-weight:700;text-align:center;letter-spacing:.3px}
 .ov{font-size:16px;font-weight:800;color:var(--td)}
-.ob.best{background:var(--gbg);border-color:var(--gbr);color:var(--gtx)}
+.ob.best{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac}
+.ob.best .ov{color:#15803d}
+.ob.best .ol{color:#16a34a}
 
-/* MATCH DETAIL VIEW (SPA) */
-.detail-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
-.back-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 14px;border-radius:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.detail-title{font-size:18px;font-weight:800;line-height:1.1;}
-.detail-card{background:#fff;border-radius:var(--r);color:var(--td);overflow:hidden;margin-bottom:1rem;}
-.dc-section{padding:14px;border-bottom:1px solid #f1f5f9;}
-.dc-title{font-size:12px;font-weight:800;color:var(--tg);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;}
+/* ─── SCORE ─── */
+.score-wrap{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 14px;border-bottom:1px solid #f1f5f9}
+.sc-team{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.sc-n{font-size:11px;font-weight:700;color:var(--td);text-align:center}
+.sc-pts{font-size:26px;font-weight:800;color:var(--td)}
+.sc-pts.win{color:#15803d}
+.sc-vs{font-size:11px;color:var(--tl);font-weight:600}
+.q-badge{background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--tg)}
+.live-q{background:#fef2f2;border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:#dc2626;animation:pu 1.2s infinite}
 
-/* BARRAS DE ESTADÍSTICAS AVANZADAS */
-.stat-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;}
-.stat-bar-bg{height:6px;background:#e2e8f0;border-radius:3px;margin-bottom:12px;display:flex;overflow:hidden;}
-.stat-bar-fill{height:100%;background:var(--accent);}
-.stat-bar-fill.away{background:#f97316;}
+/* ─── TENNIS SETS ─── */
+.sets-r{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid #f1f5f9}
+.sp{font-size:11px;font-weight:700;color:var(--td);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbox{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#f1f5f9;color:var(--tg)}
+.sbox.w{background:#dcfce7;color:#15803d}
+.sbox.lv{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.sboxes{display:flex;gap:3px}
 
-/* VALUE BETS (SAME GAME PARLAY) */
-.sgp-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:8px;}
-.sgp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.sgp-title{font-size:13px;font-weight:800;color:var(--btx);}
-.sgp-odds{font-size:16px;font-weight:800;background:var(--gbg);color:var(--gtx);padding:4px 10px;border-radius:8px;}
-.sgp-leg{font-size:11px;color:var(--tg);display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.sgp-leg::before{content:"✓";color:#16a34a;font-weight:bold;}
+/* ─── PICK ROW ─── */
+.pick-row{display:flex;align-items:center;justify-content:space-between;padding:6px 14px 10px;border-top:1px solid #f1f5f9}
+.pick-lbl{font-size:9px;color:var(--tg);font-weight:700;text-transform:uppercase}
+.pick-chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{display:inline-flex;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.chip-s{background:#dbeafe;color:#1d4ed8}
+.chip-g{background:#fff7ed;color:#c2410c}
+.chip-v{background:#fef9c3;color:#92400e}
 
-/* SECTIONS */
+/* ─── SECTIONS ─── */
 .sport-sec{display:none}.sport-sec.active{display:block}
+.day-sec{display:none}.day-sec.active{display:block}
+
+/* ─── DETAIL VIEW (SPA) ─── */
+#detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;overflow-y:auto;background:var(--bg)}
+#detail-view.open{display:block;animation:slideIn .25s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.dv-wrap{max-width:680px;margin:0 auto;padding:1rem 1rem 4rem}
+.dv-back{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:1rem;padding:8px 0}
+.dv-back:hover{color:#fff}
+.dv-back span{font-size:18px}
+.dv-hero{background:rgba(255,255,255,.97);border-radius:var(--r);overflow:hidden;margin-bottom:.75rem;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.dv-head{padding:14px 16px;color:#fff}
+.dv-teams{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dv-team{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.dv-abbr{font-size:22px;font-weight:800}
+.dv-tname{font-size:10px;opacity:.85;text-align:center}
+.dv-vs{font-size:12px;opacity:.7;padding:0 8px}
+.dv-score{font-size:36px;font-weight:800}
+.dv-score-block{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dv-subscore{font-size:11px;opacity:.7}
+
+/* Advanced stats grid */
+.adv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:12px 14px;border-bottom:1px solid #f1f5f9}
+.adv-card{background:#f8fafc;border-radius:8px;padding:10px}
+.adv-label{font-size:9px;text-transform:uppercase;font-weight:700;color:var(--tg);letter-spacing:.4px;margin-bottom:6px}
+.adv-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.adv-team{font-size:10px;font-weight:700;color:var(--td);min-width:30px}
+.adv-bar-bg{flex:1;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.adv-bar-fill{height:100%;border-radius:3px}
+.fill-h{background:#6366f1}.fill-a{background:#f97316}
+.adv-val{font-size:10px;font-weight:700;color:var(--td);min-width:28px;text-align:right}
+
+/* Stat compare row */
+.cmp-row{display:grid;grid-template-columns:36px 1fr 36px;align-items:center;gap:6px;margin-bottom:6px}
+.cmp-v{font-size:13px;font-weight:800;color:var(--td);text-align:center}
+.cmp-name{font-size:9px;text-align:center;color:var(--tg);text-transform:uppercase}
+.cmp-bar{height:5px;border-radius:3px;background:#e2e8f0;overflow:hidden;display:flex;margin-top:2px}
+
+/* H2H */
+.h2h-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:11px;color:var(--td)}
+.h2h-row:last-child{border-bottom:none}
+.h2h-teams{flex:1;color:var(--tg)}
+.h2h-score{font-weight:700}
+.h2h-comp{font-size:9px;color:var(--tl)}
+
+/* Injuries */
+.injury-chip{display:inline-flex;align-items:center;gap:4px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:3px 8px;font-size:10px;font-weight:600;color:#991b1b;margin:2px}
+.doubt-chip{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+
+/* Value bets in detail */
+.vbet-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:12px;padding:12px 14px;margin:8px 14px 12px}
+.vbet-title{font-size:11px;font-weight:800;color:#15803d;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.vbet-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;padding:5px 0;border-bottom:1px solid rgba(134,239,172,.4)}
+.vbet-row:last-child{border-bottom:none;margin-bottom:0}
+.vbet-pick{flex:1;font-size:11px;font-weight:600;color:#166534}
+.vbet-odd{font-size:14px;font-weight:800;color:#15803d}
+.vbet-why{font-size:10px;color:#4ade80;font-style:italic}
+
+/* NBA injury status */
+.nba-player{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:11px;color:var(--td)}
+.nba-player:last-child{border-bottom:none}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.s-ok{background:#22c55e}.s-doubt{background:#f59e0b}.s-out{background:#ef4444}
+.nba-ppg{margin-left:auto;font-weight:700;font-size:12px}
+
+/* ─── COMBOS ─── */
+.combo-cat-title{display:flex;align-items:center;gap:8px;margin:1.2rem 0 .6rem}
+.cat-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.3px}
+.cat-dia{background:linear-gradient(135deg,#fbbf24,#f97316);color:#fff}
+.cat-reto{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+.cat-ten{background:linear-gradient(135deg,#0ea5e9,#0f766e);color:#fff}
+.cat-nba{background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff}
+.combo{background:rgba(255,255,255,.97);border-radius:var(--r);margin-bottom:.75rem;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.2);color:var(--td)}
+.combo-top{padding:12px 14px;color:#fff}
+.combo-top.g{background:var(--a1)}.combo-top.r{background:var(--a3)}.combo-top.t{background:var(--a2)}.combo-top.n{background:var(--a3)}.combo-top.m{background:linear-gradient(135deg,#7c3aed,#c2410c)}
+.ct-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.ct-title{font-size:13px;font-weight:800}
+.ct-rb{font-size:9px;font-weight:800;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px}
+.ct-sub{font-size:10px;color:rgba(255,255,255,.7)}
+.c-legs{padding:4px 14px}
+.leg{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f1f5f9}
+.leg:last-child{border-bottom:none}
+.leg-n{width:17px;height:17px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--tg);flex-shrink:0}
+.leg-m{flex:1;font-size:10px;color:var(--tg)}
+.leg-p{font-size:11px;font-weight:700;color:var(--td)}
+.leg-o{font-size:11px;font-weight:800;color:var(--tl);min-width:30px;text-align:right}
+.c-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#f8fafc;border-top:1px solid #f1f5f9}
+.cf-l,.cf-r{display:flex;flex-direction:column;gap:1px}
+.cf-r{align-items:flex-end}
+.cf-lbl{font-size:8px;color:var(--tg);text-transform:uppercase;font-weight:700;letter-spacing:.4px}
+.cf-val{font-size:20px;font-weight:800;color:var(--td)}
+.cf-prob{font-size:14px;font-weight:800}
+.cph{color:#15803d}.cpm{color:#d97706}.cpl{color:#dc2626}
+.c-why{font-size:10px;color:var(--tg);padding:8px 14px;background:#fff;font-style:italic;border-top:1px solid #f8fafc;line-height:1.5}
+
+.disclaimer{font-size:10px;color:rgba(255,255,255,.3);text-align:center;padding:.75rem 0;line-height:1.6;margin-top:.5rem}
+
+/* ─── UTILITY ─── */
+.section-inner{padding:0 14px}
+.pad-x{padding:0 14px}
+.pad-b{padding-bottom:12px}
+.divider{height:1px;background:#f1f5f9;margin:0}
 </style>
 </head>
 <body>
-<div class="w">
 
-  <div id="main-view" class="view active">
-    
-    <div class="hdr">
-      🌍 Apuestas Pro <div class="hdr-r">30 Mar — 5 Abr 2026</div>
-    </div>
+<!-- ════ MAIN VIEW ════ -->
+<div id="main-view">
+<div class="wrap">
 
-    <div class="dstrip-wrap"><div class="dstrip">
-      <div class="db active" onclick="selDay(this)"><span class="dn">Lun</span><span class="dd">30</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Mar</span><span class="dd">31</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Mié</span><span class="dd">01</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Jue</span><span class="dd">02</span></div>
-      <div class="db" onclick="selDay(this)"><span class="dn">Vie</span><span class="dd">03</span></div>
-    </div></div>
+<div class="hdr">
+  <span class="logo">ProBet</span>
+  <div class="dot"></div>
+  <span style="font-size:11px;color:rgba(255,255,255,.5)">Dashboard 7 días</span>
+  <span class="hdr-date" id="hdr-date">31 Mar — 6 Abr 2026</span>
+</div>
 
-    <div class="sport-tabs">
-      <button class="stab active" onclick="selSport('futbol',this)">⚽ Selecciones</button>
-      <button class="stab tenis" onclick="selSport('tenis',this)">🎾 Tenis</button>
-    </div>
+<div class="dstrip" id="dstrip"></div>
 
-    <div class="sport-sec active" id="sp-futbol">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">Repesca Mundial 2026 & Amistosos</h3>
-      
-      <div class="mc" onclick="openMatchDetail('futbol_1')">
-        <div class="mc-head"><span class="mc-time">Mar 31 Abr · 20:45</span><span class="mc-teams">Bosnia-Herzegovina vs Italia</span></div>
-        <div class="sbar">
-          <div class="si"><span class="sv">Repesca</span><span class="sl">Clasif. Mundial</span></div>
-          <div class="si"><span class="sv">1.2</span><span class="sl">Goles/P Bosnia</span></div>
-          <div class="si"><span class="sv">62%</span><span class="sl">Prob. Italia Gana</span></div>
-        </div>
-        <div class="odds">
-          <div class="ob"><span class="ol">Bosnia</span><span class="ov">5.50</span></div>
-          <div class="ob"><span class="ol">Empate</span><span class="ov">3.80</span></div>
-          <div class="ob best"><span class="ol">Italia</span><span class="ov">1.65</span></div>
-        </div>
-        <div style="padding:8px 14px;font-size:11px;color:var(--tg);background:#fff;border-top:1px solid #f1f5f9;text-align:center;font-weight:600;">👉 Toca para ver Apuestas de Valor</div>
-      </div>
+<div class="stabs">
+  <button class="stab active" id="stab-fut" onclick="setSport('fut',this)">⚽ Fútbol</button>
+  <button class="stab" id="stab-ten" onclick="setSport('ten',this)">🎾 Tenis</button>
+  <button class="stab" id="stab-nba" onclick="setSport('nba',this)">🏀 NBA</button>
+  <button class="stab" id="stab-cmb" onclick="setSport('cmb',this)">📊 Combinadas</button>
+</div>
 
-      <div class="mc" onclick="openMatchDetail('futbol_2')">
-        <div class="mc-head"><span class="mc-time">Lun 30 Mar · 18:00</span><span class="mc-teams">España vs Egipto</span></div>
-        <div class="sbar">
-          <div class="si"><span class="sv">Amistoso</span><span class="sl">Preparación</span></div>
-          <div class="si"><span class="sv">2.1</span><span class="sl">Goles/P España</span></div>
-          <div class="si"><span class="sv">70%</span><span class="sl">Posesión Media</span></div>
-        </div>
-        <div class="odds">
-          <div class="ob best"><span class="ol">España</span><span class="ov">1.30</span></div>
-          <div class="ob"><span class="ol">Empate</span><span class="ov">4.75</span></div>
-          <div class="ob"><span class="ol">Egipto</span><span class="ov">9.00</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="sport-sec" id="sp-tenis">
-      <h3 style="font-size:14px;margin:15px 0 10px;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">WTA Copa Colsanitas (Bogotá)</h3>
-      
-      <div class="mc" onclick="openMatchDetail('tenis_1')">
-        <div class="mc-head tenis"><span class="mc-time">Lun 30 Mar · 14:00</span><span class="mc-teams">C. Osorio vs Rival Clasificada</span></div>
-        <div class="sbar">
-          <div class="si"><span class="sv">Tierra</span><span class="sl">Superficie</span></div>
-          <div class="si"><span class="sv">Campeona</span><span class="sl">Defensora Título</span></div>
-          <div class="si"><span class="sv">75%</span><span class="sl">Prob. Victoria</span></div>
-        </div>
-        <div class="odds two">
-          <div class="ob best"><span class="ol">Osorio</span><span class="ov">1.35</span></div>
-          <div class="ob"><span class="ol">Rival (Q)</span><span class="ov">3.10</span></div>
-        </div>
-      </div>
-    </div>
-
-  </div><div id="detail-view" class="view">
-    <div class="detail-header">
-      <button class="back-btn" onclick="closeMatchDetail()">← Volver</button>
-      <div class="detail-title" id="dv-title">Cargando...</div>
-    </div>
-    <div id="dv-content"></div>
+<!-- ══ FÚTBOL ══ -->
+<div class="sport-sec active" id="sp-fut">
+  <div class="lfilt" id="league-filt">
+    <button class="lf active" onclick="setLeague('all',this)">Todas</button>
+    <button class="lf" onclick="setLeague('ucl',this)">🏆 UCL</button>
+    <button class="lf" onclick="setLeague('laliga',this)">🇪🇸 LaLiga</button>
+    <button class="lf" onclick="setLeague('epl',this)">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier</button>
+    <button class="lf" onclick="setLeague('bun',this)">🇩🇪 Bundesliga</button>
+    <button class="lf" onclick="setLeague('sa',this)">🇮🇹 Serie A</button>
+    <button class="lf" onclick="setLeague('l1',this)">🇫🇷 Ligue 1</button>
+    <button class="lf" onclick="setLeague('int',this)">🌍 Selecciones</button>
   </div>
+  <div id="fut-cards"></div>
+</div>
 
+<!-- ══ TENIS ══ -->
+<div class="sport-sec" id="sp-ten">
+  <div class="lfilt">
+    <button class="lf active" id="ten-all" onclick="setTenisCat('all',this)">Todos</button>
+    <button class="lf" onclick="setTenisCat('atp',this)">ATP</button>
+    <button class="lf" onclick="setTenisCat('wta',this)">WTA</button>
+    <button class="lf" onclick="setTenisCat('picks',this)">🎯 Picks</button>
+  </div>
+  <div id="ten-cards"></div>
+</div>
+
+<!-- ══ NBA ══ -->
+<div class="sport-sec" id="sp-nba">
+  <div class="lfilt">
+    <button class="lf active" id="nba-all" onclick="setNbaCat('all',this)">Todos</button>
+    <button class="lf" onclick="setNbaCat('live',this)">🔴 En vivo / Recientes</button>
+    <button class="lf" onclick="setNbaCat('next',this)">📅 Próximos</button>
+    <button class="lf" onclick="setNbaCat('stand',this)">📊 Clasificación</button>
+  </div>
+  <div id="nba-cards"></div>
+</div>
+
+<!-- ══ COMBINADAS ══ -->
+<div class="sport-sec" id="sp-cmb">
+  <div id="combos-content"></div>
+</div>
+
+<div class="disclaimer">⚠ Apuesta con responsabilidad · Cuotas orientativas · +18 · Juega con cabeza</div>
+</div>
+</div>
+
+<!-- ════ DETAIL VIEW (SPA) ════ -->
+<div id="detail-view">
+  <div class="dv-wrap">
+    <div class="dv-back" onclick="closeDetail()"><span>←</span> Volver</div>
+    <div id="detail-content"></div>
+    <div class="disclaimer" style="margin-top:1rem">⚠ Apuesta con responsabilidad · +18</div>
+  </div>
 </div>
 
 <script>
-// NAVEGACIÓN
-function selSport(id,btn){
-  document.querySelectorAll('.sport-sec').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('sp-'+id).classList.add('active');
-  btn.classList.add('active');
-}
-function selDay(btn){
-  document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const DAYS=[
+  {d:"31",dn:"Mar",dm:"Mar",label:"Mar 31 Mar"},
+  {d:"1",dn:"Mié",dm:"Abr",label:"Mié 1 Abr"},
+  {d:"2",dn:"Jue",dm:"Abr",label:"Jue 2 Abr"},
+  {d:"3",dn:"Vie",dm:"Abr",label:"Vie 3 Abr"},
+  {d:"4",dn:"Sáb",dm:"Abr",label:"Sáb 4 Abr"},
+  {d:"5",dn:"Dom",dm:"Abr",label:"Dom 5 Abr"},
+  {d:"6",dn:"Lun",dm:"Abr",label:"Lun 6 Abr"},
+];
+let selDay=0, selSport="fut", selLeague="all", selTenis="all", selNba="all";
 
-// DATOS REALES DE MARZO 2026 (FECHA FIFA)
-const matchDatabase = {
-  'futbol_1': {
-    title: 'Bosnia vs Italia (Repesca)',
-    stats: [
-      { label: 'Necesidad de Victoria', v1: 'Alta', v2: 'Crítica', p1: 50, p2: 50 },
-      { label: 'Goles a favor (Fase Previa)', v1: '1.2', v2: '2.4', p1: 33, p2: 67 }
-    ],
-    bets: [
-      { title: 'SGP: Clasificación Italiana', legs: ['Italia Gana', 'Menos de 3.5 Goles Totales', 'Italia saca +5.5 Córners'], odds: '2.30' }
-    ]
-  },
-  'futbol_2': {
-    title: 'España vs Egipto (Amistoso)',
-    stats: [
-      { label: 'Posesión Estimada', v1: '68%', v2: '32%', p1: 68, p2: 32 },
-    ],
-    bets: [
-      { title: 'Value Pick', legs: ['España Gana Ambas Mitades', 'Más de 2.5 Goles'], odds: '2.10' }
-    ]
-  },
-  'tenis_1': {
-    title: 'C. Osorio en Bogotá',
-    stats: [
-      { label: 'Win % en Altura (Bogotá)', v1: '82%', v2: 'N/A', p1: 82, p2: 18 }
-    ],
-    bets: [
-      { title: 'SGP Local', legs: ['Osorio Gana 2-0', 'Primer Set Menos de 9.5 Juegos'], odds: '1.85' }
-    ]
-  }
-};
+// ─── FOOTBALL DATA ───
+const MATCHES = [
+  // UCL QF
+  {id:"ucl1",day:4,time:"21:00",home:"Real Madrid",away:"Bayern Munich",ha:"RMA",aa:"BMU",
+   league:"ucl",comp:"🏆 Champions League · QF Ida",
+   hp:32.4,dp:23.6,ap:44,
+   odds:{h:2.75,d:3.35,a:2.10},
+   form:{h:["W","W","L","W","W"],a:["W","W","D","W","W"]},
+   stats:{gpg:2.9,cs:3,xgH:1.7,xgA:2.2,posH:52,posA:48,shotsH:13,shotsA:15,sot:6},
+   h2h:[{t:"Man City vs Real Madrid",s:"1-2",c:"UCL 25/26"},{t:"Real Madrid vs Bayern",s:"Semifinales",c:"UCL 23/24"}],
+   injuries:{h:["Bellingham (duda)","Camavinga (lesión)"],a:["Müller (titular habitual)"]},
+   analysis:"Bayern es el favorito estadístico. Kane lleva 20 goles. Madrid sin Bellingham no es el mismo equipo.",
+   best:"Bayern Munich",bestOdd:2.10,
+   valueBets:[
+     {pick:"Bayern Munich gana",odd:2.10,why:"Favorito estadístico 44%"},
+     {pick:"Más de 2.5 goles",odd:1.82,why:"Ambos equipos muy goleadores"},
+     {pick:"Ambos marcan",odd:1.68,why:"Kane + Mbappé — calidad ofensiva brutal"},
+   ]},
+  {id:"ucl2",day:4,time:"21:00",home:"FC Barcelona",away:"Atlético Madrid",ha:"BAR",aa:"ATM",
+   league:"ucl",comp:"🏆 Champions League · QF Ida",
+   hp:62.5,dp:19.5,ap:18,
+   odds:{h:1.55,d:4.20,a:5.80},
+   form:{h:["W","W","W","W","W"],a:["W","L","D","W","L"]},
+   stats:{gpg:3.2,cs:5,xgH:2.8,xgA:0.9,posH:64,posA:36,shotsH:17,shotsA:8,sot:7},
+   h2h:[{t:"Barcelona vs Newcastle",s:"7-2",c:"UCL 25/26"},{t:"Tottenham vs Atlético",s:"3-2",c:"UCL 25/26"}],
+   injuries:{h:["De Jong (lesión)"],a:["Koke (duda)","Oblak (titular)"]},
+   analysis:"Barça arrasó 7-2 al Newcastle. Lewandowski (18g) y Yamal imparables. Atlético perdió 3-2 con Tottenham.",
+   best:"FC Barcelona",bestOdd:1.55,
+   valueBets:[
+     {pick:"Barcelona gana",odd:1.55,why:"62.5% prob. · 5 victorias en UCL seguidas"},
+     {pick:"Barcelona +1.5 goles",odd:1.28,why:"Promedia 3.2 goles/partido en UCL"},
+     {pick:"Menos de 8.5 corners",odd:1.72,why:"Barça domina pero no necesita corner para marcar"},
+   ]},
+  {id:"ucl3",day:1,time:"21:00",home:"PSG",away:"Liverpool FC",ha:"PSG",aa:"LFC",
+   league:"ucl",comp:"🏆 Champions League · QF Ida",
+   hp:50.9,dp:23.7,ap:25.4,
+   odds:{h:2.00,d:3.45,a:3.60},
+   form:{h:["W","W","W","D","W"],a:["W","W","W","L","W"]},
+   stats:{gpg:2.8,cs:2,xgH:2.2,xgA:1.7,posH:56,posA:44,shotsH:14,shotsA:12,sot:6},
+   h2h:[{t:"PSG vs Chelsea",s:"5-2",c:"UCL 25/26"},{t:"Liverpool vs Galatasaray",s:"4-0",c:"UCL 25/26"}],
+   injuries:{h:["Marquinhos (fit)"],a:["Luis Díaz (duda)"]},
+   analysis:"PSG lleva 8 goles en sus últimas 2 eliminatorias de UCL. Salah (25 goles) es el mejor de la Premier.",
+   best:"PSG",bestOdd:2.00,
+   valueBets:[
+     {pick:"PSG gana",odd:2.00,why:"Locales con 50.9% · mejor rendimiento en casa"},
+     {pick:"Más de 2.5 goles",odd:1.78,why:"PSG 8 goles en últimas 2 eliminatorias"},
+     {pick:"Ambos marcan",odd:1.72,why:"Salah + Mbappé/Dembélé — garantía de gol"},
+   ]},
+  {id:"ucl4",day:1,time:"21:00",home:"Sporting CP",away:"Arsenal FC",ha:"SPO",aa:"ARS",
+   league:"ucl",comp:"🏆 Champions League · QF Ida",
+   hp:21.6,dp:25.6,ap:52.8,
+   odds:{h:4.20,d:3.60,a:1.78},
+   form:{h:["W","W","L","D","W"],a:["W","W","W","W","W"]},
+   stats:{gpg:2.1,cs:4,xgH:1.1,xgA:2.0,posH:43,posA:57,shotsH:9,shotsA:14,sot:5},
+   h2h:[{t:"Arsenal vs Leverkusen",s:"2-0",c:"UCL 25/26"},{t:"Sporting vs Bodoe",s:"5-0",c:"UCL 25/26"}],
+   injuries:{h:["Gyokeres (fit)"],a:["White (lesión)"]},
+   analysis:"Arsenal lidera la UCL con 24 pts invicto (8V). Saka lleva 8g + 7a. Sporting tiene a Gyokeres como carta.",
+   best:"Arsenal FC",bestOdd:1.78,
+   valueBets:[
+     {pick:"Arsenal FC gana",odd:1.78,why:"Lider UCL · 52.8% prob."},
+     {pick:"Arsenal +1.5",odd:1.38,why:"Arsenal invicto en 8 partidos UCL esta edición"},
+     {pick:"Saka marca",odd:2.40,why:"8 goles en UCL esta temporada"},
+   ]},
+  // LALIGA
+  {id:"ll1",day:0,time:"19:00",home:"Rayo Vallecano",away:"Elche CF",ha:"RVC",aa:"ELC",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:53.6,dp:26.3,ap:20.1,
+   odds:{h:1.85,d:3.30,a:3.90},
+   form:{h:["W","D","W","D","W"],a:["L","D","W","L","L"]},
+   stats:{gpg:1.7,cs:2,xgH:1.5,xgA:0.9,posH:50,posA:50,shotsH:11,shotsA:8,sot:4},
+   h2h:[{t:"Rayo vs Elche",s:"2-1",c:"LaLiga 24/25"},{t:"Elche vs Rayo",s:"1-1",c:"LaLiga 24/25"}],
+   injuries:{h:["Álvaro García (duda)"],a:["Guti (lesión)"]},
+   analysis:"Rayo lleva 3V en sus últimos 4 en casa. Elche no gana fuera desde enero. Campo de Vallecas intimidante.",
+   best:"Rayo Vallecano",bestOdd:1.85,
+   valueBets:[
+     {pick:"Rayo Vallecano gana",odd:1.85,why:"53.6% prob · 3V últimos 4 en casa"},
+     {pick:"Menos de 2.5 goles",odd:1.65,why:"Elche no marca fuera · promedio 1.7 goles/p"},
+     {pick:"Rayo marca 1ª mitad",odd:2.10,why:"Rayo muy intenso en los primeros 45'"},
+   ]},
+  {id:"ll2",day:1,time:"14:00",home:"Real Sociedad",away:"Levante UD",ha:"RSO",aa:"LEV",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:59.9,dp:22.6,ap:17.5,
+   odds:{h:1.62,d:3.60,a:5.00},
+   form:{h:["W","W","D","W","W"],a:["L","L","D","L","W"]},
+   stats:{gpg:1.8,cs:3,xgH:1.8,xgA:1.0,posH:55,posA:45,shotsH:13,shotsA:8,sot:5},
+   h2h:[{t:"Real Sociedad vs Levante",s:"2-0",c:"LaLiga 24/25"}],
+   injuries:{h:[],a:["Morales (lesión)"]},
+   analysis:"Real Sociedad favorita clara en casa. Levante (19º) en descenso sin margen.",
+   best:"Real Sociedad",bestOdd:1.62,
+   valueBets:[
+     {pick:"Real Sociedad gana",odd:1.62,why:"59.9% prob · locales en gran forma"},
+     {pick:"Gana y Menos 3.5 goles",odd:1.45,why:"Real Sociedad sólida defensivamente"},
+   ]},
+  {id:"ll3",day:1,time:"16:15",home:"RCD Mallorca",away:"Real Madrid",ha:"MAL",aa:"RMA",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:16.8,dp:21.8,ap:61.4,
+   odds:{h:6.00,d:4.20,a:1.55},
+   form:{h:["L","D","L","W","L"],a:["W","W","L","W","W"]},
+   stats:{gpg:1.9,cs:1,xgH:0.8,xgA:2.3,posH:36,posA:64,shotsH:8,shotsA:16,sot:6},
+   h2h:[{t:"Mallorca vs Real Madrid",s:"0-3",c:"LaLiga 24/25"},{t:"Real Madrid vs Mallorca",s:"4-0",c:"LaLiga 24/25"}],
+   injuries:{h:["Muriqi (lesión)"],a:["Bellingham (duda)"]},
+   analysis:"Real Madrid ganó los 4 últimos vs Mallorca. Mbappé con 22 goles en liga.",
+   best:"Real Madrid",bestOdd:1.55,
+   valueBets:[
+     {pick:"Real Madrid gana",odd:1.55,why:"61.4% prob · ganó 4 últimos vs Mallorca"},
+     {pick:"Real Madrid +1.5",odd:1.28,why:"Mallorca no gana en casa hace 5 jornadas"},
+     {pick:"Mbappé marca",odd:2.20,why:"22 goles en liga esta temporada"},
+   ]},
+  {id:"ll4",day:1,time:"18:30",home:"Real Betis",away:"Espanyol",ha:"RBB",aa:"ESP",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:54.4,dp:24.6,ap:21,
+   odds:{h:1.72,d:3.50,a:4.50},
+   form:{h:["W","D","W","W","D"],a:["L","W","D","L","W"]},
+   stats:{gpg:1.9,cs:3,xgH:1.7,xgA:1.2,posH:53,posA:47,shotsH:12,shotsA:9,sot:4},
+   h2h:[{t:"Real Betis vs Espanyol",s:"2-1",c:"LaLiga 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"Betis sólido en el Benito Villamarín. Espanyol en zona media sin presión.",
+   best:"Real Betis",bestOdd:1.72,
+   valueBets:[
+     {pick:"Real Betis gana",odd:1.72,why:"54.4% prob · fuerte en casa"},
+     {pick:"Ambos marcan",odd:1.80,why:"Espanyol marca fuera habitualmente"},
+   ]},
+  {id:"ll5",day:1,time:"21:00",home:"Atlético Madrid",away:"FC Barcelona",ha:"ATM",aa:"BAR",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:31.3,dp:25.6,ap:43.1,
+   odds:{h:2.90,d:3.30,a:2.40},
+   form:{h:["W","D","L","W","D"],a:["W","W","W","W","W"]},
+   stats:{gpg:2.9,cs:2,xgH:1.4,xgA:2.1,posH:41,posA:59,shotsH:10,shotsA:15,sot:6},
+   h2h:[{t:"Real Madrid vs Atlético",s:"3-2",c:"LaLiga 25/26"},{t:"Atlético vs Barça",s:"1-2",c:"LaLiga 24/25"}],
+   injuries:{h:["Memphis (lesión)"],a:["De Jong (lesión)"]},
+   analysis:"DERBI ESPAÑA. Barça lidera LaLiga 4 pts sobre Madrid. Lewandowski vs Griezmann. Partido de 3+ goles histórico.",
+   best:"FC Barcelona",bestOdd:2.40,
+   valueBets:[
+     {pick:"FC Barcelona gana",odd:2.40,why:"43.1% prob · lidera la liga con 5 victorias en 5"},
+     {pick:"Más de 2.5 goles",odd:1.78,why:"Media 2.9 g/p en el Metropolitano esta temporada"},
+     {pick:"Ambos marcan",odd:1.68,why:"Ambos marcaron en 4 de últimos 5 enfrentamientos"},
+   ]},
+  {id:"ll6",day:2,time:"14:00",home:"Getafe CF",away:"Athletic Bilbao",ha:"GET",aa:"ATH",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:31.1,dp:33.1,ap:35.8,
+   odds:{h:2.90,d:3.10,a:2.50},
+   form:{h:["D","W","L","D","W"],a:["W","D","W","D","W"]},
+   stats:{gpg:1.6,cs:3,xgH:1.0,xgA:1.4,posH:44,posA:56,shotsH:9,shotsA:11,sot:4},
+   h2h:[{t:"Athletic vs Betis",s:"2-1",c:"LaLiga 25/26"}],
+   injuries:{h:[],a:["Muniain (duda)"]},
+   analysis:"Athletic lleva mejor momento. Partido muy igualado. El empate tiene gran valor estadístico (33.1%).",
+   best:"Athletic Bilbao",bestOdd:2.50,
+   valueBets:[
+     {pick:"Empate — VALOR",odd:3.10,why:"33.1% prob vs cuota 3.10 = valor positivo"},
+     {pick:"Menos de 2.5 goles",odd:1.62,why:"Ambos equipos con defensa sólida"},
+   ]},
+  {id:"ll7",day:2,time:"16:15",home:"Valencia CF",away:"RC Celta",ha:"VCF",aa:"RCC",
+   league:"laliga",comp:"🇪🇸 LaLiga EA Sports · J.33",
+   hp:40.9,dp:28.9,ap:30.2,
+   odds:{h:2.15,d:3.20,a:3.40},
+   form:{h:["W","D","W","L","W"],a:["W","D","W","D","L"]},
+   stats:{gpg:2.1,cs:2,xgH:1.4,xgA:1.3,posH:49,posA:51,shotsH:11,shotsA:10,sot:5},
+   h2h:[{t:"Valencia vs Celta",s:"1-1",c:"LaLiga 24/25"},{t:"Celta vs Valencia",s:"2-1",c:"LaLiga 24/25"}],
+   injuries:{h:[],a:["Aspas (duda)"]},
+   analysis:"Valencia en Mestalla con ventaja local. Celta sin Aspas sería muy diferente.",
+   best:"Valencia CF",bestOdd:2.15,
+   valueBets:[
+     {pick:"Valencia gana",odd:2.15,why:"40.9% prob · fuerte en Mestalla"},
+     {pick:"Más de 1.5 goles",odd:1.35,why:"Media 2.1 g/p en los duelos directos"},
+   ]},
+  // EPL
+  {id:"epl1",day:3,time:"21:00",home:"West Ham Utd",away:"Wolverhampton",ha:"WHU",aa:"WOL",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.32",
+   hp:53.1,dp:25,ap:21.9,
+   odds:{h:1.88,d:3.30,a:4.00},
+   form:{h:["W","D","W","W","D"],a:["L","L","D","W","L"]},
+   stats:{gpg:2.0,cs:2,xgH:1.5,xgA:0.9,posH:52,posA:48,shotsH:12,shotsA:8,sot:4},
+   h2h:[{t:"West Ham vs Wolves",s:"3-0",c:"PL 24/25"},{t:"Wolves vs West Ham",s:"1-2",c:"PL 24/25"}],
+   injuries:{h:[],a:["Cunha (lesión)","Hwang (duda)"]},
+   analysis:"West Ham (53.1%) con ventaja clara. Wolves sin Cunha pierde su mayor arma.",
+   best:"West Ham Utd",bestOdd:1.88,
+   valueBets:[
+     {pick:"West Ham gana",odd:1.88,why:"53.1% prob · Wolves sin Cunha"},
+     {pick:"Menos de 2.5 goles",odd:1.65,why:"Wolves sin delantero titular — poco gol esperado"},
+   ]},
+  {id:"epl2",day:4,time:"13:30",home:"Arsenal FC",away:"Bournemouth",ha:"ARS",aa:"BOU",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.33",
+   hp:68.4,dp:18.8,ap:12.8,
+   odds:{h:1.42,d:4.50,a:8.00},
+   form:{h:["W","W","W","W","D"],a:["L","W","D","L","W"]},
+   stats:{gpg:2.2,cs:5,xgH:2.2,xgA:0.7,posH:60,posA:40,shotsH:16,shotsA:7,sot:7},
+   h2h:[{t:"Arsenal vs Bournemouth",s:"3-0",c:"PL 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"Arsenal (68.4%) · Saka, Havertz y Martinelli en forma brutal. Bournemouth no gana en Emiratos nunca.",
+   best:"Arsenal FC",bestOdd:1.42,
+   valueBets:[
+     {pick:"Arsenal gana",odd:1.42,why:"68.4% prob · invictos en casa con Saka"},
+     {pick:"Arsenal +1.5",odd:1.22,why:"Arsenal marcó 3+ en sus últimas 3 en casa"},
+     {pick:"Saka marca o asiste",odd:1.85,why:"Contribución directa en 14 de los últimos 16"},
+   ]},
+  {id:"epl3",day:4,time:"16:00",home:"Burnley FC",away:"Brighton",ha:"BUR",aa:"BRI",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.33",
+   hp:21.1,dp:24,ap:54.9,
+   odds:{h:4.50,d:3.60,a:1.75},
+   form:{h:["L","L","D","L","W"],a:["W","W","W","D","W"]},
+   stats:{gpg:2.0,cs:1,xgH:0.8,xgA:1.8,posH:38,posA:62,shotsH:8,shotsA:15,sot:6},
+   h2h:[{t:"Brighton vs Burnley",s:"3-1",c:"PL 24/25"}],
+   injuries:{h:["Gudmundsson (lesión)"],a:[]},
+   analysis:"Brighton (54.9%) dominará en posesión. Burnley en zona de descenso.",
+   best:"Brighton",bestOdd:1.75,
+   valueBets:[
+     {pick:"Brighton gana",odd:1.75,why:"54.9% · Burnley 2ª peor defensa en casa"},
+     {pick:"Brighton +1.5",odd:1.40,why:"Brighton promedia 2.2 goles/p fuera"},
+   ]},
+  {id:"epl4",day:4,time:"18:30",home:"Liverpool FC",away:"Fulham FC",ha:"LFC",aa:"FUL",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.33",
+   hp:61.7,dp:20.6,ap:17.7,
+   odds:{h:1.55,d:4.00,a:5.50},
+   form:{h:["W","W","L","W","W"],a:["W","D","W","W","L"]},
+   stats:{gpg:2.5,cs:4,xgH:2.3,xgA:0.9,posH:62,posA:38,shotsH:15,shotsA:8,sot:7},
+   h2h:[{t:"Liverpool vs Fulham",s:"3-1",c:"PL 24/25"}],
+   injuries:{h:[],a:["Raúl Jiménez (duda)"]},
+   analysis:"Anfield rugiendo. Salah con 25g en liga. Liverpool (61.7%) busca el top-2.",
+   best:"Liverpool FC",bestOdd:1.55,
+   valueBets:[
+     {pick:"Liverpool gana",odd:1.55,why:"61.7% · Salah imparable (25 goles)"},
+     {pick:"Ambos marcan",odd:1.72,why:"Fulham marca fuera · 4 de últimos 5 visitas"},
+     {pick:"Salah marca",odd:1.90,why:"25 goles en liga — en racha de 7 partidos seguidos marcando"},
+   ]},
+  {id:"epl5",day:5,time:"17:30",home:"Chelsea FC",away:"Man. City",ha:"CFC",aa:"MCI",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.34",
+   hp:32.2,dp:24.6,ap:43.2,
+   odds:{h:2.80,d:3.40,a:1.95},
+   form:{h:["W","L","W","D","W"],a:["W","W","D","W","L"]},
+   stats:{gpg:2.4,cs:2,xgH:1.4,xgA:1.7,posH:46,posA:54,shotsH:12,shotsA:14,sot:5},
+   h2h:[{t:"Chelsea vs Man City",s:"1-2",c:"PL 24/25"},{t:"Man City vs Chelsea",s:"3-0",c:"PL 24/25"}],
+   injuries:{h:[],a:["De Bruyne (fit)","Haaland (fit)"]},
+   analysis:"Man. City (43.2%) favorito con De Bruyne y Haaland disponibles. Chelsea en Stamford Bridge peligroso.",
+   best:"Man. City",bestOdd:1.95,
+   valueBets:[
+     {pick:"Man. City gana",odd:1.95,why:"43.2% prob · Haaland+De Bruyne vs Chelsea's defense"},
+     {pick:"Más de 2.5 goles",odd:1.85,why:"H2H histórico: 2.8 goles de media en Londres"},
+     {pick:"Haaland marca",odd:2.00,why:"20 goles en liga · penalti habitual"},
+   ]},
+  {id:"epl6",day:6,time:"21:00",home:"Man. United",away:"Leeds Utd",ha:"MUN",aa:"LEE",
+   league:"epl",comp:"🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League · J.34",
+   hp:59.9,dp:22.3,ap:17.8,
+   odds:{h:1.65,d:3.70,a:5.00},
+   form:{h:["D","W","W","D","W"],a:["L","W","D","L","D"]},
+   stats:{gpg:2.0,cs:3,xgH:1.8,xgA:0.8,posH:56,posA:44,shotsH:14,shotsA:8,sot:6},
+   h2h:[{t:"Man Utd vs Leeds",s:"2-0",c:"PL 24/25"}],
+   injuries:{h:[],a:["Bamford (lesión)"]},
+   analysis:"United favorito claro en Old Trafford. Leeds sin Bamford pierde su área de penalty.",
+   best:"Man. United",bestOdd:1.65,
+   valueBets:[
+     {pick:"Man. United gana",odd:1.65,why:"59.9% prob · Old Trafford fuerte"},
+     {pick:"Man Utd +1.5",odd:1.38,why:"Leeds sin Bamford — el referente del área"},
+   ]},
+  // BUNDESLIGA
+  {id:"bun1",day:1,time:"15:30",home:"SC Freiburg",away:"Bayern Munich",ha:"SCF",aa:"BMU",
+   league:"bun",comp:"🇩🇪 Bundesliga · J.27",
+   hp:14.2,dp:17.3,ap:68.5,
+   odds:{h:7.00,d:5.50,a:1.42},
+   form:{h:["L","D","W","L","D"],a:["W","W","W","W","W"]},
+   stats:{gpg:2.5,cs:2,xgH:0.9,xgA:2.7,posH:34,posA:66,shotsH:8,shotsA:18,sot:7},
+   h2h:[{t:"Bayern vs Freiburg",s:"4-0",c:"Bundesliga 24/25"}],
+   injuries:{h:[],a:["Neuer (fit)"]},
+   analysis:"Bayern (68.5%) en la mejor racha de la temporada con Kane (20g). Freiburg sin capacidad de frenarles.",
+   best:"Bayern Munich",bestOdd:1.42,
+   valueBets:[
+     {pick:"Bayern Munich gana",odd:1.42,why:"68.5% · 5 victorias seguidas en Bundesliga"},
+     {pick:"Bayern +2.5",odd:1.62,why:"Promedia 3.1 goles/p como visitante en 2026"},
+     {pick:"Kane marca",odd:1.72,why:"20 goles en liga · imparable en el área"},
+   ]},
+  {id:"bun2",day:1,time:"15:30",home:"Bayer Leverkusen",away:"VFL Wolfsburg",ha:"LEV",aa:"WOB",
+   league:"bun",comp:"🇩🇪 Bundesliga · J.27",
+   hp:67.9,dp:18,ap:14.1,
+   odds:{h:1.45,d:4.50,a:6.50},
+   form:{h:["D","W","W","W","W"],a:["L","L","D","L","L"]},
+   stats:{gpg:2.4,cs:4,xgH:2.4,xgA:0.7,posH:62,posA:38,shotsH:16,shotsA:7,sot:7},
+   h2h:[{t:"Leverkusen vs Wolfsburg",s:"3-0",c:"Bundesliga 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"Leverkusen (67.9%) en BayArena devastador. Wolfsburg en zona de descenso sin recursos.",
+   best:"Bayer Leverkusen",bestOdd:1.45,
+   valueBets:[
+     {pick:"Leverkusen gana",odd:1.45,why:"67.9% prob · mejor local de la Bundesliga"},
+     {pick:"Leverkusen +2.5 goles en casa",odd:1.58,why:"Promedia 2.8 goles en casa esta temporada"},
+   ]},
+  {id:"bun3",day:1,time:"15:30",home:"Werder Bremen",away:"RB Leipzig",ha:"SVW",aa:"RBL",
+   league:"bun",comp:"🇩🇪 Bundesliga · J.27",
+   hp:29.1,dp:24.4,ap:46.5,
+   odds:{h:3.10,d:3.40,a:1.85},
+   form:{h:["D","W","L","D","W"],a:["W","W","D","W","L"]},
+   stats:{gpg:2.2,cs:2,xgH:1.2,xgA:1.9,posH:43,posA:57,shotsH:10,shotsA:13,sot:5},
+   h2h:[{t:"Bremen vs Leipzig",s:"1-3",c:"Bundesliga 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"Leipzig favorito fuera (46.5%). Olmo regresa en excelente forma.",
+   best:"RB Leipzig",bestOdd:1.85,
+   valueBets:[
+     {pick:"RB Leipzig gana",odd:1.85,why:"46.5% · mejor visitante de la Bundesliga"},
+     {pick:"Más de 2.5 goles",odd:1.82,why:"Media 2.2 g/p en este duelo directo"},
+   ]},
+  // SERIE A
+  {id:"sa1",day:2,time:"20:45",home:"Inter Milano",away:"AS Roma",ha:"INT",aa:"ROM",
+   league:"sa",comp:"🇮🇹 Serie A · J.31",
+   hp:58.8,dp:23.8,ap:17.4,
+   odds:{h:1.55,d:4.00,a:5.80},
+   form:{h:["W","W","W","D","W"],a:["W","L","W","D","W"]},
+   stats:{gpg:2.1,cs:4,xgH:2.1,xgA:0.8,posH:58,posA:42,shotsH:15,shotsA:9,sot:7},
+   h2h:[{t:"Inter vs Roma",s:"2-0",c:"Serie A 24/25"}],
+   injuries:{h:["Darmian (lesión)"],a:["Dybala (duda)"]},
+   analysis:"Inter (58.8%) con Lautaro Martínez (18g). Roma sin Dybala pierde creatividad.",
+   best:"Inter Milano",bestOdd:1.55,
+   valueBets:[
+     {pick:"Inter Milano gana",odd:1.55,why:"58.8% · Lautaro en estado de gracia"},
+     {pick:"Inter +1.5",odd:1.30,why:"Inter promedia 2.4 goles en casa"},
+     {pick:"Lautaro Martínez marca",odd:1.90,why:"18 goles en Serie A esta temporada"},
+   ]},
+  {id:"sa2",day:3,time:"20:45",home:"SSC Napoli",away:"AC Milan",ha:"NAP",aa:"ACM",
+   league:"sa",comp:"🇮🇹 Serie A · J.31",
+   hp:36.5,dp:30.8,ap:32.7,
+   odds:{h:2.50,d:3.20,a:2.80},
+   form:{h:["W","D","W","W","D"],a:["W","D","W","W","L"]},
+   stats:{gpg:2.4,cs:2,xgH:1.4,xgA:1.5,posH:50,posA:50,shotsH:12,shotsA:12,sot:5},
+   h2h:[{t:"Napoli vs Milan",s:"2-2",c:"Serie A 24/25"},{t:"Milan vs Napoli",s:"1-0",c:"Serie A 24/25"}],
+   injuries:{h:[],a:["Theo Hernández (fit)","Leao (fit)"]},
+   analysis:"PARTIDO DE LA JORNADA. Napoli lidera 2pts sobre Inter. Milan con Leao y Theo en plena forma. Partido muy igualado.",
+   best:"Ambos marcan",bestOdd:1.65,
+   valueBets:[
+     {pick:"Ambos marcan",odd:1.65,why:"Ambos marcaron en 4 últimos 4 enfrentamientos"},
+     {pick:"Empate — VALOR",odd:3.20,why:"30.8% prob vs cuota 3.20 = EV positivo"},
+     {pick:"Más de 2.5 goles",odd:1.92,why:"Napoli 2+ goles en 6 de últimos 8 partidos"},
+   ]},
+  {id:"sa3",day:4,time:"15:00",home:"Sassuolo",away:"Cagliari",ha:"SAS",aa:"CAG",
+   league:"sa",comp:"🇮🇹 Serie A · J.32",
+   hp:48.3,dp:29.1,ap:22.6,
+   odds:{h:1.90,d:3.30,a:3.80},
+   form:{h:["W","D","W","W","D"],a:["L","D","W","L","D"]},
+   stats:{gpg:1.9,cs:3,xgH:1.5,xgA:1.0,posH:52,posA:48,shotsH:11,shotsA:8,sot:4},
+   h2h:[],
+   injuries:{h:[],a:[]},
+   analysis:"Sassuolo (48.3%) en buena dinámica local.",
+   best:"Sassuolo",bestOdd:1.90,
+   valueBets:[
+     {pick:"Sassuolo gana o empata",odd:1.35,why:"Cagliari solo gana 1 de cada 4 fuera"},
+   ]},
+  // LIGUE 1
+  {id:"l1_1",day:0,time:"20:45",home:"PSG",away:"Toulouse FC",ha:"PSG",aa:"TFC",
+   league:"l1",comp:"🇫🇷 Ligue 1 · J.29",
+   hp:75.1,dp:15.5,ap:9.4,
+   odds:{h:1.28,d:6.00,a:10.00},
+   form:{h:["W","W","W","W","W"],a:["L","D","W","L","L"]},
+   stats:{gpg:3.2,cs:6,xgH:3.1,xgA:0.5,posH:66,posA:34,shotsH:19,shotsA:5,sot:8},
+   h2h:[{t:"PSG vs Toulouse",s:"4-0",c:"L1 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"PSG arrasa en casa. 75.1% de probabilidad. Dembélé, Mbappé y Barcola imposibles de parar.",
+   best:"PSG",bestOdd:1.28,
+   valueBets:[
+     {pick:"PSG gana",odd:1.28,why:"75.1% prob · PSG en casa es devastador"},
+     {pick:"PSG +3.5 goles",odd:1.75,why:"PSG promedia 3.8 goles/p en casa esta temporada"},
+     {pick:"PSG gana ambas partes",odd:1.65,why:"PSG marcó en 1ª parte en 11 de 14 en casa"},
+   ]},
+  {id:"l1_2",day:1,time:"17:00",home:"Strasbourg",away:"OGC Nice",ha:"RCS",aa:"NIC",
+   league:"l1",comp:"🇫🇷 Ligue 1 · J.29",
+   hp:52.3,dp:25,ap:22.7,
+   odds:{h:1.85,d:3.30,a:3.80},
+   form:{h:["W","D","W","W","D"],a:["L","W","D","L","W"]},
+   stats:{gpg:1.8,cs:3,xgH:1.5,xgA:1.0,posH:51,posA:49,shotsH:11,shotsA:9,sot:4},
+   h2h:[],
+   injuries:{h:[],a:[]},
+   analysis:"Strasbourg en casa (52.3%) con ventaja.",
+   best:"Strasbourg",bestOdd:1.85,
+   valueBets:[
+     {pick:"Strasbourg gana",odd:1.85,why:"52.3% prob · fuerte en casa"},
+   ]},
+  {id:"l1_3",day:1,time:"21:05",home:"Lille OSC",away:"RC Lens",ha:"LIL",aa:"RCL",
+   league:"l1",comp:"🇫🇷 Ligue 1 · J.29",
+   hp:36.9,dp:27.9,ap:35.2,
+   odds:{h:2.40,d:3.30,a:2.95},
+   form:{h:["W","D","W","L","W"],a:["W","W","D","W","D"]},
+   stats:{gpg:2.2,cs:2,xgH:1.4,xgA:1.4,posH:49,posA:51,shotsH:11,shotsA:11,sot:5},
+   h2h:[{t:"Lille vs Lens",s:"1-1",c:"L1 24/25"},{t:"Lens vs Lille",s:"2-0",c:"L1 24/25"}],
+   injuries:{h:[],a:[]},
+   analysis:"DUELO NORTE. Partidos siempre emocionados. Ambos marcaron en los últimos 4 duelos directos.",
+   best:"Ambos marcan",bestOdd:1.72,
+   valueBets:[
+     {pick:"Ambos marcan",odd:1.72,why:"Ambos marcaron en 4 de últimos 4 duelos"},
+     {pick:"Empate — VALOR",odd:3.30,why:"27.9% prob vs cuota 3.30 = EV positivo"},
+   ]},
+  // SELECCIONES
+  {id:"int1",day:0,time:"01:00",home:"Argentina",away:"Zambia",ha:"ARG",aa:"ZAM",
+   league:"int",comp:"🌍 Amistoso Internacional · FIFA",
+   hp:87,dp:8,ap:5,
+   odds:{h:1.18,d:8.00,a:18.00},
+   form:{h:["W","W","W","W","W"],a:["L","D","L","L","L"]},
+   stats:{gpg:3.5,cs:8,xgH:3.5,xgA:0.2,posH:70,posA:30,shotsH:20,shotsA:3,sot:9},
+   h2h:[{t:"Argentina vs Zambia",s:"Primera vez"}],
+   injuries:{h:[],a:[]},
+   analysis:"Messi y Argentina reciben a Zambia en La Bombonera. Cero competitividad — primer enfrentamiento histórico.",
+   best:"Argentina",bestOdd:1.18,
+   valueBets:[
+     {pick:"Argentina gana",odd:1.18,why:"87% prob · primero vs Zambia en la Bombonera"},
+     {pick:"Argentina +3.5 goles",odd:1.55,why:"Promedia 3.5 g/p en casa en amistosos 2026"},
+     {pick:"Messi marca",odd:1.75,why:"4 goles en sus últimos 3 amistosos"},
+   ]},
+];
 
-function openMatchDetail(matchId) {
-  const data = matchDatabase[matchId];
-  if(!data) return;
+// ─── TENNIS DATA ───
+const TENNIS = [
+  {id:"ten1",cat:"wta",tournament:"WTA Charleston · Tierra · R32",
+   p1:"Maiar Sherif",p2:"Yue Yuan",status:"live",
+   sets:[{p1:6,p2:2},{p1:6,p2:7},{p1:6,p2:6}],score:{p1:1,p2:1},
+   odds2:{p1:1.70,p2:2.10},
+   stats:{p1:{surf:"Tierra 68%",bp:"56%",rank:45},p2:{surf:"Tierra 55%",bp:"48%",rank:88}},
+   analysis:"Sherif gana el tie-break del tercer set. Especialista en tierra con 68% de victorias en superficie.",
+   valueBets:[{pick:"Sherif gana",odd:1.70,why:"68% victorias en tierra · domina el tercer set"}]},
+  {id:"ten2",cat:"wta",tournament:"WTA Charleston · Tierra · R32",
+   p1:"Ashlyn Krueger",p2:"Caty McNally",status:"live",
+   sets:[{p1:6,p2:4},{p1:1,p2:6},{p1:3,p2:1}],score:{p1:1,p2:1},
+   odds2:{p1:1.85,p2:1.95},
+   stats:{p1:{surf:"Tierra 62%",bp:"51%",rank:52},p2:{surf:"Tierra 58%",bp:"46%",rank:61}},
+   analysis:"Krueger lidera el tercer set 3-1. Duelo muy igualado entre dos jóvenes americanas.",
+   valueBets:[{pick:"+2.5 sets",odd:1.50,why:"Ya van al 3er set — partido muy igualado"}]},
+  {id:"ten3",cat:"wta",tournament:"WTA Charleston · Tierra · R32",
+   p1:"Kayla Day",p2:"Paula Badosa",status:"live",
+   sets:[{p1:4,p2:6},{p1:0,p2:0}],score:{p1:0,p2:1},
+   odds2:{p1:3.20,p2:1.30},
+   stats:{p1:{surf:"Tierra 48%",bp:"44%",rank:112},p2:{surf:"Tierra 72%",bp:"61%",rank:22}},
+   analysis:"Badosa (Nº22) ya ganó el primer set. Especialista en tierra con 72% de victorias en superficie favorita.",
+   valueBets:[{pick:"Paula Badosa gana",odd:1.30,why:"72% victorias tierra · Nº22 vs Nº112"}]},
+  {id:"ten4",cat:"atp",tournament:"ATP Bucarest · Tierra · QF",
+   p1:"Alex Molcan",p2:"Matteo Arnaldi",status:"final",winner:0,
+   sets:[{p1:6,p2:3},{p1:6,p2:1}],score:{p1:2,p2:0},
+   odds2:{p1:1.65,p2:2.25},
+   stats:{p1:{surf:"Tierra 70%",bp:"58%",rank:55},p2:{surf:"Tierra 62%",bp:"52%",rank:48}},
+   analysis:"Molcan ganó 6-3, 6-1. Dominó con su saque y pasó fácilmente a semifinales.",
+   valueBets:[]},
+  {id:"ten5",cat:"atp",tournament:"ATP Bucarest · Tierra · QF",
+   p1:"Sebastián Báez",p2:"Vilius Gaubas",status:"final",winner:0,
+   sets:[{p1:6,p2:3},{p1:6,p2:1}],score:{p1:2,p2:0},
+   odds2:{p1:1.30,p2:3.50},
+   stats:{p1:{surf:"Tierra 75%",bp:"62%",rank:32},p2:{surf:"Tierra 45%",bp:"41%",rank:185}},
+   analysis:"Báez arrasó 6-3, 6-1. Top 32 del mundo dominando en tierra favorita.",
+   valueBets:[]},
+  {id:"ten6",cat:"atp",tournament:"ATP Bucarest · Tierra · QF",
+   p1:"Otto Virtanen",p2:"Daniel Merida",status:"live",
+   sets:[{p1:6,p2:7},{p1:7,p2:5},{p1:4,p2:4}],score:{p1:1,p2:1},
+   odds2:{p1:1.80,p2:2.00},
+   stats:{p1:{surf:"Tierra 58%",bp:"50%",rank:98},p2:{surf:"Tierra 61%",bp:"53%",rank:110}},
+   analysis:"Tercer set 4-4. Partido muy igualado. Virtanen tiene mejor fondo físico.",
+   valueBets:[{pick:"+2.5 sets",odd:1.20,why:"Ya en 3er set — garantizado"},{pick:"Virtanen gana",odd:1.80,why:"Mejor físico en 3er set largas"}]},
+  {id:"ten7",cat:"atp",tournament:"ATP Houston · Hierba · En curso",
+   p1:"A. Andrade / B. Shelton",p2:"M. Demoliner / R. Galloway",status:"final",winner:0,
+   sets:[{p1:3,p2:6},{p1:6,p2:1},{p1:10,p2:8}],score:{p1:2,p2:1},
+   odds2:{p1:1.55,p2:2.50},
+   stats:{p1:{surf:"Hierba 65%",bp:"58%",rank:35},p2:{surf:"Hierba 52%",bp:"44%",rank:88}},
+   analysis:"Andrade/Shelton ganaron el supertiebreak 10-8. Doblemente la mejor pareja del torneo.",
+   valueBets:[]},
+  {id:"ten8",cat:"picks",tournament:"Picks semana · ATP/WTA",
+   p1:"Alcaraz",p2:"Top Rival",status:"scheduled",
+   sets:[],score:{p1:0,p2:0},
+   odds2:{p1:1.40,p2:3.00},
+   stats:{p1:{surf:"Tierra 82%",bp:"64%",rank:2},p2:{surf:"Tierra 55%",bp:"46%",rank:35}},
+   analysis:"Carlos Alcaraz llega al Mutua Madrid Open (4-12 Abr) como favorito en tierra española. Ha ganado Madrid en 2023 y 2024. En casa es casi imbatible.",
+   valueBets:[
+     {pick:"Alcaraz campeón Madrid @2.50",odd:2.50,why:"82% victorias en tierra · ganó Madrid 2023 y 2024"},
+     {pick:"Sinner finalista @1.80",odd:1.80,why:"Nº1 del mundo · llega de ganar Miami Open"},
+     {pick:"Gauff campeona Madrid WTA @2.80",odd:2.80,why:"Ganó Miami 6-1, 6-1 · tierra es su mejor superficie"},
+   ]},
+];
 
-  document.getElementById('main-view').classList.remove('active');
-  document.getElementById('detail-view').classList.add('active');
-  window.scrollTo(0,0);
-  document.getElementById('dv-title').innerText = data.title;
+// ─── NBA DATA ───
+const NBA = [
+  {id:"nba1",cat:"live",home:"OKC Thunder",away:"NY Knicks",ha:"OKC",aa:"NYK",
+   status:"final",score:{h:111,a:100},
+   quarter:"Final",prob:{h:58,a:42},odds2:{h:1.62,a:2.30},
+   players:{h:[{name:"S. Gilgeous-Alexander",ppg:32.1,reb:5.2,status:"ok"},{name:"Jalen Williams",ppg:21.4,reb:4.8,status:"ok"}],
+            a:[{name:"Jalen Brunson",ppg:28.2,reb:3.9,status:"ok"},{name:"Julius Randle",ppg:24.3,reb:9.5,status:"doubt"}]},
+   stats:{ortg:{h:118,a:112},drtg:{h:104,a:108}},
+   analysis:"OKC ganó 111-100 con SGA dominando. El Thunder (58-16) sigue siendo el mejor equipo de la NBA.",
+   valueBets:[]},
+  {id:"nba2",cat:"live",home:"Detroit Pistons",away:"Toronto Raptors",ha:"DET",aa:"TOR",
+   status:"scheduled",score:{h:0,a:0},
+   quarter:"Próximo",prob:{h:59.3,a:40.7},odds2:{h:1.68,a:2.20},
+   players:{h:[{name:"Cade Cunningham",ppg:25.8,reb:5.8,status:"ok"},{name:"Jalen Duren",ppg:14.2,reb:11.8,status:"ok"}],
+            a:[{name:"Scottie Barnes",ppg:22.3,reb:8.4,status:"ok"},{name:"RJ Barrett",ppg:18.5,reb:5.2,status:"ok"}]},
+   stats:{ortg:{h:115,a:112},drtg:{h:109,a:111}},
+   analysis:"Detroit (54-20, 1º Este) recibe a Toronto. Los Pistons de Cunningham son la gran sorpresa de la temporada.",
+   valueBets:[{pick:"Detroit Pistons gana",odd:1.68,why:"59.3% prob · 1º Este en casa"},{pick:"+220.5 puntos",odd:1.88,why:"Ambos top-15 en ritmo ofensivo"}]},
+  {id:"nba3",cat:"next",home:"Houston Rockets",away:"NY Knicks",ha:"HOU",aa:"NYK",
+   status:"scheduled",score:{h:0,a:0},
+   quarter:"Mié 1 Abr · 02:00",prob:{h:49.4,a:50.6},odds2:{h:1.95,a:1.90},
+   players:{h:[{name:"Alperen Sengun",ppg:22.1,reb:10.8,status:"ok"},{name:"Jalen Green",ppg:24.5,reb:4.2,status:"ok"}],
+            a:[{name:"Jalen Brunson",ppg:28.2,reb:3.9,status:"ok"},{name:"Julius Randle",ppg:24.3,reb:9.5,status:"doubt"}]},
+   stats:{ortg:{h:116,a:115},drtg:{h:110,a:108}},
+   analysis:"Partido casi igualado 49.4% vs 50.6%. Brunson vs Green — duelo de anotadores. Randle en duda puede inclinar la balanza.",
+   valueBets:[{pick:"+225.5 puntos",odd:1.88,why:"Ambos equipos top en ritmo ofensivo"},{pick:"NY Knicks gana",odd:1.90,why:"50.6% · Brunson domina sin oposición en casa de Rockets"}]},
+  {id:"nba4",cat:"next",home:"LA Lakers",away:"Cleveland Cavaliers",ha:"LAL",aa:"CLE",
+   status:"scheduled",score:{h:0,a:0},
+   quarter:"Mié 1 Abr · 04:30",prob:{h:54.6,a:45.4},odds2:{h:1.82,a:2.00},
+   players:{h:[{name:"LeBron James",ppg:23.5,reb:7.8,status:"ok"},{name:"Anthony Davis",ppg:26.2,reb:12.1,status:"ok"}],
+            a:[{name:"Donovan Mitchell",ppg:27.8,reb:5.0,status:"ok"},{name:"Darius Garland",ppg:21.2,reb:3.8,status:"out"}]},
+   stats:{ortg:{h:114,a:117},drtg:{h:107,a:105}},
+   analysis:"LeBron (41 años) y Davis vs Mitchell. Garland OUT para Cleveland. Lakers ligeros favoritos en casa.",
+   valueBets:[{pick:"LA Lakers gana",odd:1.82,why:"54.6% · Garland (OUT) — Cleveland muy limitado"},{pick:"LeBron+Davis +40 puntos combinados",odd:1.72,why:"Ambos promedian juntos 49.7 pts/partido"}]},
+  {id:"nba5",cat:"next",home:"Miami Heat",away:"Boston Celtics",ha:"MIA",aa:"BOS",
+   status:"scheduled",score:{h:0,a:0},
+   quarter:"Jue 2 Abr · 01:30",prob:{h:38,a:62},odds2:{h:2.50,a:1.55},
+   players:{h:[{name:"Bam Adebayo",ppg:19.8,reb:9.5,status:"ok"},{name:"Jimmy Butler",ppg:22.5,reb:5.8,status:"ok"}],
+            a:[{name:"Jayson Tatum",ppg:26.5,reb:8.2,status:"ok"},{name:"Jaylen Brown",ppg:23.0,reb:5.5,status:"ok"}]},
+   stats:{ortg:{h:110,a:118},drtg:{h:108,a:105}},
+   analysis:"Boston Celtics (49-24, 2º Este) visitan el Kaseya Center. Tatum y Brown en modo playoffs. Boston favorito claro.",
+   valueBets:[{pick:"Boston Celtics gana",odd:1.55,why:"62% prob · Tatum+Brown como mejor dupla del Este"},{pick:"Tatum +28.5 puntos",odd:1.92,why:"Promedia 30.2 pts en los últimos 8 partidos"}]},
+  {id:"nba6",cat:"stand",home:"Clasificación NBA",away:"Temporada 25/26",ha:"ESTE",aa:"OESTE",
+   status:"standing",score:{h:0,a:0},quarter:"",prob:{h:50,a:50},odds2:{h:2,a:2},
+   players:{h:[],a:[]},stats:{ortg:{h:0,a:0},drtg:{h:0,a:0}},
+   analysis:"Clasificación actualizada",valueBets:[]},
+];
 
-  let statsHtml = '';
-  data.stats.forEach(s => {
-    statsHtml += `
-      <div class="stat-row">
-        <span>${s.v1}</span>
-        <span style="color:var(--tg);font-weight:600">${s.label}</span>
-        <span>${s.v2}</span>
-      </div>
-      <div class="stat-bar-bg">
-        <div class="stat-bar-fill" style="width:${s.p1}%"></div>
-        <div class="stat-bar-fill away" style="width:${s.p2}%; background:#cbd5e1;"></div>
-      </div>
-    `;
-  });
+const EAST_STAND=[
+  {r:1,t:"Detroit Pistons",w:54,l:20,pct:.730,col:"#1d4289"},
+  {r:2,t:"Boston Celtics",w:49,l:24,pct:.671,col:"#007a33"},
+  {r:3,t:"New York Knicks",w:48,l:26,pct:.649,col:"#006bb6"},
+  {r:4,t:"Atlanta Hawks",w:42,l:33,pct:.560,col:"#e03a3e"},
+  {r:5,t:"Toronto Raptors",w:41,l:32,pct:.562,col:"#ce1141"},
+  {r:6,t:"Philadelphia 76ers",w:41,l:33,pct:.554,col:"#006bb6"},
+  {r:7,t:"Orlando Magic",w:39,l:34,pct:.534,col:"#0077c0",pi:true},
+  {r:8,t:"Charlotte Hornets",w:39,l:35,pct:.527,col:"#1d1160",pi:true},
+];
+const WEST_STAND=[
+  {r:1,t:"OKC Thunder",w:58,l:16,pct:.784,col:"#007ac1"},
+  {r:2,t:"San Antonio Spurs",w:56,l:18,pct:.757,col:"#c4ced4"},
+  {r:3,t:"LA Lakers",w:48,l:26,pct:.649,col:"#552583"},
+  {r:4,t:"Denver Nuggets",w:47,l:28,pct:.627,col:"#0E2240"},
+  {r:5,t:"Minnesota T-Wolves",w:45,l:29,pct:.608,col:"#0C2340"},
+  {r:6,t:"Houston Rockets",w:44,l:29,pct:.603,col:"#ce1141"},
+  {r:7,t:"Phoenix Suns",w:41,l:33,pct:.554,col:"#1d1160",pi:true},
+  {r:8,t:"LA Clippers",w:39,l:36,pct:.520,col:"#c8102e",pi:true},
+];
 
-  let betsHtml = '';
-  data.bets.forEach(b => {
-    let legsHtml = b.legs.map(l => `<div class="sgp-leg">${l}</div>`).join('');
-    betsHtml += `
-      <div class="sgp-card">
-        <div class="sgp-head">
-          <span class="sgp-title">${b.title}</span>
-          <span class="sgp-odds">@${b.odds}</span>
+// ─── COMBINADAS DATA ───
+const COMBOS = [
+  {cat:"dia",title:"Combinada del Día",sub:"Las 3 apuestas con mayor valor esperado hoy",risk:"68%",odd:4.05,type:"g",
+   legs:[{m:"Arsenal vs Bournemouth · PL",p:"Arsenal gana",o:1.42},{m:"Leverkusen vs Wolfsburg · BL",p:"Leverkusen gana",o:1.45},{m:"PSG vs Toulouse · L1",p:"PSG gana",o:1.28}],
+   why:"Tres favoritos claros con probabilidades reales de 68%+. Arsenal (68.4%), Leverkusen (67.9%) y PSG (75.1%) en casa frente a rivales inferiores."},
+  {cat:"dia",title:"Mini Doble Ultra Segura",sub:"2 patas · máxima probabilidad",risk:"72%",odd:2.06,type:"g",
+   legs:[{m:"Arsenal vs Bournemouth · PL",p:"Arsenal o empate (DC)",o:1.25},{m:"Bayern Munich vs Freiburg · BL",p:"Bayern o empate (DC)",o:1.12}],
+   why:"Las dos dobles chances con mayor porcentaje de éxito de la semana. Arsenal 87% sin derrota local, Bayern 82.8% sin derrota visitante."},
+  {cat:"reto",title:"Reto Cuota 10 — El Grande",sub:"5 patas · alta cuota con base estadística",risk:"34%",odd:10.42,type:"r",
+   legs:[{m:"Atlético vs Barcelona · LaLiga",p:"FC Barcelona gana",o:2.40},{m:"PSG vs Liverpool · UCL",p:"Ambos marcan",o:1.72},{m:"Napoli vs Milan · SA",p:"Ambos marcan",o:1.65},{m:"Liverpool vs Fulham · PL",p:"Liverpool gana",o:1.55},{m:"Bayernn Munich vs Freiburg · BL",p:"Bayern +1.5",o:1.62}],
+   why:"Barça lleva 5V en LaLiga. PSG-Liverpool: 8 goles en últimas 2 eliminatorias UCL. Milan-Napoli: ambos marcaron en 4/4. Liverpool imbatible en Anfield. Bayern supera a Freiburg con autoridad."},
+  {cat:"reto",title:"Reto Cuota 15 — Especial UCL",sub:"4 patas Champions · cuota muy alta",risk:"28%",odd:14.78,type:"r",
+   legs:[{m:"Real Madrid vs Bayern · UCL",p:"Bayern Munich gana",o:2.10},{m:"Barcelona vs Atlético · UCL",p:"Barcelona gana",o:1.55},{m:"PSG vs Liverpool · UCL",p:"Más de 2.5 goles",o:1.78},{m:"Sporting vs Arsenal · UCL",p:"Arsenal gana",o:1.78}],
+   why:"Los 4 cuartos de UCL con las selecciones más respaldadas estadísticamente. Bayern favorito (44%), Barça dominante (62.5%), PSG-LFC muy goleador, Arsenal líder invicto."},
+  {cat:"ten",title:"Combinada de Tenis",sub:"WTA Charleston + Picks semana",risk:"55%",odd:3.28,type:"t",
+   legs:[{m:"Badosa vs Day · WTA Charleston",p:"Paula Badosa gana",o:1.30},{m:"Alcaraz · Madrid Open",p:"Alcaraz campeón @2.50",o:2.50}],
+   why:"Badosa (Nº22) vs Day (Nº112) en tierra — 72% victorias en superficie. Alcaraz en Madrid Open con 2 títulos anteriores (2023, 2024). Tierra española = hogar."},
+  {cat:"ten",title:"Tenis Total Sets",sub:"Partidos de 3 sets en curso",risk:"58%",odd:2.16,type:"t",
+   legs:[{m:"Virtanen vs Merida · Bucarest",p:"+2.5 sets (ya en 3er set)",o:1.20},{m:"WTA Charleston R32",p:"Sherif gana el partido",o:1.70}],
+   why:"Virtanen-Merida ya está en 3er set — +2.5 sets GARANTIZADO. Sherif lidera el 3er set vs Yuan — especialista en tierra con 68% victoria superficie."},
+  {cat:"nba",title:"Especial NBA · 3 Favoritos",sub:"Los mejores picks NBA de la semana",risk:"66%",odd:3.16,type:"n",
+   legs:[{m:"Detroit vs Toronto · NBA Mié",p:"Detroit Pistons gana",o:1.68},{m:"Houston vs NY Knicks · NBA",p:"NY Knicks gana",o:1.90},{m:"Miami vs Boston · NBA Jue",p:"Boston Celtics gana",o:1.55}],
+   why:"Detroit (1º Este) en casa vs Toronto. NY con Brunson sin freno. Boston con Tatum-Brown al máximo nivel en período de playoff push."},
+  {cat:"nba",title:"NBA Over Puntos",sub:"Partidos con alta puntuación esperada",risk:"52%",odd:3.45,type:"n",
+   legs:[{m:"Houston vs NY Knicks · NBA",p:"+225.5 puntos",o:1.88},{m:"LA Lakers vs Cleveland · NBA",p:"LeBron+Davis +40 pts comb.",o:1.72}],
+   why:"Houston-Knicks: ambos top-5 en ritmo ofensivo. LeBron (23.5ppg) + Davis (26.2ppg) = 49.7 media combinada. Garland fuera en CLE reduce la defensa visitante."},
+];
+
+// ════════════════════════════════════════
+// RENDER FUNCTIONS
+// ════════════════════════════════════════
+
+function formDots(arr){return arr.map(f=>`<div class="fd f${f}">${f}</div>`).join('')}
+
+function renderFootball(){
+  const d=document.getElementById('fut-cards');d.innerHTML='';
+  let matches=MATCHES.filter(m=>selLeague==='all'||m.league===selLeague);
+  if(selDay!==null) matches=matches.filter(m=>m.day===selDay);
+  if(matches.length===0){d.innerHTML='<p style="color:rgba(255,255,255,.4);font-size:13px;padding:1rem 0">No hay partidos para esta selección.</p>';return;}
+  // Group by league
+  const groups={};
+  matches.forEach(m=>{const k=m.comp;if(!groups[k])groups[k]=[];groups[k].push(m);});
+  Object.entries(groups).forEach(([comp,ms])=>{
+    const sh=document.createElement('div');sh.className='sh';
+    const flag=comp.split(' ')[0];
+    sh.innerHTML=`<span class="sh-ico">${flag}</span><span class="sh-lbl">${comp.replace(flag,'').trim()}</span><div class="sh-line"></div>`;
+    d.appendChild(sh);
+    ms.forEach(m=>{
+      const w=winner(m.odds);
+      const card=document.createElement('div');card.className='mc';
+      const isUCL=m.league==='ucl';
+      card.innerHTML=`
+        <div class="mc-head ${isUCL?'ucl':'fut'}">
+          <span class="mc-time">${m.time}</span>
+          <span class="mc-title">${m.home} <span style="opacity:.6">vs</span> ${m.away}</span>
+          <span class="mc-ctx">${m.ha} ${m.hp}% · ${m.ap}%</span>
+          <span class="mc-arrow">›</span>
         </div>
-        ${legsHtml}
-      </div>
-    `;
+        <div class="qstats">
+          <div class="qs"><span class="qs-v">${m.stats.gpg}</span><span class="qs-l">Goles/p</span></div>
+          <div class="qs"><span class="qs-v">xG ${m.stats.xgH}</span><span class="qs-l">xG local</span></div>
+          <div class="qs"><span class="qs-v">${m.stats.cs}</span><span class="qs-l">Porterías 0<div class="form">${formDots(m.form.h)}</div></span></div>
+        </div>
+        <div class="pb-w"><div class="pb-l"><span>${m.ha} ${m.hp}%</span><span>Emp ${m.dp}%</span><span>${m.ap}% ${m.aa}</span></div>
+        <div class="pbar"><div class="ph" style="width:${m.hp}%"></div><div class="pd" style="width:${m.dp}%"></div><div class="pa" style="width:${m.ap}%"></div></div></div>
+        <div class="odds">
+          <div class="ob${w==='h'?' best':''}"><span class="ol">${m.ha}</span><span class="ov">${m.odds.h.toFixed(2)}</span></div>
+          <div class="ob${w==='d'?' best':''}"><span class="ol">Empate</span><span class="ov">${m.odds.d.toFixed(2)}</span></div>
+          <div class="ob${w==='a'?' best':''}"><span class="ol">${m.aa}</span><span class="ov">${m.odds.a.toFixed(2)}</span></div>
+        </div>
+        <div class="pick-row">
+          <span class="pick-lbl">Apuesta recomendada</span>
+          <div class="pick-chips">
+            ${m.valueBets.slice(0,2).map(v=>`<span class="chip chip-s">${v.pick} @${v.odd}</span>`).join('')}
+          </div>
+        </div>`;
+      card.addEventListener('click',()=>openDetail('fut',m.id));
+      d.appendChild(card);
+    });
   });
+}
 
-  document.getElementById('dv-content').innerHTML = `
-    <div class="detail-card">
-      <div class="dc-section">
-        <div class="dc-title">Contexto del Partido</div>
-        ${statsHtml}
+function winner(odds){
+  if(!odds)return'h';
+  const {h,d,a}=odds;
+  if(h<=a&&h<=d)return'h';
+  if(a<h&&a<=d)return'a';
+  return'd';
+}
+
+function renderTenis(){
+  const d=document.getElementById('ten-cards');d.innerHTML='';
+  let items=TENNIS.filter(t=>selTenis==='all'||t.cat===selTenis);
+  if(items.length===0){d.innerHTML='<p style="color:rgba(255,255,255,.4);font-size:13px;padding:1rem 0">No hay partidos.</p>';return;}
+  const sh=document.createElement('div');sh.className='sh';
+  sh.innerHTML=`<span class="sh-ico">🎾</span><span class="sh-lbl">Partidos en curso / semana</span><div class="sh-line"></div>`;
+  d.appendChild(sh);
+  items.forEach(t=>{
+    const card=document.createElement('div');card.className='mc';
+    const isLive=t.status==='live';
+    const isFin=t.status==='final';
+    const setBoxes=(sets,p)=>sets.map(s=>{
+      const won=isFin&&p===0?s.p1>s.p2:isFin&&p===1?s.p2>s.p1:false;
+      const cls=won?'sbox w':isLive?'sbox lv':'sbox';
+      return`<div class="${cls}">${p===0?s.p1:s.p2}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="mc-head ten">
+        ${isLive?'<span class="mc-live-badge">EN VIVO</span>':''}
+        ${isFin?'<span class="mc-time">FIN</span>':''}
+        ${!isLive&&!isFin?'<span class="mc-time">Próx.</span>':''}
+        <span class="mc-title">${t.tournament}</span>
+        <span class="mc-arrow">›</span>
       </div>
-    </div>
-    <h3 style="font-size:15px;margin:20px 0 10px;text-transform:uppercase;">🔥 Apuestas de Valor (SGP)</h3>
-    <div class="detail-card" style="background:transparent;box-shadow:none;padding:0;">
-      ${betsHtml}
-    </div>
-  `;
+      <div class="sets-r"><span class="sp">${t.p1} <span style="font-size:9px;color:var(--tg)">#${t.stats.p1.rank}</span></span><div class="sboxes">${setBoxes(t.sets,0)}</div></div>
+      <div class="sets-r"><span class="sp">${t.p2} <span style="font-size:9px;color:var(--tg)">#${t.stats.p2.rank}</span></span><div class="sboxes">${setBoxes(t.sets,1)}</div></div>
+      <div class="odds2">
+        <div class="ob${t.odds2.p1<=t.odds2.p2?' best':''}"><span class="ol">${t.p1.split(' ').pop()}</span><span class="ov">${t.odds2.p1.toFixed(2)}</span></div>
+        <div class="ob${t.odds2.p2<t.odds2.p1?' best':''}"><span class="ol">${t.p2.split(' ').pop()}</span><span class="ov">${t.odds2.p2.toFixed(2)}</span></div>
+      </div>
+      ${t.valueBets.length?`<div class="pick-row"><span class="pick-lbl">Pick</span><div class="pick-chips">${t.valueBets.slice(0,2).map(v=>`<span class="chip chip-s">${v.pick} @${v.odd}</span>`).join('')}</div></div>`:''}`;
+    card.addEventListener('click',()=>openDetail('ten',t.id));
+    d.appendChild(card);
+  });
 }
 
-function closeMatchDetail() {
-  document.getElementById('detail-view').classList.remove('active');
-  document.getElementById('main-view').classList.add('active');
+function renderNba(){
+  const d=document.getElementById('nba-cards');d.innerHTML='';
+  const items=NBA.filter(n=>selNba==='all'||(selNba==='live'&&(n.cat==='live'))||(selNba==='next'&&n.cat==='next')||(selNba==='stand'&&n.cat==='stand'));
+  // Standing special
+  items.forEach(n=>{
+    if(n.cat==='stand'){
+      const wrap=document.createElement('div');wrap.className='mc';
+      wrap.innerHTML=`
+        <div class="mc-head nba-h"><span class="mc-title">Clasificación NBA 2025/26</span></div>
+        <div style="padding:8px 14px;background:#f8fafc;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;color:var(--tg);text-transform:uppercase;margin-bottom:4px">Conferencia Este</div>
+          ${EAST_STAND.map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #f8fafc;font-size:11px;color:var(--td)">
+            <span style="min-width:16px;font-weight:800;color:var(--tg);font-size:10px">${s.r}</span>
+            <span style="flex:1;font-weight:600">${s.t}</span>
+            <span style="color:var(--tg);font-size:10px">${s.w}-${s.l}</span>
+            <span style="font-weight:700">${s.pct.toFixed(3)}</span>
+            ${s.pi?'<span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:4px;font-weight:700">PI</span>':'<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block"></span>'}
+          </div>`).join('')}
+        </div>
+        <div style="padding:8px 14px">
+          <div style="font-size:10px;font-weight:800;color:var(--tg);text-transform:uppercase;margin-bottom:4px">Conferencia Oeste</div>
+          ${WEST_STAND.map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #f8fafc;font-size:11px;color:var(--td)">
+            <span style="min-width:16px;font-weight:800;color:var(--tg);font-size:10px">${s.r}</span>
+            <span style="flex:1;font-weight:600">${s.t}</span>
+            <span style="color:var(--tg);font-size:10px">${s.w}-${s.l}</span>
+            <span style="font-weight:700">${s.pct.toFixed(3)}</span>
+            ${s.pi?'<span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:4px;font-weight:700">PI</span>':'<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block"></span>'}
+          </div>`).join('')}
+        </div>`;
+      d.appendChild(wrap);
+      return;
+    }
+    const card=document.createElement('div');card.className='mc';
+    const isFin=n.status==='final';const isLive=n.status==='live';const isNext=n.status==='scheduled';
+    const badge=isFin?`<span class="mc-time">FIN</span>`:isLive?`<span class="mc-live-badge">EN VIVO · ${n.quarter}</span>`:`<span class="mc-time">${n.quarter}</span>`;
+    card.innerHTML=`
+      <div class="mc-head nba-h">${badge}<span class="mc-title">${n.home} vs ${n.away}</span><span class="mc-arrow">›</span></div>
+      ${isFin||isLive?`
+      <div class="score-wrap">
+        <div class="sc-team"><span class="sc-n">${n.ha}</span><span class="sc-pts${n.score.h>n.score.a?' win':''}">${n.score.h}</span></div>
+        <div>${isLive?`<div class="live-q">${n.quarter}</div>`:''}</div>
+        <div class="sc-team"><span class="sc-n">${n.aa}</span><span class="sc-pts${n.score.a>n.score.h?' win':''}">${n.score.a}</span></div>
+      </div>`:``}
+      <div class="qstats">
+        <div class="qs"><span class="qs-v">${n.stats.ortg.h}</span><span class="qs-l">Off Rating ${n.ha}</span></div>
+        <div class="qs"><span class="qs-v">${n.stats.drtg.h}</span><span class="qs-l">Def Rating ${n.ha}</span></div>
+        <div class="qs"><span class="qs-v">${n.prob.h}%</span><span class="qs-l">Prob. ${n.ha}</span></div>
+      </div>
+      <div class="pb-w"><div class="pb-l"><span>${n.ha} ${n.prob.h}%</span><span style="margin-left:auto">${n.prob.a}% ${n.aa}</span></div>
+        <div class="pbar"><div class="ph" style="width:${n.prob.h}%"></div><div class="pa2" style="width:${n.prob.a}%"></div></div></div>
+      <div class="odds2">
+        <div class="ob${n.odds2.h<=n.odds2.a?' best':''}"><span class="ol">${n.ha}</span><span class="ov">${n.odds2.h.toFixed(2)}</span></div>
+        <div class="ob${n.odds2.a<n.odds2.h?' best':''}"><span class="ol">${n.aa}</span><span class="ov">${n.odds2.a.toFixed(2)}</span></div>
+      </div>
+      ${n.valueBets.length?`<div class="pick-row"><span class="pick-lbl">Picks</span><div class="pick-chips">${n.valueBets.slice(0,2).map(v=>`<span class="chip chip-s">${v.pick} @${v.odd}</span>`).join('')}</div></div>`:''}`;
+    card.addEventListener('click',()=>openDetail('nba',n.id));
+    d.appendChild(card);
+  });
 }
+
+function renderCombos(){
+  const d=document.getElementById('combos-content');d.innerHTML='';
+  const cats=[{k:'dia',lbl:'Combinada del Día',icon:'☀️',desc:'Las mejores apuestas de hoy'},{k:'reto',lbl:'Reto Cuota 10',icon:'🎯',desc:'Combinadas de alta cuota'},{k:'ten',lbl:'Combinada de Tenis',icon:'🎾',desc:'Picks ATP & WTA'},{k:'nba',lbl:'Especial NBA',icon:'🏀',desc:'Las mejores apuestas NBA'}];
+  cats.forEach(cat=>{
+    const cs=COMBOS.filter(c=>c.cat===cat.k);
+    if(!cs.length)return;
+    const title=document.createElement('div');title.className='combo-cat-title';
+    title.innerHTML=`<span class="cat-badge cat-${cat.k}">${cat.icon} ${cat.lbl}</span><span style="font-size:11px;color:rgba(255,255,255,.4)">${cat.desc}</span>`;
+    d.appendChild(title);
+    cs.forEach(c=>{
+      const el=document.createElement('div');el.className='combo';
+      const pClass=parseFloat(c.risk)>=60?'cph':parseFloat(c.risk)>=40?'cpm':'cpl';
+      el.innerHTML=`
+        <div class="combo-top ${c.type}">
+          <div class="ct-row"><span class="ct-title">${c.title}</span><span class="ct-rb">${c.risk} prob.</span></div>
+          <div class="ct-sub">${c.sub}</div>
+        </div>
+        <div class="c-legs">${c.legs.map((l,i)=>`<div class="leg"><div class="leg-n">${i+1}</div><div class="leg-m">${l.m}</div><div class="leg-p">${l.p}</div><div class="leg-o">@${l.o.toFixed(2)}</div></div>`).join('')}</div>
+        <div class="c-foot">
+          <div class="cf-l"><span class="cf-lbl">Cuota total</span><span class="cf-val">@${c.odd.toFixed(2)}</span></div>
+          <div class="cf-r"><span class="cf-lbl">Probabilidad</span><span class="cf-prob ${pClass}">${c.risk}</span></div>
+        </div>
+        <div class="c-why">💡 ${c.why}</div>`;
+      d.appendChild(el);
+    });
+  });
+}
+
+// ════════════════════════════════════════
+// DETAIL VIEW
+// ════════════════════════════════════════
+
+function openDetail(sport,id){
+  const dv=document.getElementById('detail-view');
+  const dc=document.getElementById('detail-content');
+  if(sport==='fut'){
+    const m=MATCHES.find(x=>x.id===id);if(!m)return;
+    const isUCL=m.league==='ucl';
+    dc.innerHTML=`
+      <div class="dv-hero">
+        <div class="dv-head ${isUCL?'ucl':'fut'}" style="background:${isUCL?'var(--a4)':'var(--a1)'}">
+          <div style="font-size:10px;opacity:.7;margin-bottom:8px;font-weight:700">${m.comp}</div>
+          <div class="dv-teams">
+            <div class="dv-team"><span class="dv-abbr">${m.ha}</span><span class="dv-tname">${m.home}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 12px">
+              <span style="font-size:12px;opacity:.6">${m.time}</span>
+              <span style="font-size:22px;font-weight:800">VS</span>
+            </div>
+            <div class="dv-team"><span class="dv-abbr">${m.aa}</span><span class="dv-tname">${m.away}</span></div>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:10px">
+            <div class="dv-score-block"><span class="dv-score">${m.odds.h.toFixed(2)}</span><span class="dv-subscore">Local</span></div>
+            <div class="dv-score-block"><span class="dv-score">${m.odds.d.toFixed(2)}</span><span class="dv-subscore">Empate</span></div>
+            <div class="dv-score-block"><span class="dv-score">${m.odds.a.toFixed(2)}</span><span class="dv-subscore">Visitante</span></div>
+          </div>
+        </div>
+        <!-- PROB BAR GRANDE -->
+        <div style="padding:12px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--tg);margin-bottom:6px">
+            <span style="color:#6366f1">${m.ha} ${m.hp}%</span><span>Empate ${m.dp}%</span><span style="color:#f97316">${m.ap}% ${m.aa}</span>
+          </div>
+          <div class="pbar" style="height:10px;border-radius:6px">
+            <div class="ph" style="width:${m.hp}%"></div><div class="pd" style="width:${m.dp}%"></div><div class="pa" style="width:${m.ap}%"></div>
+          </div>
+        </div>
+        <!-- ESTADÍSTICAS AVANZADAS -->
+        <div style="padding:12px 16px 8px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);letter-spacing:.4px;margin-bottom:10px">Estadísticas avanzadas</div>
+          ${renderStatBar("xG",m.stats.xgH,m.stats.xgA,m.ha,m.aa)}
+          ${renderStatBar("Posesión %",m.stats.posH,m.stats.posA,m.ha,m.aa)}
+          ${renderStatBar("Tiros totales",m.stats.shotsH,m.stats.shotsA,m.ha,m.aa)}
+          ${renderStatBar("Remates a puerta",m.stats.sot,10-m.stats.sot,m.ha,m.aa)}
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
+            <div class="adv-card"><div class="adv-label">Goles/p</div><div style="font-size:22px;font-weight:800;color:var(--td)">${m.stats.gpg}</div></div>
+            <div class="adv-card"><div class="adv-label">xG local</div><div style="font-size:22px;font-weight:800;color:#6366f1">${m.stats.xgH}</div></div>
+            <div class="adv-card"><div class="adv-label">Port. a 0</div><div style="font-size:22px;font-weight:800;color:#0ea5e9">${m.stats.cs}</div></div>
+          </div>
+        </div>
+        <!-- FORMA RECIENTE -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Forma reciente (últ. 5)</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:11px;font-weight:700;color:var(--td);margin-bottom:4px">${m.home}</div><div class="form">${formDots(m.form.h)}</div></div>
+            <div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--td);margin-bottom:4px">${m.away}</div><div class="form">${formDots(m.form.a)}</div></div>
+          </div>
+        </div>
+        <!-- H2H -->
+        ${m.h2h.length?`<div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Enfrentamientos directos</div>
+          ${m.h2h.map(h=>`<div class="h2h-row"><span class="h2h-teams">${h.t}</span><span class="h2h-score">${h.s}</span><span class="h2h-comp">${h.c}</span></div>`).join('')}
+        </div>`:''}
+        <!-- BAJAS -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Bajas y dudas</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${[...m.injuries.h,...m.injuries.a].map(i=>`<span class="${i.includes('lesión')?'injury-chip':'doubt-chip'}">${i}</span>`).join('')||'<span style="font-size:11px;color:var(--tl)">Sin bajas confirmadas</span>'}
+          </div>
+        </div>
+        <!-- ANÁLISIS -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:6px">Análisis del partido</div>
+          <p style="font-size:12px;color:var(--tg);line-height:1.5">${m.analysis}</p>
+        </div>
+        <!-- VALUE BETS -->
+        <div class="vbet-card">
+          <div class="vbet-title">🎯 Apuestas de valor — ${m.home} vs ${m.away}</div>
+          ${m.valueBets.map(v=>`<div class="vbet-row">
+            <div><div class="vbet-pick">${v.pick}</div><div class="vbet-why">${v.why}</div></div>
+            <div class="vbet-odd">@${v.odd.toFixed(2)}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+  }
+  else if(sport==='ten'){
+    const t=TENNIS.find(x=>x.id===id);if(!t)return;
+    const isLive=t.status==='live';const isFin=t.status==='final';
+    dc.innerHTML=`
+      <div class="dv-hero">
+        <div class="dv-head ten" style="background:var(--a2)">
+          <div style="font-size:10px;opacity:.7;margin-bottom:8px">${t.tournament}</div>
+          ${isLive?'<div style="font-size:12px;font-weight:800;background:#ef4444;display:inline-block;padding:3px 10px;border-radius:10px;margin-bottom:8px">EN VIVO</div>':''}
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:14px;font-weight:800">${t.p1}</span>
+            <span style="font-size:12px;opacity:.7">vs</span>
+            <span style="font-size:14px;font-weight:800">${t.p2}</span>
+          </div>
+        </div>
+        ${t.sets.length?`<div style="padding:12px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Marcador por sets</div>
+          <div class="sets-r"><span class="sp" style="font-weight:800">${t.p1}</span><div class="sboxes">${t.sets.map(s=>`<div class="${isFin&&s.p1>s.p2?'sbox w':isLive?'sbox lv':'sbox'}">${s.p1}</div>`).join('')}</div></div>
+          <div class="sets-r"><span class="sp" style="font-weight:800">${t.p2}</span><div class="sboxes">${t.sets.map(s=>`<div class="${isFin&&s.p2>s.p1?'sbox w':isLive?'sbox lv':'sbox'}">${s.p2}</div>`).join('')}</div></div>
+        </div>`:''}
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Estadísticas de superficie</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="adv-card"><div class="adv-label">${t.p1.split(' ').pop()} en ${t.tournament.includes('Tierra')?'Tierra':'Pista'}</div><div style="font-size:20px;font-weight:800;color:#0f766e">${t.stats.p1.surf}</div><div style="font-size:10px;color:var(--tg)">Break points: ${t.stats.p1.bp}</div></div>
+            <div class="adv-card"><div class="adv-label">${t.p2.split(' ').pop()} en ${t.tournament.includes('Tierra')?'Tierra':'Pista'}</div><div style="font-size:20px;font-weight:800;color:#0f766e">${t.stats.p2.surf}</div><div style="font-size:10px;color:var(--tg)">Break points: ${t.stats.p2.bp}</div></div>
+          </div>
+        </div>
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <p style="font-size:12px;color:var(--tg);line-height:1.5">${t.analysis}</p>
+        </div>
+        <div class="odds2" style="padding:10px 16px;gap:8px">
+          <div class="ob${t.odds2.p1<=t.odds2.p2?' best':''}"><span class="ol">${t.p1}</span><span class="ov">${t.odds2.p1.toFixed(2)}</span></div>
+          <div class="ob${t.odds2.p2<t.odds2.p1?' best':''}"><span class="ol">${t.p2}</span><span class="ov">${t.odds2.p2.toFixed(2)}</span></div>
+        </div>
+        ${t.valueBets.length?`<div class="vbet-card"><div class="vbet-title">🎯 Apuestas de valor</div>${t.valueBets.map(v=>`<div class="vbet-row"><div><div class="vbet-pick">${v.pick}</div><div class="vbet-why">${v.why}</div></div><div class="vbet-odd">@${v.odd.toFixed(2)}</div></div>`).join('')}</div>`:''}
+      </div>`;
+  }
+  else if(sport==='nba'){
+    const n=NBA.find(x=>x.id===id);if(!n||n.cat==='stand')return;
+    const isFin=n.status==='final';const isNext=n.status==='scheduled';
+    dc.innerHTML=`
+      <div class="dv-hero">
+        <div class="dv-head nba-h" style="background:var(--a3)">
+          <div style="font-size:10px;opacity:.7;margin-bottom:6px">${n.quarter}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="text-align:center"><div style="font-size:20px;font-weight:800">${n.ha}</div>${isFin?`<div style="font-size:32px;font-weight:800;color:${n.score.h>n.score.a?'#86efac':'#fff'}">${n.score.h}</div>`:'<div style="font-size:14px;opacity:.7">@${n.odds2.h.toFixed(2)}</div>'}</div>
+            <div style="font-size:16px;opacity:.6">VS</div>
+            <div style="text-align:center"><div style="font-size:20px;font-weight:800">${n.aa}</div>${isFin?`<div style="font-size:32px;font-weight:800;color:${n.score.a>n.score.h?'#86efac':'#fff'}">${n.score.a}</div>`:'<div style="font-size:14px;opacity:.7">@${n.odds2.a.toFixed(2)}</div>'}</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Ratings avanzados</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+            <div class="adv-card"><div class="adv-label">Off Rating ${n.ha}</div><div style="font-size:22px;font-weight:800;color:#6366f1">${n.stats.ortg.h}</div></div>
+            <div class="adv-card"><div class="adv-label">Def Rating ${n.ha}</div><div style="font-size:22px;font-weight:800;color:#f97316">${n.stats.drtg.h}</div></div>
+            <div class="adv-card"><div class="adv-label">Off Rating ${n.aa}</div><div style="font-size:22px;font-weight:800;color:#6366f1">${n.stats.ortg.a}</div></div>
+            <div class="adv-card"><div class="adv-label">Def Rating ${n.aa}</div><div style="font-size:22px;font-weight:800;color:#f97316">${n.stats.drtg.a}</div></div>
+          </div>
+        </div>
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9">
+          <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--tg);margin-bottom:8px">Jugadores clave</div>
+          <div style="font-size:10px;font-weight:700;color:var(--tg);margin-bottom:4px">${n.home}</div>
+          ${n.players.h.map(p=>`<div class="nba-player"><div class="status-dot s-${p.status==='ok'?'ok':p.status==='doubt'?'doubt':'out'}"></div><span style="flex:1">${p.name}</span><span style="color:var(--tg);font-size:10px">${p.reb} REB</span><span class="nba-ppg">${p.ppg} PPG</span></div>`).join('')}
+          <div style="font-size:10px;font-weight:700;color:var(--tg);margin:8px 0 4px">${n.away}</div>
+          ${n.players.a.map(p=>`<div class="nba-player"><div class="status-dot s-${p.status==='ok'?'ok':p.status==='doubt'?'doubt':'out'}"></div><span style="flex:1">${p.name}</span>${p.status==='out'?'<span style="font-size:9px;background:#fef2f2;color:#991b1b;padding:1px 6px;border-radius:4px;font-weight:700">OUT</span>':p.status==='doubt'?'<span style="font-size:9px;background:#fff7ed;color:#9a3412;padding:1px 6px;border-radius:4px;font-weight:700">DUDA</span>':''}<span style="color:var(--tg);font-size:10px">${p.reb} REB</span><span class="nba-ppg">${p.ppg} PPG</span></div>`).join('')}
+        </div>
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9"><p style="font-size:12px;color:var(--tg);line-height:1.5">${n.analysis}</p></div>
+        ${n.valueBets.length?`<div class="vbet-card"><div class="vbet-title">🎯 Apuestas de valor</div>${n.valueBets.map(v=>`<div class="vbet-row"><div><div class="vbet-pick">${v.pick}</div><div class="vbet-why">${v.why}</div></div><div class="vbet-odd">@${v.odd.toFixed(2)}</div></div>`).join('')}</div>`:''}
+      </div>`;
+  }
+  dv.classList.add('open');
+  dv.scrollTop=0;
+  document.getElementById('main-view').style.display='none';
+}
+
+function closeDetail(){
+  document.getElementById('detail-view').classList.remove('open');
+  document.getElementById('main-view').style.display='block';
+}
+
+function renderStatBar(name,h,a,ha,aa){
+  const tot=h+a||1;
+  return`<div class="cmp-row">
+    <div class="cmp-v">${h}</div>
+    <div><div class="cmp-name">${name}</div><div class="cmp-bar"><div class="fill-h" style="width:${(h/tot*100).toFixed(0)}%"></div><div class="fill-a" style="width:${(a/tot*100).toFixed(0)}%"></div></div></div>
+    <div class="cmp-v">${a}</div>
+  </div>`;
+}
+
+// ════════════════════════════════════════
+// CONTROLS
+// ════════════════════════════════════════
+
+function buildDateStrip(){
+  const ds=document.getElementById('dstrip');ds.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const btn=document.createElement('div');btn.className=`db${i===0?' active today':''}`;
+    btn.innerHTML=`<span class="dn">${d.dn}</span><span class="dd">${d.d}</span><span class="dm">${d.dm}</span>`;
+    btn.onclick=()=>{selDay=i;document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAll()};
+    ds.appendChild(btn);
+  });
+}
+
+function setSport(s,btn){
+  selSport=s;
+  document.querySelectorAll('.stab').forEach(b=>{b.classList.remove('active','t-active','n-active','c-active')});
+  if(s==='ten')btn.classList.add('t-active');
+  else if(s==='nba')btn.classList.add('n-active');
+  else if(s==='cmb')btn.classList.add('c-active');
+  else btn.classList.add('active');
+  document.querySelectorAll('.sport-sec').forEach(el=>el.classList.remove('active'));
+  document.getElementById(`sp-${s}`).classList.add('active');
+  renderAll();
+}
+
+function setLeague(l,btn){selLeague=l;document.querySelectorAll('#league-filt .lf').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFootball();}
+function setTenisCat(c,btn){selTenis=c;document.querySelectorAll('#sp-ten .lf').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTenis();}
+function setNbaCat(c,btn){selNba=c;document.querySelectorAll('#sp-nba .lf').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderNba();}
+
+function renderAll(){
+  if(selSport==='fut')renderFootball();
+  else if(selSport==='ten')renderTenis();
+  else if(selSport==='nba')renderNba();
+  else if(selSport==='cmb')renderCombos();
+}
+
+// INIT
+buildDateStrip();
+renderFootball();
+renderTenis();
+renderNba();
+renderCombos();
 </script>
 </body>
 </html>
